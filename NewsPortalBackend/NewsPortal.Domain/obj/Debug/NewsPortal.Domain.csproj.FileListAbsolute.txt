@@ -1,0 +1,6 @@
+J:\NewsPortalBackend\NewsPortal.Domain\bin\Debug\NewsPortal.Domain.dll
+J:\NewsPortalBackend\NewsPortal.Domain\bin\Debug\NewsPortal.Domain.pdb
+J:\NewsPortalBackend\NewsPortal.Domain\obj\Debug\NewsPortal.Domain.csproj.AssemblyReference.cache
+J:\NewsPortalBackend\NewsPortal.Domain\obj\Debug\NewsPortal.Domain.csproj.CoreCompileInputs.cache
+J:\NewsPortalBackend\NewsPortal.Domain\obj\Debug\NewsPortal.Domain.dll
+J:\NewsPortalBackend\NewsPortal.Domain\obj\Debug\NewsPortal.Domain.pdb
