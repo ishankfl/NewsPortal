@@ -16,7 +16,7 @@ namespace NewsPortal.Domain.Models
         public Role Role { get; set; }
         public DateTime CreatedAt { get; set; }
 
-        public bool IsSuspended { get; set; }          // <— new
-        public DateTime? SuspendedAt { get; set; }     // <— new
+        public bool IsSuspended { get; set; }        
+        public DateTime? SuspendedAt { get; set; }   
     }
 }
