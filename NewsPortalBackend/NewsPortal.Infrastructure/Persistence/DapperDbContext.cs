@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
+using Microsoft.Extensions.Configuration;
+using Npgsql;
 
 namespace NewsPortal.Infrastructure.Persistence
 {
@@ -12,10 +11,16 @@ namespace NewsPortal.Infrastructure.Persistence
 
         public DapperDbContext(IConfiguration configuration)
         {
+            if (configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             _connectionString = configuration.GetConnectionString("DefaultConnection")
-                               ?? throw new ArgumentNullException(nameof(configuration), "Connection string not found.");
+                               ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
         }
 
-        public NpgsqlConnection CreateConnection() => new NpgsqlConnection(_connectionString);
+        public IDbConnection CreateConnection()
+        {
+            return new NpgsqlConnection(_connectionString);
+        }
     }
 }
