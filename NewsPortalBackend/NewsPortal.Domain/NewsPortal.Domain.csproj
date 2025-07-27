@@ -43,6 +43,9 @@
   <ItemGroup>
     <Compile Include="Enums\AdPlacementType.cs" />
     <Compile Include="Enums\Role.cs" />
+    <Compile Include="Models\Article.cs" />
+    <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\Media.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
