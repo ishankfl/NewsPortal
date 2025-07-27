@@ -10,10 +10,13 @@ namespace NewsPortal.Domain.Models
     public class User
     {
         public int Id { get; set; }
-        public string Username { get; set; } = default!;
-        public string Email { get; set; } = default!;
-        public string PasswordHash { get; set; } = default!;
+        public string Username { get; set; } = default;
+        public string Email { get; set; } = default;
+        public string PasswordHash { get; set; } = default;
         public Role Role { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        public bool IsSuspended { get; set; }          // <— new
+        public DateTime? SuspendedAt { get; set; }     // <— new
     }
 }
