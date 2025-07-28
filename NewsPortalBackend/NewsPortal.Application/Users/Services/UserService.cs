@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
-    private readonly IEmailSender _emailSender; // optional
+    private readonly IEmailSender _emailSender; 
 
     public UserService(IUserRepository userRepository, IEmailSender emailSender = null)
     {

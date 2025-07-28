@@ -1,0 +1,2 @@
+J:\NewsPortal\NewsPortalBackend\NewsPortal.Application\obj\Debug\NewsPortal.Application.csproj.AssemblyReference.cache
+J:\NewsPortal\NewsPortalBackend\NewsPortal.Application\obj\Debug\NewsPortal.Application.csproj.CoreCompileInputs.cache
