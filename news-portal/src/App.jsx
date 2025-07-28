@@ -1,35 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route } from 'react-router-dom';
+import AdminLayout from './layouts/AdminLayout';
+import Dashboard from './pages/admin/Dashboard';
+// import News from './pages/news/News';
+// import ManageNews from './pages/news/ManageNews';
+// import AddNews from './pages/news/AddNews';
+// import ManageMedia from './pages/media/ManageMedia';
+// import ManageAdvertises from './pages/advertises/ManageAdvertises';
+// import AddAdvertise from './pages/advertises/AddAdvertise';
+// import BannerNews from './pages/banner/BannerNews';
+// import Users from './pages/users/Users';
+// import ManageUsers from './pages/users/ManageUsers';
+// import AddUser from './pages/users/AddUser';
+// import Profile from './pages/users/Profile';
+// import ResetPassword from './pages/users/ResetPassword';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Routes>
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<Dashboard />} />
+        {/* <Route path="news" element={<News />} />
+        <Route path="news/manage" element={<ManageNews />} />
+        <Route path="news/add" element={<AddNews />} />
+        <Route path="media/manage" element={<ManageMedia />} />
+        <Route path="advertises/manage" element={<ManageAdvertises />} />
+        <Route path="advertises/add" element={<AddAdvertise />} />
+        <Route path="banner" element={<BannerNews />} />
+        <Route path="users" element={<Users />} />
+        <Route path="users/manage" element={<ManageUsers />} />
+        <Route path="users/add" element={<AddUser />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="reset-password" element={<ResetPassword />} /> */}
+      </Route>
+    </Routes>
+  );
 }
 
-export default App
+export default App;
