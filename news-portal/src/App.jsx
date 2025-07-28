@@ -1,6 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
-import AdminLayout from './layouts/AdminLayout';
-import Dashboard from './pages/admin/Dashboard';
+import AdminLayout from './components/admin/layouts/AdminLayout';
+import AddUser from './components/admin/user/AddUser';
+// import AdminLayout from './layouts/AdminLayout';
+// import Dashboard from './pages/admin/Dashboard';
 // import News from './pages/news/News';
 // import ManageNews from './pages/news/ManageNews';
 // import AddNews from './pages/news/AddNews';
@@ -18,10 +20,10 @@ function App() {
   return (
     <Routes>
       <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<Dashboard />} />
+        <Route path="manage/user/add" element={<AddUser />} />
+        {/* <Route index element={<Dashboard />} /> */}
         {/* <Route path="news" element={<News />} />
         <Route path="news/manage" element={<ManageNews />} />
-        <Route path="news/add" element={<AddNews />} />
         <Route path="media/manage" element={<ManageMedia />} />
         <Route path="advertises/manage" element={<ManageAdvertises />} />
         <Route path="advertises/add" element={<AddAdvertise />} />
