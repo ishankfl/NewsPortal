@@ -1,220 +1,132 @@
-import { useState } from 'react';
+import React from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { FiSave, FiUser, FiMail, FiLock, FiUserCheck } from 'react-icons/fi';
-// import { createUser } from '../../../services/userService';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { FiSave, FiUser, FiMail, FiLock, FiUserCheck } from 'react-icons/fi';
+import { Formik, Form } from 'formik';
 
-// Simulate the Role enum for JS
-const Role = {
-  Superadmin: 'Superadmin',
-  Admin: 'Admin',
-  Writer: 'Writer'
+import FormButton from '../../common/FormButton';
+import FormInput from '../../common/FormInput';
+import FormSelect from '../../common/FormSelect';
+import { userValidationSchema } from '../../../validation/user-validation';
+import { Role } from '../../common/Role';
+
+// Example createUser function - replace with actual service
+const createUser = async (userData) => {
+    return new Promise((resolve) => {
+        setTimeout(() => resolve(userData), 1000);
+    });
 };
 
-
 const AddUser = () => {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    plainPassword: '',
-    role: Role.User
-  });
+    // const createUserMutation = useMutation(createUser, {
+    //     onSuccess: () => {
+    //         queryClient.invalidateQueries(['users']);
+    //         toast.success('User created successfully!');
+    //         navigate('/users/manage');
+    //     },
+    //     onError: (error) => {
+    //         toast.error(error.message || 'Failed to create user');
+    //     }
+    // });
 
-  const [errors, setErrors] = useState({});
+    const initialValues = {
+        username: '',
+        email: '',
+        plainPassword: '',
+        role: Role.Writer
+    };
 
-  const createUserMutation = useMutation({
-    // mutationFn: (userData) => createUser(userData),
-    // onSuccess: () => {
-    //   queryClient.invalidateQueries({ queryKey: ['users'] });
-    //   toast.success('User created successfully!');
-    //   navigate('/users/manage');
-    // },
-    // onError: (error) => {
-    //   toast.error(error.message || 'Failed to create user');
-    // }
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value
-    }));
-
-    if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: undefined
-      }));
-    }
-  };
-
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!formData.username.trim()) {
-      newErrors.username = 'Username is required';
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Invalid email format';
-    }
-
-    if (!formData.plainPassword) {
-      newErrors.plainPassword = 'Password is required';
-    } else if (formData.plainPassword.length < 6) {
-      newErrors.plainPassword = 'Password must be at least 6 characters';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (validateForm()) {
-      createUserMutation.mutate(formData);
-    }
-  };
-
-  return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Add New User</h1>
-        <button
-          onClick={() => navigate('/users/manage')}
-          className="px-4 py-2 text-sm text-white bg-gray-500 rounded hover:bg-gray-600"
-        >
-          Back to Users
-        </button>
-      </div>
-
-      <div className="bg-white p-6 rounded-lg shadow">
-        <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Username */}
-            <div className="space-y-2">
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                Username
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <FiUser className="text-gray-400" />
+    return (
+        <div className="min-h-screen bg-gray-100 py-10 px-4">
+            <div className="max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
+                {/* Header */}
+                <div className="flex items-center justify-between mb-10">
+                    <h1 className="text-3xl font-bold text-gray-800">➕ Add New User</h1>
+                    <button
+                        onClick={() => navigate('/users/manage')}
+                        className="px-5 py-2 text-sm font-medium text-white bg-gray-700 rounded-md hover:bg-gray-800 transition"
+                    >
+                        Back to Users
+                    </button>
                 </div>
-                <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleChange}
-                  className={`pl-10 w-full rounded-md border ${errors.username ? 'border-red-500' : 'border-gray-300'} p-2 focus:ring-indigo-500 focus:border-indigo-500`}
-                  placeholder="Enter username"
-                />
-              </div>
-              {errors.username && <p className="text-sm text-red-500">{errors.username}</p>}
-            </div>
 
-            {/* Email */}
-            <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <FiMail className="text-gray-400" />
-                </div>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={`pl-10 w-full rounded-md border ${errors.email ? 'border-red-500' : 'border-gray-300'} p-2 focus:ring-indigo-500 focus:border-indigo-500`}
-                  placeholder="Enter email"
-                />
-              </div>
-              {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
-            </div>
-
-            {/* Password */}
-            <div className="space-y-2">
-              <label htmlFor="plainPassword" className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <FiLock className="text-gray-400" />
-                </div>
-                <input
-                  type="password"
-                  id="plainPassword"
-                  name="plainPassword"
-                  value={formData.plainPassword}
-                  onChange={handleChange}
-                  className={`pl-10 w-full rounded-md border ${errors.plainPassword ? 'border-red-500' : 'border-gray-300'} p-2 focus:ring-indigo-500 focus:border-indigo-500`}
-                  placeholder="Enter password"
-                />
-              </div>
-              {errors.plainPassword && <p className="text-sm text-red-500">{errors.plainPassword}</p>}
-            </div>
-
-            {/* Role */}
-            <div className="space-y-2">
-              <label htmlFor="role" className="block text-sm font-medium text-gray-700">
-                Role
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <FiUserCheck className="text-gray-400" />
-                </div>
-                <select
-                  id="role"
-                  name="role"
-                  value={formData.role}
-                  onChange={handleChange}
-                  className="pl-10 w-full rounded-md border border-gray-300 p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                {/* Form */}
+                <Formik
+                    initialValues={initialValues}
+                    validationSchema={userValidationSchema}
+                    onSubmit={(values) => createUserMutation.mutate(values)}
                 >
-                  <option value={Role.Admin}>Admin</option>
-                  <option value={Role.Editor}>Editor</option>
-                  <option value={Role.User}>User</option>
-                </select>
-              </div>
-            </div>
-          </div>
+                    {({ values, errors, touched, handleChange, handleBlur }) => (
+                        <Form>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <FormInput
+                                    label="Username"
+                                    id="username"
+                                    name="username"
+                                    value={values.username}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={touched.username && errors.username}
+                                    placeholder="Enter username"
+                                    icon={FiUser}
+                                />
 
-          <div className="mt-8 flex justify-end">
-            <button
-              type="submit"
-              disabled={createUserMutation.isPending}
-              className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 flex items-center"
-            >
-              {createUserMutation.isPending ? (
-                <>
-                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Saving...
-                </>
-              ) : (
-                <>
-                  <FiSave className="mr-2" />
-                  Save User
-                </>
-              )}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
+                                <FormInput
+                                    label="Email"
+                                    id="email"
+                                    name="email"
+                                    // type="email"
+                                    value={values.email}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={touched.email && errors.email}
+                                    placeholder="Enter email"
+                                    icon={FiMail}
+                                />
+
+                                <FormInput
+                                    label="Password"
+                                    id="plainPassword"
+                                    name="plainPassword"
+                                    type="password"
+                                    value={values.plainPassword}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={touched.plainPassword && errors.plainPassword}
+                                    placeholder="Enter password"
+                                    icon={FiLock}
+                                />
+
+                                <FormSelect
+                                    label="Role"
+                                    id="role"
+                                    name="role"
+                                    value={values.role}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={touched.role && errors.role}
+                                    options={Object.values(Role).map((r) => ({ value: r, label: r }))}
+                                    icon={FiUserCheck}
+                                />
+                            </div>
+
+                            {/* Submit Button */}
+                            <div className="mt-10 flex justify-end">
+                                <FormButton className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg flex items-center transition">
+                                    <FiSave className="mr-2" />
+                                    Save User
+                                </FormButton>
+                            </div>
+                        </Form>
+                    )}
+                </Formik>
+            </div>
+        </div>
+    );
 };
 
 export default AddUser;

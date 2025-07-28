@@ -20,7 +20,7 @@ function App() {
   return (
     <Routes>
       <Route path="/admin" element={<AdminLayout />}>
-        <Route path="manage/user/add" element={<AddUser />} />
+        <Route path="users/add" element={<AddUser />} />
         {/* <Route index element={<Dashboard />} /> */}
         {/* <Route path="news" element={<News />} />
         <Route path="news/manage" element={<ManageNews />} />
