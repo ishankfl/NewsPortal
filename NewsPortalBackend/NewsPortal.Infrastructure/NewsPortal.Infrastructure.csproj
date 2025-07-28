@@ -108,5 +108,11 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NewsPortal.Domain\NewsPortal.Domain.csproj">
+      <Project>{ce771edf-8940-4b7a-ac2d-b880124db740}</Project>
+      <Name>NewsPortal.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

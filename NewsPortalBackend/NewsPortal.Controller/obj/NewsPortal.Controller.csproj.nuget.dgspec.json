@@ -4,6 +4,25 @@
     "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Controller\\NewsPortal.Controller.csproj": {}
   },
   "projects": {
+    "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\NewsPortal.Application.csproj": {
+      "restore": {
+        "projectUniqueName": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\NewsPortal.Application.csproj",
+        "projectName": "NewsPortal.Application",
+        "projectPath": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\NewsPortal.Application.csproj",
+        "frameworks": {
+          "net472": {
+            "projectReferences": {
+              "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Domain\\NewsPortal.Domain.csproj": {
+                "projectPath": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Domain\\NewsPortal.Domain.csproj"
+              }
+            }
+          }
+        }
+      },
+      "frameworks": {
+        "net472": {}
+      }
+    },
     "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Controller\\NewsPortal.Controller.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -28,7 +47,14 @@
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\NewsPortal.Application.csproj": {
+                "projectPath": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\NewsPortal.Application.csproj"
+              },
+              "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Infrastructure\\NewsPortal.Infrastructure.csproj": {
+                "projectPath": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Infrastructure\\NewsPortal.Infrastructure.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -40,8 +66,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.300"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -63,24 +88,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.16, 8.0.16]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[8.0.16, 8.0.16]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.16, 8.0.16]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[8.0.16, 8.0.16]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -89,8 +96,42 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
         }
+      }
+    },
+    "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Domain\\NewsPortal.Domain.csproj": {
+      "restore": {
+        "projectUniqueName": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Domain\\NewsPortal.Domain.csproj",
+        "projectName": "NewsPortal.Domain",
+        "projectPath": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Domain\\NewsPortal.Domain.csproj",
+        "frameworks": {
+          "net472": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net472": {}
+      }
+    },
+    "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Infrastructure\\NewsPortal.Infrastructure.csproj": {
+      "restore": {
+        "projectUniqueName": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Infrastructure\\NewsPortal.Infrastructure.csproj",
+        "projectName": "NewsPortal.Infrastructure",
+        "projectPath": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Infrastructure\\NewsPortal.Infrastructure.csproj",
+        "frameworks": {
+          "net472": {
+            "projectReferences": {
+              "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Domain\\NewsPortal.Domain.csproj": {
+                "projectPath": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Domain\\NewsPortal.Domain.csproj"
+              }
+            }
+          }
+        }
+      },
+      "frameworks": {
+        "net472": {}
       }
     }
   }

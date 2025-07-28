@@ -88,6 +88,39 @@
         "frameworkReferences": [
           "Microsoft.AspNetCore.App"
         ]
+      },
+      "NewsPortal.Application/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "NewsPortal.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/NewsPortal.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/NewsPortal.Application.dll": {}
+        }
+      },
+      "NewsPortal.Domain/1.0.0": {
+        "type": "project",
+        "compile": {
+          "bin/placeholder/NewsPortal.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/NewsPortal.Domain.dll": {}
+        }
+      },
+      "NewsPortal.Infrastructure/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "NewsPortal.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/NewsPortal.Infrastructure.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/NewsPortal.Infrastructure.dll": {}
+        }
       }
     }
   },
@@ -420,10 +453,27 @@
         "swashbuckle.aspnetcore.swaggerui.6.4.0.nupkg.sha512",
         "swashbuckle.aspnetcore.swaggerui.nuspec"
       ]
+    },
+    "NewsPortal.Application/1.0.0": {
+      "type": "project",
+      "path": "../NewsPortal.Application/NewsPortal.Application.csproj",
+      "msbuildProject": "../NewsPortal.Application/NewsPortal.Application.csproj"
+    },
+    "NewsPortal.Domain/1.0.0": {
+      "type": "project",
+      "path": "../NewsPortal.Domain/NewsPortal.Domain.csproj",
+      "msbuildProject": "../NewsPortal.Domain/NewsPortal.Domain.csproj"
+    },
+    "NewsPortal.Infrastructure/1.0.0": {
+      "type": "project",
+      "path": "../NewsPortal.Infrastructure/NewsPortal.Infrastructure.csproj",
+      "msbuildProject": "../NewsPortal.Infrastructure/NewsPortal.Infrastructure.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "NewsPortal.Application >= 1.0.0",
+      "NewsPortal.Infrastructure >= 1.0.0",
       "Swashbuckle.AspNetCore >= 6.4.0"
     ]
   },
@@ -454,7 +504,14 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\NewsPortal.Application.csproj": {
+              "projectPath": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\NewsPortal.Application.csproj"
+            },
+            "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Infrastructure\\NewsPortal.Infrastructure.csproj": {
+              "projectPath": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Infrastructure\\NewsPortal.Infrastructure.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -466,8 +523,7 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "9.0.300"
+      }
     },
     "frameworks": {
       "net8.0": {
@@ -489,24 +545,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.16, 8.0.16]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.win-x64",
-            "version": "[8.0.16, 8.0.16]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.16, 8.0.16]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[8.0.16, 8.0.16]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -515,7 +553,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
