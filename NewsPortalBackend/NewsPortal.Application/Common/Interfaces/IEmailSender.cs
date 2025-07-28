@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace NewsPortal.Application.Common.Interfaces
 {
-    internal interface IEmailSender
+
+    public interface IEmailSender
     {
+        Task SendAsync(string to, string subject, string htmlBody);
     }
 }
