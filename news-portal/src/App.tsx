@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import AdminLayout from './layouts/AdminLayout'
-// import Dashboard from './pages/Dashboard'
+import Dashboard from './pages/admin/Dashboard'
 // import News from './pages/news/News'
 // import ManageNews from './pages/news/ManageNews'
 // import AddNews from './pages/news/AddNews'
@@ -17,9 +17,9 @@ import AdminLayout from './layouts/AdminLayout'
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<AdminLayout />}>
-        {/* <Route index element={<Dashboard />} />
-        <Route path="news" element={<News />} />
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<Dashboard />} />
+         {/*<Route path="news" element={<News />} />
         <Route path="news/manage" element={<ManageNews />} />
         <Route path="news/add" element={<AddNews />} />
         <Route path="media/manage" element={<ManageMedia />} />
