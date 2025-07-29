@@ -60,7 +60,10 @@ public class UserService : IUserService
 
     public Task<bool> UnsuspendAsync(int id) => _userRepository.UnsuspendAsync(id);
 
-    public Task<IEnumerable<User>> GetAllAsync() => _userRepository.GetAllAsync();
+    public Task<GetUsersResult> GetAllAsync(int page = 1, int pageSize = 10, string? searchTerm = null)
+    {
+        return _userRepository.GetAllAsync(page, pageSize, searchTerm);
+    }
 
 
     public async Task<UserResponse> GetByIdAsync(int id)

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using NewsPortal.Application.Users.DTOs;
 using NewsPortal.Application.Users.Interfaces;
 using NewsPortal.Domain.Enums;
+using NewsPortal.Domain.Models;
 
 namespace NewsPortal.Controller.Controllers
 {
@@ -39,14 +40,20 @@ namespace NewsPortal.Controller.Controllers
             return Ok(user);
         }
 
-        // GET: api/user
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserResponse>>> GetAll()
+        public async Task<ActionResult<GetUsersResult>> GetAll(
+      [FromQuery] int page = 1,
+      [FromQuery] int pageSize = 10,
+      [FromQuery] string? search = null)
         {
-            // Only works if you have GetAllAsync implemented
-            var users = await _userService.GetAllAsync();
-            return Ok(users);
+            var result = await _userService.GetAllAsync(page, pageSize, search);
+
+
+
+            return Ok(result);
         }
+
+
 
         // DELETE: api/user/{id}
         [HttpDelete("{id:int}")]

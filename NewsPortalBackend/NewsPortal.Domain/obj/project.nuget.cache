@@ -1,13 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "FpbJOBni/io=",
+  "dgSpecHash": "clynoPTivCg=",
   "success": true,
   "projectFilePath": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Domain\\NewsPortal.Domain.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\Dell\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.17\\microsoft.netcore.app.ref.8.0.17.nupkg.sha512",
-    "C:\\Users\\Dell\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.17\\microsoft.windowsdesktop.app.ref.8.0.17.nupkg.sha512",
-    "C:\\Users\\Dell\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.17\\microsoft.aspnetcore.app.ref.8.0.17.nupkg.sha512",
-    "C:\\Users\\Dell\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\8.0.17\\microsoft.netcore.app.host.win-x64.8.0.17.nupkg.sha512"
-  ],
+  "expectedPackageFiles": [],
   "logs": []
 }

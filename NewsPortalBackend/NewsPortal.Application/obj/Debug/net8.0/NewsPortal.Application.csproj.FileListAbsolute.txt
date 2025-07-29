@@ -88,3 +88,6 @@ J:\NewsPortal\NewsPortalBackend\NewsPortal.Application\bin\Debug\net8.0\Microsof
 J:\NewsPortal\NewsPortalBackend\NewsPortal.Application\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
 J:\NewsPortal\NewsPortalBackend\NewsPortal.Application\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 J:\NewsPortal\NewsPortalBackend\NewsPortal.Application\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+J:\NewsPortal\NewsPortalBackend\NewsPortal.Application\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+J:\NewsPortal\NewsPortalBackend\NewsPortal.Application\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+J:\NewsPortal\NewsPortalBackend\NewsPortal.Application\bin\Debug\net8.0\Dapper.SqlBuilder.dll

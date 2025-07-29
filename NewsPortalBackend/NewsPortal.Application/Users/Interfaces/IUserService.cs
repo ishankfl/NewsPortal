@@ -17,7 +17,7 @@ namespace NewsPortal.Application.Users.Interfaces
         // Optional convenience op that your repo can already support through UpdateAsync(User)
         Task<bool> UpdateRoleAsync(int id, Role newRole);
 
-        Task<IEnumerable<User>> GetAllAsync();
+        Task<GetUsersResult> GetAllAsync(int page = 1, int pageSize = 10, string? searchTerm = null);
 
     }
 }

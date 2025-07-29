@@ -57,7 +57,7 @@ namespace NewsPortal.Domain.Interfaces
         /// <returns>True if update was successful, false otherwise</returns>
         Task<bool> UpdateAsync(User user);
 
-        Task<IEnumerable<User>> GetAllAsync();
+        Task<GetUsersResult> GetAllAsync(int page = 1, int pageSize = 10, string? searchTerm = null);
 
     }
 }

@@ -8,6 +8,14 @@ namespace NewsPortal.Infrastructure.Repositories
 {
     public class UserRepository : IUserRepository
     {
+        public class PaginatedResult<T>
+        {
+            public int CurrentPage { get; set; }
+            public int PageSize { get; set; }
+            public int TotalItems { get; set; }
+            public int TotalPages => (int)Math.Ceiling((double)TotalItems / PageSize);
+            public IEnumerable<T> Items { get; set; } = Enumerable.Empty<T>();
+        }
         private readonly DapperDbContext _context;
 
         public UserRepository(DapperDbContext context)
@@ -140,17 +148,22 @@ namespace NewsPortal.Infrastructure.Repositories
             return affectedRows > 0;
         }
 
-        public async Task<IEnumerable<User>> GetAllAsync(int page = 1, int pageSize = 10, string? searchTerm = null)
+        public async Task<GetUsersResult> GetAllAsync(int page = 1, int pageSize = 10, string? searchTerm = null)
         {
             var offset = (page - 1) * pageSize;
 
             var sqlBuilder = new SqlBuilder();
+
             var baseSql = @"
-                SELECT Id, Username, Email, PasswordHash, Role, CreatedAt, IsSuspended, SuspendedAt
-                FROM Users
-                /**where**/
-                ORDER BY Id
-                OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY;";
+        SELECT Id, Username, Email, PasswordHash, Role, CreatedAt, IsSuspended, SuspendedAt
+        FROM Users
+        /**where**/
+        ORDER BY Id
+        OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY;";
+
+            var countSql = @"
+        SELECT COUNT(*) FROM Users
+        /**where**/;";
 
             var parameters = new DynamicParameters();
             parameters.Add("Offset", offset);
@@ -162,11 +175,15 @@ namespace NewsPortal.Infrastructure.Repositories
                 parameters.Add("Search", $"%{searchTerm}%");
             }
 
-            var template = sqlBuilder.AddTemplate(baseSql, parameters);
+            var paginatedTemplate = sqlBuilder.AddTemplate(baseSql, parameters);
+            var countTemplate = sqlBuilder.AddTemplate(countSql, parameters);
 
             using var conn = _context.CreateConnection();
-            var users = await conn.QueryAsync<User>(template.RawSql, template.Parameters);
 
+            var users = (await conn.QueryAsync<User>(paginatedTemplate.RawSql, paginatedTemplate.Parameters)).ToList();
+            var totalItems = await conn.ExecuteScalarAsync<int>(countTemplate.RawSql, countTemplate.Parameters);
+
+            // Parse Role from string to enum if necessary
             foreach (var user in users)
             {
                 if (Enum.TryParse<Role>(user.Role.ToString(), out var parsedRole))
@@ -175,7 +192,15 @@ namespace NewsPortal.Infrastructure.Repositories
                 }
             }
 
-            return users;
+            return new GetUsersResult
+            {
+                CurrentPage = page,
+                PageSize = pageSize,
+                TotalItems = totalItems,
+                Items = users
+            };
         }
+
+
     }
 }
