@@ -22,41 +22,39 @@ namespace NewsPortal.Infrastructure.Repositories
                 VALUES (@Username, @Email, @PasswordHash, @Role, NOW(), @IsSuspended, @SuspendedAt)
                 RETURNING Id;";
 
-            using (var conn = _context.CreateConnection())
+            using var conn = _context.CreateConnection();
+
+            return await conn.ExecuteScalarAsync<int>(sql, new
             {
-                return await conn.ExecuteScalarAsync<int>(sql, new
-                {
-                    user.Username,
-                    user.Email,
-                    user.PasswordHash,
-                    Role = user.Role.ToString(),
-                    user.IsSuspended,
-                    user.SuspendedAt
-                });
-            }
+                user.Username,
+                user.Email,
+                user.PasswordHash,
+                Role = user.Role.ToString(),
+                user.IsSuspended,
+                user.SuspendedAt
+            });
         }
 
-        public async Task<User> GetByIdAsync(int id)
+        public async Task<User?> GetByIdAsync(int id)
         {
             const string sql = @"
                 SELECT Id, Username, Email, PasswordHash, Role, CreatedAt, IsSuspended, SuspendedAt
                 FROM Users
                 WHERE Id = @Id;";
 
-            using (var conn = _context.CreateConnection())
+            using var conn = _context.CreateConnection();
+
+            var result = await conn.QueryFirstOrDefaultAsync<User>(sql, new { Id = id });
+
+            if (result != null && Enum.TryParse<Role>(result.Role.ToString(), out var parsedRole))
             {
-                var result = await conn.QueryFirstOrDefaultAsync<User>(sql, new { Id = id });
-
-                if (result != null)
-                {
-                    result.Role = (result.Role);
-                }
-
-                return result;
+                result.Role = parsedRole;
             }
+
+            return result;
         }
 
-        public async Task<User> GetByUsernameOrEmailAsync(string usernameOrEmail)
+        public async Task<User?> GetByUsernameOrEmailAsync(string usernameOrEmail)
         {
             const string sql = @"
                 SELECT Id, Username, Email, PasswordHash, Role, CreatedAt, IsSuspended, SuspendedAt
@@ -64,28 +62,26 @@ namespace NewsPortal.Infrastructure.Repositories
                 WHERE Username = @UsernameOrEmail OR Email = @UsernameOrEmail
                 LIMIT 1;";
 
-            using (var conn = _context.CreateConnection())
+            using var conn = _context.CreateConnection();
+
+            var result = await conn.QueryFirstOrDefaultAsync<User>(sql, new { UsernameOrEmail = usernameOrEmail });
+
+            if (result != null && Enum.TryParse<Role>(result.Role.ToString(), out var parsedRole))
             {
-                var result = await conn.QueryFirstOrDefaultAsync<User>(sql, new { UsernameOrEmail = usernameOrEmail });
-
-                if (result != null)
-                {
-                    result.Role = (result.Role);
-                }
-
-                return result;
+                result.Role = parsedRole;
             }
+
+            return result;
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
             const string sql = @"DELETE FROM Users WHERE Id = @Id;";
 
-            using (var conn = _context.CreateConnection())
-            {
-                var affectedRows = await conn.ExecuteAsync(sql, new { Id = id });
-                return affectedRows > 0;
-            }
+            using var conn = _context.CreateConnection();
+            var affectedRows = await conn.ExecuteAsync(sql, new { Id = id });
+
+            return affectedRows > 0;
         }
 
         public async Task<bool> SuspendAsync(int id)
@@ -96,11 +92,10 @@ namespace NewsPortal.Infrastructure.Repositories
                     SuspendedAt = NOW()
                 WHERE Id = @Id;";
 
-            using (var conn = _context.CreateConnection())
-            {
-                var affectedRows = await conn.ExecuteAsync(sql, new { Id = id });
-                return affectedRows > 0;
-            }
+            using var conn = _context.CreateConnection();
+            var affectedRows = await conn.ExecuteAsync(sql, new { Id = id });
+
+            return affectedRows > 0;
         }
 
         public async Task<bool> UnsuspendAsync(int id)
@@ -111,11 +106,10 @@ namespace NewsPortal.Infrastructure.Repositories
                     SuspendedAt = NULL
                 WHERE Id = @Id;";
 
-            using (var conn = _context.CreateConnection())
-            {
-                var affectedRows = await conn.ExecuteAsync(sql, new { Id = id });
-                return affectedRows > 0;
-            }
+            using var conn = _context.CreateConnection();
+            var affectedRows = await conn.ExecuteAsync(sql, new { Id = id });
+
+            return affectedRows > 0;
         }
 
         public async Task<bool> UpdateAsync(User user)
@@ -130,44 +124,58 @@ namespace NewsPortal.Infrastructure.Repositories
                     SuspendedAt = @SuspendedAt
                 WHERE Id = @Id;";
 
-            using (var conn = _context.CreateConnection())
-            {
-                var affectedRows = await conn.ExecuteAsync(sql, new
-                {
-                    user.Id,
-                    user.Username,
-                    user.Email,
-                    user.PasswordHash,
-                    Role = user.Role.ToString(),
-                    user.IsSuspended,
-                    user.SuspendedAt
-                });
+            using var conn = _context.CreateConnection();
 
-                return affectedRows > 0;
-            }
+            var affectedRows = await conn.ExecuteAsync(sql, new
+            {
+                user.Id,
+                user.Username,
+                user.Email,
+                user.PasswordHash,
+                Role = user.Role.ToString(),
+                user.IsSuspended,
+                user.SuspendedAt
+            });
+
+            return affectedRows > 0;
         }
-        public async Task<IEnumerable<User>> GetAllAsync()
+
+        public async Task<IEnumerable<User>> GetAllAsync(int page = 1, int pageSize = 10, string? searchTerm = null)
         {
-            const string sql = @"
-        SELECT Id, Username, Email, PasswordHash, Role, CreatedAt, IsSuspended, SuspendedAt
-        FROM Users;";
+            var offset = (page - 1) * pageSize;
 
-            using (var conn = _context.CreateConnection())
+            var sqlBuilder = new SqlBuilder();
+            var baseSql = @"
+                SELECT Id, Username, Email, PasswordHash, Role, CreatedAt, IsSuspended, SuspendedAt
+                FROM Users
+                /**where**/
+                ORDER BY Id
+                OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY;";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("Offset", offset);
+            parameters.Add("PageSize", pageSize);
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                var users = await conn.QueryAsync<User>(sql);
-
-                // Optional: Convert string Role to enum if needed
-                foreach (var user in users)
-                {
-                    if (Enum.TryParse<Role>(user.Role.ToString(), out var parsedRole))
-                    {
-                        user.Role = parsedRole;
-                    }
-                }
-
-                return users;
+                sqlBuilder.Where("Username ILIKE @Search OR Email ILIKE @Search");
+                parameters.Add("Search", $"%{searchTerm}%");
             }
-        }
 
+            var template = sqlBuilder.AddTemplate(baseSql, parameters);
+
+            using var conn = _context.CreateConnection();
+            var users = await conn.QueryAsync<User>(template.RawSql, template.Parameters);
+
+            foreach (var user in users)
+            {
+                if (Enum.TryParse<Role>(user.Role.ToString(), out var parsedRole))
+                {
+                    user.Role = parsedRole;
+                }
+            }
+
+            return users;
+        }
     }
 }
