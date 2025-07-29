@@ -1,0 +1,259 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{02429BF3-44F0-4258-8B6F-E8ABA8CA5D2C}|NewsPortal.Controller\\NewsPortal.Controller.csproj|c:\\users\\dell\\source\\repos\\newsportal\\newsportal.controller\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{02429BF3-44F0-4258-8B6F-E8ABA8CA5D2C}|NewsPortal.Controller\\NewsPortal.Controller.csproj|solutionrelative:newsportal.controller\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|c:\\users\\dell\\source\\repos\\newsportal\\newsportal.application\\users\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|solutionrelative:newsportal.application\\users\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|c:\\users\\dell\\source\\repos\\newsportal\\newsportal.application\\users\\dtos\\authuserresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|solutionrelative:newsportal.application\\users\\dtos\\authuserresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|c:\\users\\dell\\source\\repos\\newsportal\\newsportal.application\\common\\utils\\passwordgenerator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|solutionrelative:newsportal.application\\common\\utils\\passwordgenerator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|c:\\users\\dell\\source\\repos\\newsportal\\newsportal.application\\common\\services\\smtpemailsender.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|solutionrelative:newsportal.application\\common\\services\\smtpemailsender.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|c:\\users\\dell\\source\\repos\\newsportal\\newsportal.application\\common\\interfaces\\iemailsender.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|solutionrelative:newsportal.application\\common\\interfaces\\iemailsender.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|c:\\users\\dell\\source\\repos\\newsportal\\newsportal.application\\users\\dtos\\userresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|solutionrelative:newsportal.application\\users\\dtos\\userresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|c:\\users\\dell\\source\\repos\\newsportal\\newsportal.application\\users\\dtos\\createuserrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|solutionrelative:newsportal.application\\users\\dtos\\createuserrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|c:\\users\\dell\\source\\repos\\newsportal\\newsportal.application\\users\\dtos\\updateuserrolerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|solutionrelative:newsportal.application\\users\\dtos\\updateuserrolerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A38D9A13-8A42-4170-8C77-E1A8DD97F6D0}|NewsPortal.Infrastructure\\NewsPortal.Infrastructure.csproj|c:\\users\\dell\\source\\repos\\newsportal\\newsportal.infrastructure\\repositories\\authenticationrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A38D9A13-8A42-4170-8C77-E1A8DD97F6D0}|NewsPortal.Infrastructure\\NewsPortal.Infrastructure.csproj|solutionrelative:newsportal.infrastructure\\repositories\\authenticationrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A38D9A13-8A42-4170-8C77-E1A8DD97F6D0}|NewsPortal.Infrastructure\\NewsPortal.Infrastructure.csproj|c:\\users\\dell\\source\\repos\\newsportal\\newsportal.infrastructure\\persistence\\dapperdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A38D9A13-8A42-4170-8C77-E1A8DD97F6D0}|NewsPortal.Infrastructure\\NewsPortal.Infrastructure.csproj|solutionrelative:newsportal.infrastructure\\persistence\\dapperdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3B9622AA-4E67-453B-87EF-E3DDBCAAF7A2}|NewsPortal.Domain\\NewsPortal.Domain.csproj|c:\\users\\dell\\source\\repos\\newsportal\\newsportal.domain\\models\\advertisement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3B9622AA-4E67-453B-87EF-E3DDBCAAF7A2}|NewsPortal.Domain\\NewsPortal.Domain.csproj|solutionrelative:newsportal.domain\\models\\advertisement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|c:\\users\\dell\\source\\repos\\newsportal\\newsportal.application\\users\\interfaces\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|solutionrelative:newsportal.application\\users\\interfaces\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Controller\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Controller\\Controllers\\UserController.cs",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Controller\\Controllers\\UserController.cs",
+              "RelativeToolTip": "NewsPortal.Controller\\Controllers\\UserController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABcAAAAkAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-29T04:07:46.118Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "PasswordGenerator.cs",
+              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Application\\Common\\Utils\\PasswordGenerator.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Application\\Common\\Utils\\PasswordGenerator.cs",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Application\\Common\\Utils\\PasswordGenerator.cs",
+              "RelativeToolTip": "NewsPortal.Application\\Common\\Utils\\PasswordGenerator.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-29T04:06:39.513Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "SmtpEmailSender.cs",
+              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Application\\Common\\Services\\SmtpEmailSender.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Application\\Common\\Services\\SmtpEmailSender.cs",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Application\\Common\\Services\\SmtpEmailSender.cs",
+              "RelativeToolTip": "NewsPortal.Application\\Common\\Services\\SmtpEmailSender.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-29T04:06:34.904Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "IEmailSender.cs",
+              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Application\\Common\\Interfaces\\IEmailSender.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Application\\Common\\Interfaces\\IEmailSender.cs",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Application\\Common\\Interfaces\\IEmailSender.cs",
+              "RelativeToolTip": "NewsPortal.Application\\Common\\Interfaces\\IEmailSender.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-29T04:06:32.087Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "UserResponse.cs",
+              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Application\\Users\\DTOs\\UserResponse.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Application\\Users\\DTOs\\UserResponse.cs",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Application\\Users\\DTOs\\UserResponse.cs",
+              "RelativeToolTip": "NewsPortal.Application\\Users\\DTOs\\UserResponse.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAmAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-29T04:05:32.278Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "CreateUserRequest.cs",
+              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Application\\Users\\DTOs\\CreateUserRequest.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Application\\Users\\DTOs\\CreateUserRequest.cs",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Application\\Users\\DTOs\\CreateUserRequest.cs",
+              "RelativeToolTip": "NewsPortal.Application\\Users\\DTOs\\CreateUserRequest.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAdAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-29T03:56:07.608Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AuthUserResponse.cs",
+              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Application\\Users\\DTOs\\AuthUserResponse.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Application\\Users\\DTOs\\AuthUserResponse.cs",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Application\\Users\\DTOs\\AuthUserResponse.cs",
+              "RelativeToolTip": "NewsPortal.Application\\Users\\DTOs\\AuthUserResponse.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAmAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-29T03:55:47.019Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Application\\Users\\Services\\UserService.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Application\\Users\\Services\\UserService.cs",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Application\\Users\\Services\\UserService.cs",
+              "RelativeToolTip": "NewsPortal.Application\\Users\\Services\\UserService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAABbAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-29T03:53:26.032Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "UpdateUserRoleRequest.cs",
+              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Application\\Users\\DTOs\\UpdateUserRoleRequest.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Application\\Users\\DTOs\\UpdateUserRoleRequest.cs",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Application\\Users\\DTOs\\UpdateUserRoleRequest.cs",
+              "RelativeToolTip": "NewsPortal.Application\\Users\\DTOs\\UpdateUserRoleRequest.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAPAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-29T04:02:28.186Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "AuthenticationRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Infrastructure\\Repositories\\AuthenticationRepository.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Infrastructure\\Repositories\\AuthenticationRepository.cs",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Infrastructure\\Repositories\\AuthenticationRepository.cs",
+              "RelativeToolTip": "NewsPortal.Infrastructure\\Repositories\\AuthenticationRepository.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-29T03:50:28.981Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "DapperDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Infrastructure\\Persistence\\DapperDbContext.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Infrastructure\\Persistence\\DapperDbContext.cs",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Infrastructure\\Persistence\\DapperDbContext.cs",
+              "RelativeToolTip": "NewsPortal.Infrastructure\\Persistence\\DapperDbContext.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAAAnAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-29T03:50:33.448Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Advertisement.cs",
+              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Domain\\Models\\Advertisement.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Domain\\Models\\Advertisement.cs",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Domain\\Models\\Advertisement.cs",
+              "RelativeToolTip": "NewsPortal.Domain\\Models\\Advertisement.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-29T03:50:22.334Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "IUserService.cs",
+              "DocumentMoniker": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Application\\Users\\Interfaces\\IUserService.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Application\\Users\\Interfaces\\IUserService.cs",
+              "ToolTip": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Application\\Users\\Interfaces\\IUserService.cs",
+              "RelativeToolTip": "NewsPortal.Application\\Users\\Interfaces\\IUserService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-29T03:49:25.406Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

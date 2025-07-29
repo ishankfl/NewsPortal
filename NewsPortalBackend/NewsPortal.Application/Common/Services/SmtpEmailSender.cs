@@ -1,4 +1,5 @@
-﻿using NewsPortal.Application.Common.Interfaces;
+﻿using Microsoft.Extensions.Options;
+using NewsPortal.Application.Common.Interfaces;
 using NewsPortal.Application.Users.DTOs;
 using System.Net;
 using System.Net.Mail;
@@ -6,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace NewsPortal.Application.Common.Services
 {
-    public class SmtpEmailSender : IEmailSender
+    public class SmtpEmailSender : IEmailSenderSmtp
     {
         private readonly SmtpSettings _smtpSettings;
 
-        public SmtpEmailSender(SmtpSettings smtpSettings)
+        public SmtpEmailSender(IOptions<SmtpSettings> smtpOptions)
         {
-            _smtpSettings = smtpSettings;
+            _smtpSettings = smtpOptions.Value;
         }
 
         public async Task SendAsync(string to, string subject, string htmlBody)
@@ -33,6 +34,5 @@ namespace NewsPortal.Application.Common.Services
                 }
             }
         }
-
     }
 }

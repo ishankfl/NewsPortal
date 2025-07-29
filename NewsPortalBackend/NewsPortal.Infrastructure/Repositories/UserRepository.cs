@@ -3,9 +3,6 @@ using NewsPortal.Domain.Enums;
 using NewsPortal.Domain.Interfaces;
 using NewsPortal.Domain.Models;
 using NewsPortal.Infrastructure.Persistence;
-using System;
-using System.Data;
-using System.Threading.Tasks;
 
 namespace NewsPortal.Infrastructure.Repositories
 {
@@ -149,5 +146,28 @@ namespace NewsPortal.Infrastructure.Repositories
                 return affectedRows > 0;
             }
         }
+        public async Task<IEnumerable<User>> GetAllAsync()
+        {
+            const string sql = @"
+        SELECT Id, Username, Email, PasswordHash, Role, CreatedAt, IsSuspended, SuspendedAt
+        FROM Users;";
+
+            using (var conn = _context.CreateConnection())
+            {
+                var users = await conn.QueryAsync<User>(sql);
+
+                // Optional: Convert string Role to enum if needed
+                foreach (var user in users)
+                {
+                    if (Enum.TryParse<Role>(user.Role.ToString(), out var parsedRole))
+                    {
+                        user.Role = parsedRole;
+                    }
+                }
+
+                return users;
+            }
+        }
+
     }
 }

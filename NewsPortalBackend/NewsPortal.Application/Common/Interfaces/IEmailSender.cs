@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace NewsPortal.Application.Common.Interfaces
 {
-
-    public interface IEmailSender
+    public interface IEmailSenderSmtp
     {
         Task SendAsync(string to, string subject, string htmlBody);
     }

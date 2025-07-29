@@ -1,5 +1,7 @@
 ﻿using NewsPortal.Application.Users.DTOs;
 using NewsPortal.Domain.Enums;
+using NewsPortal.Domain.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace NewsPortal.Application.Users.Interfaces
@@ -14,5 +16,8 @@ namespace NewsPortal.Application.Users.Interfaces
 
         // Optional convenience op that your repo can already support through UpdateAsync(User)
         Task<bool> UpdateRoleAsync(int id, Role newRole);
+
+        Task<IEnumerable<User>> GetAllAsync();
+
     }
 }

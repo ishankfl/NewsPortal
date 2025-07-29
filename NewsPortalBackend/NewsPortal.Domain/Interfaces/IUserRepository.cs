@@ -1,5 +1,7 @@
 ﻿using NewsPortal.Domain.Enums;
 using NewsPortal.Domain.Models;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace NewsPortal.Domain.Interfaces
@@ -54,5 +56,8 @@ namespace NewsPortal.Domain.Interfaces
         /// <param name="user">User entity with updated information</param>
         /// <returns>True if update was successful, false otherwise</returns>
         Task<bool> UpdateAsync(User user);
+
+        Task<IEnumerable<User>> GetAllAsync();
+
     }
 }

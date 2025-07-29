@@ -6,14 +6,15 @@ using NewsPortal.Domain.Enums;
 using NewsPortal.Domain.Interfaces;
 using NewsPortal.Domain.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
-    private readonly IEmailSender _emailSender; 
+    private readonly IEmailSenderSmtp _emailSender; 
 
-    public UserService(IUserRepository userRepository, IEmailSender emailSender = null)
+    public UserService(IUserRepository userRepository, IEmailSenderSmtp emailSender = null)
     {
         _userRepository = userRepository;
         _emailSender = emailSender;
@@ -58,6 +59,9 @@ public class UserService : IUserService
     public Task<bool> SuspendAsync(int id) => _userRepository.SuspendAsync(id);
 
     public Task<bool> UnsuspendAsync(int id) => _userRepository.UnsuspendAsync(id);
+
+    public Task<IEnumerable<User>> GetAllAsync() => _userRepository.GetAllAsync();
+
 
     public async Task<UserResponse> GetByIdAsync(int id)
     {

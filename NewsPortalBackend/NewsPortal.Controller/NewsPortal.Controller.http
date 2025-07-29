@@ -1,4 +1,4 @@
-@NewsPortal.Controller_HostAddress = http://localhost:5214
+@NewsPortal.Controller_HostAddress = http://localhost:5253
 
 GET {{NewsPortal.Controller_HostAddress}}/weatherforecast/
 Accept: application/json

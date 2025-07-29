@@ -40,13 +40,13 @@ namespace NewsPortal.Controller.Controllers
         }
 
         // GET: api/user
-      /*  [HttpGet]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<UserResponse>>> GetAll()
         {
             // Only works if you have GetAllAsync implemented
-            var users = await _userService.get();
+            var users = await _userService.GetAllAsync();
             return Ok(users);
-        }*/
+        }
 
         // DELETE: api/user/{id}
         [HttpDelete("{id:int}")]
