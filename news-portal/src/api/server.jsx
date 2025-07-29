@@ -1,1 +1,1 @@
-export const server ='https://localhost:7003/api'
+export const server ='http://localhost:5253/api'

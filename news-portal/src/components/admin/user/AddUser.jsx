@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -13,19 +13,44 @@ import { Role } from '../../common/Role';
 import { createUser } from '../../../api/user-services';
 
 const AddUser = () => {
+  const [serverError, setServerError] = useState('');
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  // React Query mutation with new syntax for v4+
   const createUserMutation = useMutation({
     mutationFn: createUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       toast.success('User created successfully!');
-      navigate('/admin/users/manage');
+      setServerError(false);
+      // navigate('/admin/users/manage');
     },
     onError: (error) => {
-      toast.error(error?.message || 'Failed to create user');
+      setServerError(''); 
+      if (error.response) {
+        // Backend error response
+        const status = error.response.status;
+        const data = error.response.data;
+
+        if (status === 400) {
+          setServerError(data.message || 'Validation error occurred');
+        } else if (status === 401) {
+          setServerError('Unauthorized. Please login.');
+        } else if (status === 500) {
+          setServerError('Server error occurred. Please try again later.');
+        } else {
+          setServerError(data.message || 'An error occurred');
+        }
+        toast.error(data.message || 'Failed to create user');
+      } else if (error.request) {
+        // Network error (no response)
+        setServerError('Network error. Please check your internet connection.');
+        toast.error('Network error. Please check your internet connection.');
+      } else {
+        // Other errors
+        setServerError(error.message || 'An unexpected error occurred');
+        toast.error(error.message || 'Failed to create user');
+      }
     }
   });
 
@@ -49,6 +74,18 @@ const AddUser = () => {
             Back to Users
           </button>
         </div>
+
+        {/* Display server/network error */}
+        {serverError && (
+          <div className="mb-6 p-4 text-red-700 bg-red-100 rounded border border-red-400">
+            {serverError}
+          </div>
+        )}
+            {!serverError && (
+          <div className="mb-6 p-4 text-green-700 bg-green-100 rounded border border-green-400">
+            Successfully new user added
+          </div>
+        )}
 
         {/* Formik form */}
         <Formik
@@ -101,11 +138,11 @@ const AddUser = () => {
                   label="Role"
                   id="role"
                   name="role"
-                  value={values.role}
+                  value={parseInt(values.role)}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={touched.role && errors.role}
-                  options={Object.values(Role).map((r) => ({ value: r, label: r }))}
+                  options={Object.entries(Role).map(([key, val]) => ({ value: val, label: key }))}
                   icon={FiUserCheck}
                 />
               </div>

@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import AdminLayout from './components/admin/layouts/AdminLayout';
 import AddUser from './components/admin/user/AddUser';
+import ViewUsers from './components/admin/user/ViewUsers';
 // import AdminLayout from './layouts/AdminLayout';
 // import Dashboard from './pages/admin/Dashboard';
 // import News from './pages/news/News';
@@ -21,6 +22,7 @@ function App() {
     <Routes>
       <Route path="/admin" element={<AdminLayout />}>
         <Route path="users/add" element={<AddUser />} />
+        <Route path="users/manage" element={<ViewUsers />} />
         {/* <Route index element={<Dashboard />} /> */}
         {/* <Route path="news" element={<News />} />
         <Route path="news/manage" element={<ManageNews />} />
