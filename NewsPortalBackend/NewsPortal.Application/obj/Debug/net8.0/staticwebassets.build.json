@@ -1,13 +1,13 @@
 {
   "Version": 1,
-  "Hash": "883/uXfqtgMVsYhlVPvW1N6zpXKWYZZVpb/DYpMB8NY=",
+  "Hash": "HyosTQU+KEWLgdfkP8fUhJVlhDONXDubc1UrUMWos1w=",
   "Source": "NewsPortal.Application",
   "BasePath": "_content/NewsPortal.Application",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [
     {
-      "Identity": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Domain\\NewsPortal.Domain.csproj",
+      "Identity": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Domain\\NewsPortal.Domain.csproj",
       "Version": 2,
       "Source": "NewsPortal.Domain",
       "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
@@ -18,7 +18,7 @@
       "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework"
     },
     {
-      "Identity": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Infrastructure\\NewsPortal.Infrastructure.csproj",
+      "Identity": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Infrastructure\\NewsPortal.Infrastructure.csproj",
       "Version": 2,
       "Source": "NewsPortal.Infrastructure",
       "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",

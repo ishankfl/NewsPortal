@@ -1,13 +1,13 @@
 {
   "Version": 1,
-  "Hash": "vGzCCl14SuCYvId3QsiS6H7Z+OIS0M61scf7Tq0Dgik=",
+  "Hash": "+JAL+Hl5Vx/NMOQlAZV4eN5kO5Sh5qcXWZLZWMClhHI=",
   "Source": "NewsPortal.Infrastructure",
   "BasePath": "_content/NewsPortal.Infrastructure",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [
     {
-      "Identity": "C:\\Users\\Dell\\source\\repos\\NewsPortal\\NewsPortal.Domain\\NewsPortal.Domain.csproj",
+      "Identity": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Domain\\NewsPortal.Domain.csproj",
       "Version": 2,
       "Source": "NewsPortal.Domain",
       "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
