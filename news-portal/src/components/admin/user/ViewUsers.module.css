@@ -1,0 +1,125 @@
+
+.view-users-container {
+  @apply min-h-screen py-5 px-4;
+}
+
+.view-users-card {
+  @apply mx-auto bg-white p-8 rounded-2xl;
+}
+
+.view-users-header {
+  @apply flex justify-between items-center mb-6;
+}
+
+.view-users-title {
+  @apply text-3xl font-bold text-gray-800;
+}
+
+.add-user-btn {
+  @apply bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition;
+}
+
+.search-controls {
+  @apply flex justify-between items-center mb-4;
+}
+
+.search-input {
+  @apply px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-80;
+}
+
+.pagination-container {
+  @apply flex gap-2 items-center justify-between bg-red-500;
+}
+
+.pagination-btn {
+  @apply px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition;
+}
+
+.pagination-info {
+  @apply text-sm text-gray-600 mx-2;
+}
+
+.table-container {
+  @apply overflow-x-auto;
+}
+
+.users-table {
+  @apply min-w-full bg-white border rounded;
+}
+
+.table-header {
+  @apply bg-gray-100 text-left text-sm font-medium text-gray-600 uppercase tracking-wider;
+}
+
+.table-header-cell {
+  @apply px-6 py-3;
+}
+
+.table-row {
+  @apply border-t hover:bg-gray-50;
+}
+
+.table-cell {
+  @apply px-6 py-4;
+}
+
+.skeleton-row {
+  @apply border-t;
+}
+
+.skeleton-bar {
+  @apply h-4 bg-gray-200 rounded animate-pulse;
+}
+
+.skeleton-bar-small {
+  @apply h-4 bg-gray-200 rounded animate-pulse w-16;
+}
+
+.skeleton-toggle {
+  @apply h-6 bg-gray-200 rounded-full animate-pulse w-20;
+}
+
+.skeleton-icon {
+  @apply h-5 w-5 bg-gray-200 rounded animate-pulse;
+}
+
+.toggle-label {
+  @apply inline-flex items-center cursor-pointer;
+}
+
+.toggle-input {
+  @apply sr-only;
+}
+
+.toggle-switch {
+  @apply w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-indigo-500 rounded-full peer-checked:bg-indigo-600 relative;
+}
+
+.toggle-slider {
+  @apply absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition peer-checked:translate-x-5;
+}
+
+.toggle-text {
+  @apply ml-2 text-sm text-gray-700;
+}
+
+.actions-container {
+  @apply px-6 py-4 flex gap-3;
+}
+
+.edit-btn {
+  @apply text-indigo-600 hover:text-indigo-800;
+}
+
+.delete-btn {
+  @apply text-red-600 hover:text-red-800;
+}
+
+.no-users-row {
+  @apply text-center py-4 text-gray-500;
+}
+
+.error-message {
+  @apply text-center mt-10 text-red-500;
+}
+

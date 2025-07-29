@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @layer components { */
+@layer components {
   .view-users-container {
     @apply min-h-screen py-5 px-4;
   }
@@ -19,8 +19,8 @@
     @apply text-3xl font-bold text-gray-800;
   }
 
-  .add-user-btn {
-    @apply bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition;
+  .add-btn {
+    @apply bg-indigo-600 text-white px-8 py-2 rounded hover:bg-indigo-700 transition;
   }
 
   .table-container {
@@ -107,3 +107,7 @@
     @apply text-center mt-10 text-red-500;
   }
 
+  .pagination-container {
+    @apply flex justify-between px-4 mt-8
+  }
+}

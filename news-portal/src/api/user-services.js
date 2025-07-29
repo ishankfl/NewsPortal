@@ -21,27 +21,30 @@ export const createUser = async (userData) => {
     throw error.response?.data || error;
   }
 };
-import axios from 'axios';
-import { server } from './server';
-
-// Fetch users with pagination and search
 export const getUsers = async ({ queryKey }) => {
   const [_key, params = {}] = queryKey;
   const { page = 1, pageSize = 10, search = '' } = params;
 
+  const queryParams = {
+    page,
+    pageSize,
+    ...(search.trim() && { search: search.trim() }),
+  };
+
   try {
     const response = await axios.get(`${server}/user`, {
-      params: { page, pageSize, search },
+      params: queryParams,
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    return response.data; // assume API returns array of users here
+    return response.data;
   } catch (error) {
     console.error(error);
     throw error.response?.data || error;
   }
 };
+
 
 // Delete user by id
 export const deleteUser = async (id) => {
