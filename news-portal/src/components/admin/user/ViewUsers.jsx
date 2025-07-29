@@ -1,17 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { FiEdit, FiTrash2, FiUserX } from 'react-icons/fi';
+import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { getUsers, deleteUser, updateUserStatus } from '../../../api/user-services';
-import {Role} from '../../common/Role'
+import { Role } from '../../common/Role';
+import './ViewUsers.module.css';
+
+const SkeletonRow = () => (
+  <tr className="skeleton-row">
+    <td className="table-cell"><div className="skeleton-bar" /></td>
+    <td className="table-cell"><div className="skeleton-bar" /></td>
+    <td className="table-cell"><div className="skeleton-bar-small" /></td>
+    <td className="table-cell"><div className="skeleton-toggle" /></td>
+    <td className="table-cell flex gap-3">
+      <div className="skeleton-icon" />
+      <div className="skeleton-icon" />
+    </td>
+  </tr>
+);
+
 const ViewUsers = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const [page, setPage] = useState(1);
+  const pageSize = 5;
+
   const { data: users = [], isLoading, isError } = useQuery({
-    queryKey: ['users'],
+    queryKey: ['users', { page, pageSize, search: searchTerm }],
     queryFn: getUsers,
+    keepPreviousData: true,
   });
 
   const deleteMutation = useMutation({
@@ -42,80 +62,113 @@ const ViewUsers = () => {
     suspendMutation.mutate({ id, isSuspended: !currentStatus });
   };
 
-  if (isLoading) return <p className="text-center mt-10">Loading users...</p>;
-  if (isError) return <p className="text-center mt-10 text-red-500">Failed to load users.</p>;
+  const handleSearch = (e) => {
+    setPage(1);
+    setSearchTerm(e.target.value);
+  };
 
   return (
-    <div className="min-h-screen  py-5 px-4">
-      <div className="mx-auto bg-white p-8 rounded-2xl ">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-800">Manage Users</h1>
+    <div className="view-users-container">
+      <div className="view-users-card">
+        <div className="view-users-header">
+          <h1 className="view-users-title">Manage Users</h1>
           <button
             onClick={() => navigate('/admin/users/add')}
-            className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition"
+            className="add-user-btn"
           >
             Add User
           </button>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border rounded">
+        <div className="flex justify-between items-center mb-4">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearch}
+            placeholder="Search by username or email"
+            className="search-input"
+          />
+          <div className="pagination-buttons flex gap-2">
+            <button
+              className="pagination-btn"
+              disabled={page === 1}
+              onClick={() => setPage((p) => Math.max(p - 1, 1))}
+            >
+              Prev
+            </button>
+            <span>Page {page}</span>
+            <button
+              className="pagination-btn"
+              disabled={users.length < pageSize}
+              onClick={() => setPage((p) => p + 1)}
+            >
+              Next
+            </button>
+          </div>
+        </div>
+
+        <div className="table-container">
+          <table className="users-table">
             <thead>
-              <tr className="bg-gray-100 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
-                <th className="px-6 py-3">Username</th>
-                <th className="px-6 py-3">Email</th>
-                <th className="px-6 py-3">Role</th>
-                <th className="px-6 py-3">Suspended</th>
-                <th className="px-6 py-3">Actions</th>
+              <tr className="table-header">
+                <th className="table-header-cell">Username</th>
+                <th className="table-header-cell">Email</th>
+                <th className="table-header-cell">Role</th>
+                <th className="table-header-cell">Suspended</th>
+                <th className="table-header-cell">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {users.map((user) => (
-                <tr key={user.id} className="border-t hover:bg-gray-50">
-                  <td className="px-6 py-4">{user.username}</td>
-                  <td className="px-6 py-4">{user.email}</td>
-                  <td className="px-6 py-4">
-                    {Object.keys(Role).find((key) => Role[key] === user.role)}
-                  </td>
-
-                  <td className="px-6 py-4">
-                    <label className="inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={!user.isSuspended}
-                        onChange={() => handleToggleSuspend(user.id, user.isSuspended)}
-                        className="sr-only peer"
-                      />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-indigo-500 rounded-full peer peer-checked:bg-indigo-600 relative">
-                        <span className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition peer-checked:translate-x-5"></span>
-                      </div>
-                      <span className="ml-2 text-sm text-gray-700">
-                        {user.isSuspended ? 'Disabled' : 'Active'}
-                      </span>
-                    </label>
-                  </td>
-                  <td className="px-6 py-4 flex gap-3">
-                    <button
-                      onClick={() => navigate(`/admin/users/edit/${user.id}`)}
-                      className="text-indigo-600 hover:text-indigo-800"
-                      title="Edit"
-                    >
-                      <FiEdit size={18} />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(user.id)}
-                      className="text-red-600 hover:text-red-800"
-                      title="Delete"
-                    >
-                      <FiTrash2 size={18} />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              {users.length === 0 && (
-                <tr>
-                  <td colSpan="5" className="text-center py-4 text-gray-500">No users found</td>
-                </tr>
+              {isLoading ? (
+                Array.from({ length: 5 }).map((_, index) => (
+                  <SkeletonRow key={index} />
+                ))
+              ) : isError ? (
+                <tr><td colSpan="5" className="error-message">Failed to load users.</td></tr>
+              ) : users.length === 0 ? (
+                <tr><td colSpan="5" className="no-users-row">No users found</td></tr>
+              ) : (
+                users.map((user) => (
+                  <tr key={user.id} className="table-row">
+                    <td className="table-cell">{user.username}</td>
+                    <td className="table-cell">{user.email}</td>
+                    <td className="table-cell">
+                      {Object.keys(Role).find((key) => Role[key] === user.role)}
+                    </td>
+                    <td className="table-cell">
+                      <label className="toggle-label">
+                        <input
+                          type="checkbox"
+                          checked={!user.isSuspended}
+                          onChange={() => handleToggleSuspend(user.id, user.isSuspended)}
+                          className="toggle-input peer"
+                        />
+                        <div className="toggle-switch">
+                          <span className="toggle-slider"></span>
+                        </div>
+                        <span className="toggle-text">
+                          {user.isSuspended ? 'Disabled' : 'Active'}
+                        </span>
+                      </label>
+                    </td>
+                    <td className="actions-container">
+                      <button
+                        onClick={() => navigate(`/admin/users/edit/${user.id}`)}
+                        className="edit-btn"
+                        title="Edit"
+                      >
+                        <FiEdit size={18} />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(user.id)}
+                        className="delete-btn"
+                        title="Delete"
+                      >
+                        <FiTrash2 size={18} />
+                      </button>
+                    </td>
+                  </tr>
+                ))
               )}
             </tbody>
           </table>

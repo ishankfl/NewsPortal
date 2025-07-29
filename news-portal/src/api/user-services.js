@@ -21,23 +21,29 @@ export const createUser = async (userData) => {
     throw error.response?.data || error;
   }
 };
+import axios from 'axios';
+import { server } from './server';
 
-// Get all users
-export const getUsers = async () => {
+// Fetch users with pagination and search
+export const getUsers = async ({ queryKey }) => {
+  const [_key, params = {}] = queryKey;
+  const { page = 1, pageSize = 10, search = '' } = params;
+
   try {
     const response = await axios.get(`${server}/user`, {
+      params: { page, pageSize, search },
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
     });
-    return response.data;
+    return response.data; // assume API returns array of users here
   } catch (error) {
     console.error(error);
     throw error.response?.data || error;
   }
 };
 
-// Delete a user by ID
+// Delete user by id
 export const deleteUser = async (id) => {
   try {
     await axios.delete(`${server}/user/${id}`, {
@@ -51,7 +57,7 @@ export const deleteUser = async (id) => {
   }
 };
 
-// Update user suspension status// Update user suspension status
+// Update user suspension status
 export const updateUserStatus = async ({ id, isSuspended }) => {
   try {
     const url = `${server}/user/${id}/${isSuspended ? 'suspend' : 'unsuspend'}`;
