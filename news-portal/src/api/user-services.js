@@ -51,22 +51,18 @@ export const deleteUser = async (id) => {
   }
 };
 
-// Update user suspension status
+// Update user suspension status// Update user suspension status
 export const updateUserStatus = async ({ id, isSuspended }) => {
   try {
-    const response = await axios.patch(
-      `${server}/user/${id}/suspend`,
-      { isSuspended },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        }
+    const url = `${server}/user/${id}/${isSuspended ? 'suspend' : 'unsuspend'}`;
+    const response = await axios.put(url, null, {
+      headers: {
+        'Content-Type': 'application/json',
       }
-    );
+    });
     return response.data;
   } catch (error) {
     console.error(error);
     throw error.response?.data || error;
   }
 };
-  

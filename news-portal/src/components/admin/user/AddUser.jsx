@@ -13,7 +13,7 @@ import { Role } from '../../common/Role';
 import { createUser } from '../../../api/user-services';
 
 const AddUser = () => {
-  const [serverError, setServerError] = useState('');
+  const [serverError, setServerError] = useState(false);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 

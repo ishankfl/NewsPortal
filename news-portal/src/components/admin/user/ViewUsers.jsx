@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { FiEdit, FiTrash2, FiUserX } from 'react-icons/fi';
 import { getUsers, deleteUser, updateUserStatus } from '../../../api/user-services';
-
+import {Role} from '../../common/Role'
 const ViewUsers = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -74,7 +74,10 @@ const ViewUsers = () => {
                 <tr key={user.id} className="border-t hover:bg-gray-50">
                   <td className="px-6 py-4">{user.username}</td>
                   <td className="px-6 py-4">{user.email}</td>
-                  <td className="px-6 py-4">{user.role}</td>
+                  <td className="px-6 py-4">
+                    {Object.keys(Role).find((key) => Role[key] === user.role)}
+                  </td>
+
                   <td className="px-6 py-4">
                     <label className="inline-flex items-center cursor-pointer">
                       <input
