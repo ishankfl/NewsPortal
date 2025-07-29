@@ -1,5 +1,6 @@
 ﻿using NewsPortal.Application.Users.Interfaces;
 using NewsPortal.Application.Users.Services;
+using NewsPortal.Controller.Filters;
 using NewsPortal.Domain.Interfaces;
 using NewsPortal.Infrastructure.Persistence;
 using NewsPortal.Infrastructure.Repositories;
@@ -28,6 +29,13 @@ builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>(
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddMemoryCache();
+
+builder.Services.AddScoped<RateLimitFilter>();
+
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<RateLimitFilter>();
+});
 
 var app = builder.Build();
 
