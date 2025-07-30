@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { FiSave, FiUser, FiMail, FiLock, FiUserCheck, FiArrowLeft } from 'react-icons/fi';
 import { Formik, Form } from 'formik';
-
 import FormButton from '../../common/FormButton';
 import FormInput from '../../common/FormInput';
 import FormSelect from '../../common/FormSelect';
@@ -62,7 +61,7 @@ const AddUser = () => {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center space-x-4">
+          <div className="flex flex-col items-start gap-8 space-x-4">
             <button
               onClick={() => navigate('/admin/users/manage')}
               className="flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-white rounded-lg border border-gray-300 hover:bg-gray-50 hover:text-gray-700 transition-colors shadow-sm"
@@ -78,36 +77,29 @@ const AddUser = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left side - SVG Illustration */}
           <div className="hidden lg:flex items-center justify-center">
             <div className="w-full max-w-md">
               <svg viewBox="0 0 400 300" className="w-full h-auto">
-                {/* Background circles */}
                 <circle cx="200" cy="150" r="120" fill="#f0f4ff" opacity="0.6"/>
                 <circle cx="180" cy="130" r="80" fill="#e0e7ff" opacity="0.4"/>
                 
-                {/* Main user figure */}
                 <circle cx="200" cy="120" r="25" fill="#6366f1"/>
                 <rect x="175" y="145" width="50" height="60" rx="25" fill="#6366f1"/>
                 
-                {/* Additional user figures */}
                 <circle cx="140" cy="140" r="15" fill="#a5b4fc" opacity="0.8"/>
                 <rect x="125" y="155" width="30" height="35" rx="15" fill="#a5b4fc" opacity="0.8"/>
                 
                 <circle cx="260" cy="140" r="15" fill="#a5b4fc" opacity="0.8"/>
                 <rect x="245" y="155" width="30" height="35" rx="15" fill="#a5b4fc" opacity="0.8"/>
                 
-                {/* Decorative elements */}
                 <rect x="120" y="80" width="8" height="8" rx="2" fill="#6366f1" opacity="0.6"/>
                 <rect x="280" y="90" width="6" height="6" rx="1" fill="#8b5cf6" opacity="0.6"/>
                 <rect x="100" y="200" width="10" height="10" rx="2" fill="#06b6d4" opacity="0.6"/>
                 <rect x="290" y="210" width="8" height="8" rx="2" fill="#10b981" opacity="0.6"/>
                 
-                {/* Connection lines */}
                 <line x1="165" y1="150" x2="185" y2="160" stroke="#6366f1" strokeWidth="2" opacity="0.4"/>
                 <line x1="235" y1="160" x2="255" y2="150" stroke="#6366f1" strokeWidth="2" opacity="0.4"/>
                 
-                {/* Text */}
                 <text x="200" y="260" textAnchor="middle" fill="#6366f1" fontSize="16" fontWeight="600">
                   User Management
                 </text>

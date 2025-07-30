@@ -134,7 +134,7 @@ const EditUser = () => {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center space-x-4">
+          <div className="flex flex-col items-start gap-8 space-x-4">
             <button
               onClick={() => navigate('/admin/users/manage')}
               className="flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-white rounded-lg border border-gray-300 hover:bg-gray-50 hover:text-gray-700 transition-colors shadow-sm"
