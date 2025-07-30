@@ -196,7 +196,7 @@ const AdminLayout = () => {
         </header>
 
         {/* Page Content */}
-        <main className="p-6">
+        <main className="p-0 md:p-0 lg:p-6 sm:p-0">
           <Outlet />
         </main>
       </div>

@@ -12,8 +12,8 @@ export const createUser = async (userData) => {
     const response = await axios.post(`${server}/user?autoGeneratePassword=false`, userData, {
       headers: {
         'Content-Type': 'application/json',
-        // 'Authorization': `Bearer ${token}`
-      }
+      },
+      timeout: 5000,
     });
     return response;
   } catch (error) {
@@ -21,6 +21,8 @@ export const createUser = async (userData) => {
     throw error.response?.data || error;
   }
 };
+
+// Get users with pagination and search
 export const getUsers = async ({ queryKey }) => {
   const [_key, params = {}] = queryKey;
   const { page = 1, pageSize = 10, search = '' } = params;
@@ -37,6 +39,7 @@ export const getUsers = async ({ queryKey }) => {
       headers: {
         'Content-Type': 'application/json',
       },
+      timeout: 5000,
     });
     return response.data;
   } catch (error) {
@@ -45,14 +48,14 @@ export const getUsers = async ({ queryKey }) => {
   }
 };
 
-
-// Delete user by id
+// Delete user by ID
 export const deleteUser = async (id) => {
   try {
     await axios.delete(`${server}/user/${id}`, {
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
+      timeout: 5000,
     });
   } catch (error) {
     console.error(error);
@@ -67,7 +70,8 @@ export const updateUserStatus = async ({ id, isSuspended }) => {
     const response = await axios.put(url, null, {
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
+      timeout: 5000,
     });
     return response.data;
   } catch (error) {

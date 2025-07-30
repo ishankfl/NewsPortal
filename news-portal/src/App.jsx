@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import AdminLayout from './components/admin/layouts/AdminLayout';
 import AddUser from './components/admin/user/AddUser';
 import ViewUsers from './components/admin/user/ViewUsers';
+import Login from './components/admin/auth/Login';
 // import AdminLayout from './layouts/AdminLayout';
 // import Dashboard from './pages/admin/Dashboard';
 // import News from './pages/news/News';
@@ -16,28 +17,21 @@ import ViewUsers from './components/admin/user/ViewUsers';
 // import AddUser from './pages/users/AddUser';
 // import Profile from './pages/users/Profile';
 // import ResetPassword from './pages/users/ResetPassword';
-
+import { ToastContainer, toast } from 'react-toastify';
 function App() {
   return (
-    <Routes>
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route path="users/add" element={<AddUser />} />
-        <Route path="users/manage" element={<ViewUsers />} />
-        {/* <Route index element={<Dashboard />} /> */}
-        {/* <Route path="news" element={<News />} />
-        <Route path="news/manage" element={<ManageNews />} />
-        <Route path="media/manage" element={<ManageMedia />} />
-        <Route path="advertises/manage" element={<ManageAdvertises />} />
-        <Route path="advertises/add" element={<AddAdvertise />} />
-        <Route path="banner" element={<BannerNews />} />
-        <Route path="users" element={<Users />} />
-        <Route path="users/manage" element={<ManageUsers />} />
-        <Route path="users/add" element={<AddUser />} />
-        <Route path="profile" element={<Profile />} />
-        <Route path="reset-password" element={<ResetPassword />} /> */}
-      </Route>
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/admin/login" element={<Login />} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route path="users/add" element={<AddUser />} />
+          <Route path="users/manage" element={<ViewUsers />} />
+        </Route>
+      </Routes> 
+      <ToastContainer position="top-right" />
+    </>
   );
 }
+
 
 export default App;
