@@ -64,19 +64,37 @@ const EditUser = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 py-8 px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="flex items-center space-x-4 mb-8">
-            <button
-              onClick={() => navigate('/admin/users/manage')}
-              className="flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-white rounded-lg border border-gray-300 hover:bg-gray-50 hover:text-gray-700 transition-colors shadow-sm"
-            >
-              <FiArrowLeft className="mr-2" size={16} />
-              Back to Users
-            </button>
+          <div className="mb-8">
+            <div className="flex items-center space-x-4 mb-6">
+              <button
+                onClick={() => navigate('/admin/users/manage')}
+                className="flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-white rounded-lg border border-gray-300 hover:bg-gray-50 hover:text-gray-700 transition-colors shadow-sm"
+              >
+                <FiArrowLeft className="mr-2" size={16} />
+                Back to Users
+              </button>
+            </div>
+            
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+              <div className="animate-pulse">
+                <div className="flex items-center space-x-4">
+                  <div className="w-16 h-16 bg-gray-200 rounded-2xl"></div>
+                  <div className="flex-1">
+                    <div className="h-8 bg-gray-200 rounded w-1/3 mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-2/3 mb-3"></div>
+                    <div className="flex space-x-2">
+                      <div className="h-6 bg-gray-200 rounded-full w-20"></div>
+                      <div className="h-6 bg-gray-200 rounded-full w-16"></div>
+                      <div className="h-6 bg-gray-200 rounded-full w-14"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           
           <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
             <div className="animate-pulse">
-              <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {Array.from({ length: 4 }).map((_, i) => (
@@ -99,14 +117,28 @@ const EditUser = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 py-8 px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="flex items-center space-x-4 mb-8">
-            <button
-              onClick={() => navigate('/admin/users/manage')}
-              className="flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-white rounded-lg border border-gray-300 hover:bg-gray-50 hover:text-gray-700 transition-colors shadow-sm"
-            >
-              <FiArrowLeft className="mr-2" size={16} />
-              Back to Users
-            </button>
+          <div className="mb-8">
+            <div className="flex items-center space-x-4 mb-6">
+              <button
+                onClick={() => navigate('/admin/users/manage')}
+                className="flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-white rounded-lg border border-gray-300 hover:bg-gray-50 hover:text-gray-700 transition-colors shadow-sm"
+              >
+                <FiArrowLeft className="mr-2" size={16} />
+                Back to Users
+              </button>
+            </div>
+            
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+              <div className="flex items-center space-x-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg">
+                  <FiUser className="w-8 h-8 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-3xl font-bold text-gray-900">User Not Found</h1>
+                  <p className="text-gray-600 mt-1">The requested user could not be found</p>
+                </div>
+              </div>
+            </div>
           </div>
           
           <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
@@ -133,8 +165,8 @@ const EditUser = () => {
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 py-8 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex flex-col items-start gap-8 space-x-4">
+        <div className="mb-8">
+          <div className="flex items-center space-x-4 mb-6">
             <button
               onClick={() => navigate('/admin/users/manage')}
               className="flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-white rounded-lg border border-gray-300 hover:bg-gray-50 hover:text-gray-700 transition-colors shadow-sm"
@@ -142,9 +174,53 @@ const EditUser = () => {
               <FiArrowLeft className="mr-2" size={16} />
               Back to Users
             </button>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Edit User</h1>
-              <p className="text-gray-600 mt-1">Update user account information and permissions</p>
+          </div>
+          
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
+                  <FiEdit3 className="w-8 h-8 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-3xl font-bold text-gray-900">Edit User</h1>
+                  <p className="text-gray-600 mt-1">Update user account information and permissions</p>
+                  {user && (
+                    <div className="flex items-center mt-2 space-x-4">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                        <FiUser className="w-4 h-4 mr-1" />
+                        {user.username}
+                      </span>
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
+                        <FiUserCheck className="w-4 h-4 mr-1" />
+                        {Object.keys(Role).find((key) => Role[key] === user.role)}
+                      </span>
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                        user.isSuspended 
+                          ? 'bg-red-100 text-red-800' 
+                          : 'bg-green-100 text-green-800'
+                      }`}>
+                        <div className={`w-2 h-2 rounded-full mr-2 ${
+                          user.isSuspended ? 'bg-red-500' : 'bg-green-500'
+                        }`}></div>
+                        {user.isSuspended ? 'Suspended' : 'Active'}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+              
+              <div className="hidden md:flex items-center space-x-3">
+                <div className="text-right">
+                  <p className="text-sm text-gray-500">Last updated</p>
+                  <p className="text-sm font-medium text-gray-900">
+                    {user?.updatedAt ? new Date(user.updatedAt).toLocaleDateString() : 'N/A'}
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
+                  <FiUser className="w-6 h-6 text-gray-600" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -281,6 +357,7 @@ const EditUser = () => {
                       options={Object.entries(Role).map(([key, val]) => ({ value: val, label: key }))}
                       icon={FiUserCheck}
                     />
+
                   </div>
 
                   <div className="pt-6 border-t border-gray-200">
@@ -313,3 +390,6 @@ const EditUser = () => {
 };
 
 export default EditUser;
+
+
+

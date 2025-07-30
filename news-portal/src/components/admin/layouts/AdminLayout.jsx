@@ -28,7 +28,7 @@ const AdminLayout = () => {
         <nav className="p-4">
           <ul className="space-y-2">
             <li>
-              <Link to="/" className="flex items-center p-2 rounded hover:bg-indigo-700">
+              <Link to="/admin/dashboard" className="flex items-center p-2 rounded hover:bg-indigo-700">
                 <FiHome className="mr-3" />
                 Dashboard
               </Link>

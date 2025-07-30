@@ -26,7 +26,7 @@ const Login = () => {
         Cookies.set('token', token, { expires: 1 }); // expires in 1 day
         Cookies.set('user', JSON.stringify(user), { expires: 1 });
         toast.success('Login successful!');
-        navigate('/admin/manage/user'); // Redirect on successful login
+        navigate('/admin/users/manage'); // Redirect on successful login
       } else if (response.status === 401) {
         toast.error('Unauthorized: Incorrect email or password.');
       } else if (response.status === 403) {
