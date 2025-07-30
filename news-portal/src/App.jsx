@@ -18,6 +18,7 @@ import Login from './components/admin/auth/Login';
 // import Profile from './pages/users/Profile';
 // import ResetPassword from './pages/users/ResetPassword';
 import { ToastContainer, toast } from 'react-toastify';
+import EditUser from './components/admin/user/EditUser';
 function App() {
   return (
     <>
@@ -26,6 +27,7 @@ function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="users/add" element={<AddUser />} />
           <Route path="users/manage" element={<ViewUsers />} />
+          <Route path="users/edit/:id" element={<EditUser />} />
         </Route>
       </Routes> 
       <ToastContainer position="top-right" />

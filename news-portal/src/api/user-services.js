@@ -79,3 +79,35 @@ export const updateUserStatus = async ({ id, isSuspended }) => {
     throw error.response?.data || error;
   }
 };
+
+// Get user by ID
+export const getUserById = async (id) => {
+  try {
+    const response = await axios.get(`${server}/user/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      timeout: 5000,
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error.response?.data || error;
+  }
+};
+
+// Update user by ID
+export const updateUser = async (id, updatedData) => {
+  try {
+    const response = await axios.put(`${server}/user/${id}`, updatedData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      timeout: 5000,
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error.response?.data || error;
+  }
+};
