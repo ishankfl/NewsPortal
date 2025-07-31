@@ -1,4 +1,5 @@
 using Dapper;
+using NewsPortal.Domain.Dtos;
 using NewsPortal.Domain.Interfaces;
 using NewsPortal.Domain.Models;
 using NewsPortal.Infrastructure.Persistence;
@@ -70,33 +71,59 @@ namespace NewsPortal.Infrastructure.Repositories
             var count = await conn.ExecuteScalarAsync<int>(sql, parameters);
             return count > 0;
         }
-        public async Task<(IEnumerable<Article> Articles, int TotalCount)> GetPagedAsync(int pageNumber, int pageSize, string? searchQuery)
-{
-    var offset = (pageNumber - 1) * pageSize;
+        public async Task<(IEnumerable<ArticleWithImageDto> Articles, int TotalCount)> GetPagedAsync(int pageNumber, int pageSize, string? searchQuery)
+        {
+            var offset = (pageNumber - 1) * pageSize;
 
-    var sql = @"
-        SELECT * FROM articles
-        WHERE (@SearchQuery IS NULL OR title ILIKE '%' || @SearchQuery || '%' OR content ILIKE '%' || @SearchQuery || '%')
-        ORDER BY publication_datetime DESC
+            var sql = @"
+        SELECT 
+            a.id AS Id,
+            a.language_code AS LanguageCode,
+            a.title AS Title,
+            a.slug AS Slug,
+            a.content AS Content,
+            a.summary AS Summary,
+            a.status AS Status,
+            a.publication_datetime AS PublicationDatetime,
+            a.allow_comments AS AllowComments,
+            a.cover_image_id AS CoverImageId,
+            a.author_id AS AuthorId,
+            a.reporter_id AS ReporterId,
+            a.seo_title AS SeoTitle,
+            a.seo_description AS SeoDescription,
+            a.seo_keywords AS SeoKeywords,
+            a.created_at AS CreatedAt,
+            a.updated_at AS UpdatedAt,
+            i.imageurl AS ImageUrl
+        FROM articles a
+        LEFT JOIN images i ON a.cover_image_id = i.id
+        WHERE (@SearchQuery IS NULL 
+               OR a.title ILIKE '%' || @SearchQuery || '%' 
+               OR a.content ILIKE '%' || @SearchQuery || '%')
+        ORDER BY a.publication_datetime DESC
         LIMIT @PageSize OFFSET @Offset;
 
-        SELECT COUNT(*) FROM articles
-        WHERE (@SearchQuery IS NULL OR title ILIKE '%' || @SearchQuery || '%' OR content ILIKE '%' || @SearchQuery || '%');
+        SELECT COUNT(*) 
+        FROM articles a
+        WHERE (@SearchQuery IS NULL 
+               OR a.title ILIKE '%' || @SearchQuery || '%' 
+               OR a.content ILIKE '%' || @SearchQuery || '%');
     ";
 
-    using var conn = _context.CreateConnection();
-    using var multi = await conn.QueryMultipleAsync(sql, new
-    {
-        SearchQuery = string.IsNullOrWhiteSpace(searchQuery) ? null : searchQuery,
-        PageSize = pageSize,
-        Offset = offset
-    });
+            using var conn = _context.CreateConnection();
+            using var multi = await conn.QueryMultipleAsync(sql, new
+            {
+                SearchQuery = string.IsNullOrWhiteSpace(searchQuery) ? null : searchQuery,
+                PageSize = pageSize,
+                Offset = offset
+            });
 
-    var articles = await multi.ReadAsync<Article>();
-    var totalCount = await multi.ReadSingleAsync<int>();
+            var articles = await multi.ReadAsync<ArticleWithImageDto>();
+            var totalCount = await multi.ReadSingleAsync<int>();
 
-    return (articles, totalCount);
-}
+            return (articles, totalCount);
+        }
+
 
 
     }

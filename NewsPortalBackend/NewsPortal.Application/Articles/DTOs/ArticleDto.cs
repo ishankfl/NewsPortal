@@ -13,12 +13,13 @@
         public int? CoverImageId { get; set; }
         public int? AuthorId { get; set; }
         public int? ReporterId { get; set; }
-
         public string SeoTitle { get; set; }
         public string SeoDescription { get; set; }
         public string SeoKeywords { get; set; }
-
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+
+        // Add ImageUrl here to pass to client
+        public string? ImageUrl { get; set; }
     }
 }

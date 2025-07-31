@@ -56,7 +56,7 @@ namespace NewsPortal.Application.Articles.Services
                 Status = request.Status,
                 PublicationDatetime = request.PublicationDatetime,
                 AllowComments = request.AllowComments,
-                CoverImageId = request.CoverImageId,
+                CoverImageId = request.CoverImage,
                 AuthorId = request.AuthorId,
                 ReporterId = request.ReporterId,
                 SeoTitle = request.SeoTitle,
@@ -108,9 +108,9 @@ namespace NewsPortal.Application.Articles.Services
             }
 
             // Validate cover image if provided
-            if (request.CoverImageId.HasValue && request.CoverImageId.Value > 0)
+            if (request.CoverImage.HasValue && request.CoverImage.Value > 0)
             {
-                var image = await _imageRepository.GetByIdAsync(request.CoverImageId.Value);
+                var image = await _imageRepository.GetByIdAsync(request.CoverImage.Value);
                 if (image == null)
                     result.Errors.Add("Cover image not found");
             }
@@ -191,16 +191,27 @@ namespace NewsPortal.Application.Articles.Services
                 Articles = articles.Select(a => new ArticleDto
                 {
                     Id = a.Id,
+                    LanguageCode = a.LanguageCode,
                     Title = a.Title,
                     Slug = a.Slug,
                     Summary = a.Summary,
                     Status = a.Status,
-                    PublicationDatetime = a.PublicationDatetime
-                    // map other fields as needed
+                    PublicationDatetime = a.PublicationDatetime,
+                    AllowComments = a.AllowComments,
+                    CoverImageId = a.CoverImageId,
+                    AuthorId = a.AuthorId,
+                    ReporterId = a.ReporterId,
+                    SeoTitle = a.SeoTitle,
+                    SeoDescription = a.SeoDescription,
+                    SeoKeywords = a.SeoKeywords,
+                    CreatedAt = a.CreatedAt,
+                    UpdatedAt = a.UpdatedAt,
+                    ImageUrl = a.ImageUrl
                 }),
                 TotalCount = totalCount
             };
         }
+
 
         /*  public async Task<bool> UpdateAsync(UpdateArticleRequest request)
           {

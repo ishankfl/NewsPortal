@@ -28,7 +28,7 @@ namespace NewsPortal.Application.Articles.DTOs
         
         public bool AllowComments { get; set; } = true;
         
-        public int? CoverImageId { get; set; }
+        public int? CoverImage { get; set; }
         
         [Required]
         public int AuthorId { get; set; }

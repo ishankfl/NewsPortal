@@ -1,40 +1,27 @@
-﻿namespace NewsPortal.Domain.Models
+﻿namespace NewsPortal.Domain.Dtos
 {
-    public class Article
+    public class ArticleWithImageDto
     {
+        // Article properties matching your domain model:
         public int Id { get; set; }
-
-        // Language: English or Nepali
-        public string LanguageCode { get; set; } = string.Empty; // 'en' or 'np'
-
-        // Titles & Content
+        public string LanguageCode { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
         public string Slug { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
         public string Summary { get; set; } = string.Empty;
-
-        // Status & Publishing Info
-        public string Status { get; set; } = "draft"; // 'draft' or 'published'
+        public string Status { get; set; } = "draft";
         public DateTime? PublicationDatetime { get; set; }
         public bool AllowComments { get; set; } = true;
-
-        // Media & Users
         public int? CoverImageId { get; set; }
         public int AuthorId { get; set; }
         public int? ReporterId { get; set; }
-
-        // SEO
         public string SeoTitle { get; set; } = string.Empty;
         public string SeoDescription { get; set; } = string.Empty;
         public string SeoKeywords { get; set; } = string.Empty;
-
-        // Audit
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-        // Navigation Properties
-        public Image? CoverImage { get; set; }
-        public User? Author { get; set; }
-        public User? Reporter { get; set; }
+        // Extra field from joined table
+        public string? ImageUrl { get; set; }
     }
 }

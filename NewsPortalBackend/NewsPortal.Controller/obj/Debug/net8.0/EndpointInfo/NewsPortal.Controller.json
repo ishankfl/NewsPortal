@@ -55,7 +55,7 @@
                   "AllowComments": {
                     "type": "boolean"
                   },
-                  "CoverImageId": {
+                  "CoverImage": {
                     "type": "integer",
                     "format": "int32"
                   },
@@ -107,7 +107,7 @@
                 "AllowComments": {
                   "style": "form"
                 },
-                "CoverImageId": {
+                "CoverImage": {
                   "style": "form"
                 },
                 "AuthorId": {
