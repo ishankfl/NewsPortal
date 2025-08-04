@@ -15,17 +15,26 @@ namespace NewsPortal.Controller.Controllers
         {
             _authService = authService;
         }
-
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            var token = await _authService.LoginAsync(request.Email, request.Password);
+            try
+            {
+                var token = await _authService.LoginAsync(request.Email, request.Password);
 
-            if (token == null)
-                return Unauthorized(new { message = "Invalid username or password." });
-
-            return Ok(new { Token = token });
+                return Ok(new { Token = token });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // For unhandled exceptions, return 500
+                return StatusCode(500, new { message = "An unexpected error occurred.", detail = ex.Message });
+            }
         }
+
 
     }
 }
