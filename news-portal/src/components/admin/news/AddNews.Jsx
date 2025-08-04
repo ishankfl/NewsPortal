@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { imgServer, server } from '../../../api/server';
 import {
     FiSave,
     FiArrowLeft,
@@ -19,7 +20,9 @@ import {
     FiUnderline,
     FiList,
     FiLink,
-    FiType
+    FiType,
+    FiFolder,
+    FiCheck
 } from 'react-icons/fi';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -27,14 +30,194 @@ import * as Yup from 'yup';
 import FormButton from '../../common/FormButton';
 import FormInput from '../../common/FormInput';
 import FormSelect from '../../common/FormSelect';
-import SeoKeywords from './SEOKeywords';
+import { uploadImage, getAllImages } from '../../../api/images-service';
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+const ImageGalleryModal = ({ isOpen, onClose, onSelectImage }) => {
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [uploadingImage, setUploadingImage] = useState(false);
+    const [newImageName, setNewImageName] = useState('');
+    const queryClient = useQueryClient();
+
+    const { data: images = [], isLoading, refetch } = useQuery({
+        queryKey: ['images'],
+        queryFn: getAllImages,
+        enabled: isOpen
+    });
+
+    const uploadImageMutation = useMutation({
+        mutationFn: ({ file, name }) => uploadImage(file, name),
+        onSuccess: () => {
+            toast.success('Image uploaded successfully!');
+            setUploadingImage(false);
+            setNewImageName('');
+            refetch();
+        },
+        onError: (error) => {
+            toast.error(error.message || 'Failed to upload image');
+            setUploadingImage(false);
+        }
+    });
+
+    const handleImageUpload = (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        if (!newImageName.trim()) {
+            toast.error('Please enter an image name');
+            return;
+        }
+
+        setUploadingImage(true);
+        uploadImageMutation.mutate({ file, name: newImageName.trim() });
+    };
+
+    const handleSelectImage = () => {
+        if (selectedImage) {
+            onSelectImage(selectedImage);
+            onClose();
+        }
+    };
+
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg w-5/6 h-5/6 max-w-6xl flex flex-col">
+                {/* Header */}
+                <div className="flex items-center justify-between p-6 border-b">
+                    <h2 className="text-2xl font-bold text-gray-900 flex items-center">
+                        <FiFolder className="mr-3" />
+                        Image Gallery
+                    </h2>
+                    <button
+                        onClick={onClose}
+                        className="p-2 hover:bg-gray-100 rounded-full"
+                    >
+                        <FiX size={24} />
+                    </button>
+                </div>
+
+                {/* Upload Section */}
+                <div className="p-6 border-b bg-gray-50">
+                    <h3 className="text-lg font-semibold mb-4">Upload New Image</h3>
+                    <div className="flex space-x-4 items-end">
+                        <div className="flex-1">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Image Name
+                            </label>
+                            <input
+                                type="text"
+                                value={newImageName}
+                                onChange={(e) => setNewImageName(e.target.value)}
+                                placeholder="Enter image name"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                            />
+                        </div>
+                        <div>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleImageUpload}
+                                className="hidden"
+                                id="galleryImageUpload"
+                                disabled={uploadingImage}
+                            />
+                            <label
+                                htmlFor="galleryImageUpload"
+                                className={`inline-flex items-center px-4 py-2 rounded-lg cursor-pointer transition-colors ${
+                                    uploadingImage
+                                        ? 'bg-gray-400 cursor-not-allowed'
+                                        : 'bg-indigo-600 hover:bg-indigo-700'
+                                } text-white`}
+                            >
+                                <FiUpload className="w-4 h-4 mr-2" />
+                                {uploadingImage ? 'Uploading...' : 'Upload'}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Image Grid */}
+                <div className="flex-1 p-6 overflow-y-auto">
+                    {isLoading ? (
+                        <div className="flex items-center justify-center h-64">
+                            <div className="text-gray-500">Loading images...</div>
+                        </div>
+                    ) : images.length === 0 ? (
+                        <div className="flex items-center justify-center h-64">
+                            <div className="text-center">
+                                <FiImage className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                                <p className="text-gray-500">No images found</p>
+                                <p className="text-sm text-gray-400">Upload your first image above</p>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                            {images.map((image) => (
+                                <div
+                                    key={image.id}
+                                    className={`relative cursor-pointer rounded-lg overflow-hidden border-2 transition-all ${
+                                        selectedImage?.id === image.id
+                                            ? 'border-indigo-500 ring-2 ring-indigo-200'
+                                            : 'border-gray-200 hover:border-gray-300'
+                                    }`}
+                                    onClick={() => setSelectedImage(image)}
+                                >
+                                    <div className="aspect-square">
+                                        <img
+                                            src={image.url || `${imgServer}${image.imageUrl}`}
+                                            alt={image.name}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                    {selectedImage?.id === image.id && (
+                                        <div className="absolute top-2 right-2 bg-indigo-500 text-white rounded-full p-1">
+                                            <FiCheck size={16} />
+                                        </div>
+                                    )}
+                                    <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-75 text-white p-2">
+                                        <p className="text-sm truncate">{image.name}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* Footer */}
+                <div className="p-6 border-t bg-gray-50 flex justify-between items-center">
+                    <div className="text-sm text-gray-600">
+                        {selectedImage ? `Selected: ${selectedImage.name}` : 'Select an image to continue'}
+                    </div>
+                    <div className="flex space-x-3">
+                        <button
+                            onClick={onClose}
+                            className="px-4 py-2 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={handleSelectImage}
+                            disabled={!selectedImage}
+                            className={`px-6 py-2 rounded-lg transition-colors ${
+                                selectedImage
+                                    ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                            }`}
+                        >
+                            Select Image
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 const RichTextEditor = ({ value, onChange, placeholder }) => {
     const editorRef = useRef(null);
     const [showImageModal, setShowImageModal] = useState(false);
+    const [showGalleryModal, setShowGalleryModal] = useState(false);
     const [imageUrl, setImageUrl] = useState('');
 
     const formatText = (command, value = null) => {
@@ -48,6 +231,12 @@ const RichTextEditor = ({ value, onChange, placeholder }) => {
             setImageUrl('');
             setShowImageModal(false);
         }
+    };
+
+    const handleGalleryImageSelect = (image) => {
+        const imageUrl = image.url || `/api/images/${image.id}`;
+        formatText('insertImage', imageUrl);
+        setShowGalleryModal(false);
     };
 
     const handleInput = () => {
@@ -72,6 +261,8 @@ const RichTextEditor = ({ value, onChange, placeholder }) => {
                     <option value="h5">Heading 5</option>
                     <option value="h6">Heading 6</option>
                 </select>
+
+                <div className="border-l border-gray-300 mx-1"></div>
 
                 <button
                     type="button"
@@ -100,6 +291,8 @@ const RichTextEditor = ({ value, onChange, placeholder }) => {
                     <FiUnderline size={16} />
                 </button>
 
+                <div className="border-l border-gray-300 mx-1"></div>
+
                 <button
                     type="button"
                     onClick={() => formatText('insertUnorderedList')}
@@ -118,6 +311,8 @@ const RichTextEditor = ({ value, onChange, placeholder }) => {
                     <FiType size={16} />
                 </button>
 
+                <div className="border-l border-gray-300 mx-1"></div>
+
                 <button
                     type="button"
                     onClick={() => {
@@ -132,9 +327,18 @@ const RichTextEditor = ({ value, onChange, placeholder }) => {
 
                 <button
                     type="button"
+                    onClick={() => setShowGalleryModal(true)}
+                    className="p-2 hover:bg-gray-200 rounded bg-indigo-50 text-indigo-600"
+                    title="Insert Image from Gallery"
+                >
+                    <FiFolder size={16} />
+                </button>
+
+                <button
+                    type="button"
                     onClick={() => setShowImageModal(true)}
                     className="p-2 hover:bg-gray-200 rounded"
-                    title="Insert Image"
+                    title="Insert Image URL"
                 >
                     <FiImage size={16} />
                 </button>
@@ -151,11 +355,11 @@ const RichTextEditor = ({ value, onChange, placeholder }) => {
                 placeholder={placeholder}
             />
 
-            {/* Image Modal */}
+            {/* Image URL Modal */}
             {showImageModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white p-6 rounded-lg w-96">
-                        <h3 className="text-lg font-semibold mb-4">Insert Image</h3>
+                        <h3 className="text-lg font-semibold mb-4">Insert Image URL</h3>
                         <input
                             type="url"
                             value={imageUrl}
@@ -182,17 +386,25 @@ const RichTextEditor = ({ value, onChange, placeholder }) => {
                     </div>
                 </div>
             )}
+
+            {/* Image Gallery Modal */}
+            <ImageGalleryModal
+                isOpen={showGalleryModal}
+                onClose={() => setShowGalleryModal(false)}
+                onSelectImage={handleGalleryImageSelect}
+            />
         </div>
     );
 };
 
 const AddNews = () => {
-    const [serverError, setServerError] = useState('');
+    const [serverError, setServerError] = useState(false);
     const [coverImage, setCoverImage] = useState(null);
     const [coverImagePreview, setCoverImagePreview] = useState(null);
     const [activeLanguage, setActiveLanguage] = useState('en');
     const [seoKeywords, setSeoKeywords] = useState([]);
     const [keywordInput, setKeywordInput] = useState('');
+    const [showCoverGallery, setShowCoverGallery] = useState(false);
 
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -200,40 +412,22 @@ const AddNews = () => {
     // Fetch categories and authors
     const { data: categories = [] } = useQuery({
         queryKey: ['categories'],
-        queryFn: async () => {
-            const response = await fetch('/api/categories');
-            if (!response.ok) throw new Error('Failed to fetch categories');
-            return response.json();
-        }
+        queryFn: () => fetch('/api/categories').then(res => res.json())
     });
 
     const { data: authors = [] } = useQuery({
         queryKey: ['authors'],
-        queryFn: async () => {
-            const response = await fetch('/api/users?role=author');
-            if (!response.ok) throw new Error('Failed to fetch authors');
-            return response.json();
-        }
+        queryFn: () => fetch('/api/users?role=author').then(res => res.json())
     });
 
     const validationSchema = Yup.object({
         title_en: Yup.string().required('English title is required'),
         title_np: Yup.string().required('Nepali title is required'),
-        slug: Yup.string()
-            .required('Slug is required')
-            .matches(/^[a-z0-9-]+$/, 'Slug can only contain lowercase letters, numbers and hyphens'),
-        content_en: Yup.string().test(
-            'is-empty',
-            'English content is required',
-            value => value && value.replace(/<(.|\n)*?>/g, '').trim().length > 0
-        ),
-        content_np: Yup.string().test(
-            'is-empty',
-            'Nepali content is required',
-            value => value && value.replace(/<(.|\n)*?>/g, '').trim().length > 0
-        ),
-        categoryId: Yup.number().required('Category is required').positive('Invalid category'),
-        authorId: Yup.number().required('Author is required').positive('Invalid author'),
+        slug: Yup.string().required('Slug is required'),
+        content_en: Yup.string().required('English content is required'),
+        content_np: Yup.string().required('Nepali content is required'),
+        categoryId: Yup.number().required('Category is required'),
+        authorId: Yup.number().required('Author is required'),
         publishedAt: Yup.date().required('Publish date is required')
     });
 
@@ -243,11 +437,7 @@ const AddNews = () => {
                 method: 'POST',
                 body: formData
             });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to create article');
-            }
+            if (!response.ok) throw new Error('Failed to create article');
             return response.json();
         },
         onSuccess: () => {
@@ -263,24 +453,19 @@ const AddNews = () => {
 
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
-        if (!file) return;
-
-        // Validate file type
-        if (!ALLOWED_FILE_TYPES.includes(file.type)) {
-            toast.error('Only JPEG, PNG, and WebP images are allowed');
-            return;
+        if (file) {
+            setCoverImage(file);
+            const reader = new FileReader();
+            reader.onload = (e) => setCoverImagePreview(e.target.result);
+            reader.readAsDataURL(file);
         }
+    };
 
-        // Validate file size
-        if (file.size > MAX_FILE_SIZE) {
-            toast.error('Image size must be less than 10MB');
-            return;
-        }
-
-        setCoverImage(file);
-        const reader = new FileReader();
-        reader.onload = (e) => setCoverImagePreview(e.target.result);
-        reader.readAsDataURL(file);
+    const handleCoverImageSelect = (image) => {
+        const imageUrl = image.url || `${imgServer}${image.imageUrl}`;
+        setCoverImagePreview(imageUrl);
+        setCoverImage(imageUrl); // Store URL instead of file for gallery images
+        setShowCoverGallery(false);
     };
 
     const generateSlug = (title) => {
@@ -289,7 +474,7 @@ const AddNews = () => {
             .replace(/[^a-z0-9\s-]/g, '')
             .replace(/\s+/g, '-')
             .replace(/-+/g, '-')
-            .trim();
+            .trim('-');
     };
 
     const addKeyword = () => {
@@ -312,33 +497,6 @@ const AddNews = () => {
         categoryId: '',
         authorId: '',
         publishedAt: new Date().toISOString().slice(0, 16)
-    };
-
-    const handleSubmit = (values, { setSubmitting }) => {
-        setServerError('');
-
-        const formData = new FormData();
-
-        // Append all regular fields
-        Object.entries(values).forEach(([key, value]) => {
-            if (value !== undefined && value !== null) {
-                formData.append(key, value);
-            }
-        });
-
-        // Append cover image if exists
-        if (coverImage) {
-            formData.append('coverImage', coverImage);
-        }
-
-        // Append SEO keywords
-        if (seoKeywords.length > 0) {
-            formData.append('seoKeywords', JSON.stringify(seoKeywords));
-        }
-
-        createNewsMutation.mutate(formData, {
-            onSettled: () => setSubmitting(false)
-        });
     };
 
     return (
@@ -384,9 +542,25 @@ const AddNews = () => {
                 <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
-                    onSubmit={handleSubmit}
+                    onSubmit={(values) => {
+                        const formData = new FormData();
+                        Object.keys(values).forEach(key => {
+                            formData.append(key, values[key]);
+                        });
+                        if (coverImage) {
+                            if (typeof coverImage === 'string') {
+                                // Gallery image URL
+                                formData.append('coverImageUrl', coverImage);
+                            } else {
+                                // Uploaded file
+                                formData.append('coverImage', coverImage);
+                            }
+                        }
+                        formData.append('seoKeywords', JSON.stringify(seoKeywords));
+                        createNewsMutation.mutate(formData);
+                    }}
                 >
-                    {({ values, errors, touched, handleChange, handleBlur, setFieldValue, isSubmitting }) => (
+                    {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
                         <Form className="space-y-8">
                             {/* Basic Information */}
                             <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
@@ -401,10 +575,11 @@ const AddNews = () => {
                                         <button
                                             type="button"
                                             onClick={() => setActiveLanguage('en')}
-                                            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeLanguage === 'en'
-                                                ? 'bg-white text-indigo-600 shadow-sm'
-                                                : 'text-gray-600 hover:text-gray-900'
-                                                }`}
+                                            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                                                activeLanguage === 'en'
+                                                    ? 'bg-white text-indigo-600 shadow-sm'
+                                                    : 'text-gray-600 hover:text-gray-900'
+                                            }`}
                                         >
                                             <FiGlobe className="w-4 h-4 inline mr-1" />
                                             English
@@ -412,10 +587,11 @@ const AddNews = () => {
                                         <button
                                             type="button"
                                             onClick={() => setActiveLanguage('np')}
-                                            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeLanguage === 'np'
-                                                ? 'bg-white text-indigo-600 shadow-sm'
-                                                : 'text-gray-600 hover:text-gray-900'
-                                                }`}
+                                            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                                                activeLanguage === 'np'
+                                                    ? 'bg-white text-indigo-600 shadow-sm'
+                                                    : 'text-gray-600 hover:text-gray-900'
+                                            }`}
                                         >
                                             नेपाली
                                         </button>
@@ -535,20 +711,30 @@ const AddNews = () => {
                                             <FiUpload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                                             <p className="text-gray-600 mb-2">Upload cover image</p>
                                             <p className="text-sm text-gray-500 mb-4">PNG, JPG up to 10MB</p>
-                                            <input
-                                                type="file"
-                                                accept="image/*"
-                                                onChange={handleImageUpload}
-                                                className="hidden"
-                                                id="coverImage"
-                                            />
-                                            <label
-                                                htmlFor="coverImage"
-                                                className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors"
-                                            >
-                                                <FiUpload className="w-4 h-4 mr-2" />
-                                                Choose Image
-                                            </label>
+                                            <div className="flex justify-center space-x-4">
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    onChange={handleImageUpload}
+                                                    className="hidden"
+                                                    id="coverImage"
+                                                />
+                                                <label
+                                                    htmlFor="coverImage"
+                                                    className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors"
+                                                >
+                                                    <FiUpload className="w-4 h-4 mr-2" />
+                                                    Upload New
+                                                </label>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setShowCoverGallery(true)}
+                                                    className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                                                >
+                                                    <FiFolder className="w-4 h-4 mr-2" />
+                                                    Choose from Gallery
+                                                </button>
+                                            </div>
                                         </div>
                                     )}
                                 </div>
@@ -579,14 +765,52 @@ const AddNews = () => {
                                     </div>
                                 </div>
                             </div>
-                            <SeoKeywords
-                                setKeywordInput={setKeywordInput}
-                                keywordInput={keywordInput}
-                                addKeyword={addKeyword}
-                                seoKeywords={seoKeywords}
-                                removeKeyword={removeKeyword}
-                            />
 
+                            {/* SEO Keywords */}
+                            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+                                <div className="flex items-center mb-6">
+                                    <FiTag className="w-6 h-6 text-indigo-600 mr-3" />
+                                    <h2 className="text-2xl font-bold text-gray-900">SEO Keywords</h2>
+                                </div>
+
+                                <div className="space-y-4">
+                                    <div className="flex space-x-2">
+                                        <input
+                                            type="text"
+                                            value={keywordInput}
+                                            onChange={(e) => setKeywordInput(e.target.value)}
+                                            onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addKeyword())}
+                                            placeholder="Add SEO keyword"
+                                            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={addKeyword}
+                                            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                                        >
+                                            <FiPlus size={16} />
+                                        </button>
+                                    </div>
+
+                                    <div className="flex flex-wrap gap-2">
+                                        {seoKeywords.map((keyword, index) => (
+                                            <span
+                                                key={index}
+                                                className="inline-flex items-center px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm"
+                                            >
+                                                {keyword}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => removeKeyword(keyword)}
+                                                    className="ml-2 text-indigo-600 hover:text-indigo-800"
+                                                >
+                                                    <FiX size={14} />
+                                                </button>
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
 
                             {/* Actions */}
                             <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
@@ -611,11 +835,11 @@ const AddNews = () => {
                                         </button>
                                         <FormButton
                                             type="submit"
-                                            disabled={isSubmitting || createNewsMutation.isLoading}
+                                            disabled={createNewsMutation.isLoading}
                                             className="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg flex items-center transition-colors"
                                         >
                                             <FiSave className="mr-2" size={18} />
-                                            {isSubmitting || createNewsMutation.isLoading ? 'Publishing...' : 'Publish Article'}
+                                            {createNewsMutation.isLoading ? 'Publishing...' : 'Publish Article'}
                                         </FormButton>
                                     </div>
                                 </div>
@@ -629,6 +853,13 @@ const AddNews = () => {
                         </Form>
                     )}
                 </Formik>
+
+                {/* Cover Image Gallery Modal */}
+                <ImageGalleryModal
+                    isOpen={showCoverGallery}
+                    onClose={() => setShowCoverGallery(false)}
+                    onSelectImage={handleCoverImageSelect}
+                />
             </div>
         </div>
     );
