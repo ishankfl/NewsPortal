@@ -60,7 +60,7 @@ const AdminLayout = () => {
                       </Link>
                     </li>
                     <li>
-                      <Link to="/news/add" className="block p-2 rounded hover:bg-indigo-700">
+                      <Link to="/admin/news/add" className="block p-2 rounded hover:bg-indigo-700">
                         Add New News
                       </Link>
                     </li>
