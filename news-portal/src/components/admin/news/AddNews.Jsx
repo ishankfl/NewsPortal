@@ -1,5 +1,3 @@
-
-
 import React, { useState, useRef } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
@@ -29,6 +27,10 @@ import * as Yup from 'yup';
 import FormButton from '../../common/FormButton';
 import FormInput from '../../common/FormInput';
 import FormSelect from '../../common/FormSelect';
+import SeoKeywords from './SEOKeywords';
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
 const RichTextEditor = ({ value, onChange, placeholder }) => {
     const editorRef = useRef(null);
@@ -71,33 +73,6 @@ const RichTextEditor = ({ value, onChange, placeholder }) => {
                     <option value="h6">Heading 6</option>
                 </select>
 
-                <select
-                    onChange={(e) => formatText('fontName', e.target.value)}
-                    className="px-2 py-1 border border-gray-300 rounded text-sm"
-                    defaultValue=""
-                >
-                    <option value="">Font</option>
-                    <option value="Arial">Arial</option>
-                    <option value="Georgia">Georgia</option>
-                    <option value="Times New Roman">Times New Roman</option>
-                    <option value="Courier New">Courier New</option>
-                    <option value="Verdana">Verdana</option>
-                </select>
-
-                <select
-                    onChange={(e) => formatText('fontSize', e.target.value)}
-                    className="px-2 py-1 border border-gray-300 rounded text-sm"
-                    defaultValue=""
-                >
-                    <option value="">Size</option>
-                    <option value="1">Small</option>
-                    <option value="3">Normal</option>
-                    <option value="5">Large</option>
-                    <option value="7">Huge</option>
-                </select>
-
-                <div className="border-l border-gray-300 mx-1"></div>
-
                 <button
                     type="button"
                     onClick={() => formatText('bold')}
@@ -125,8 +100,6 @@ const RichTextEditor = ({ value, onChange, placeholder }) => {
                     <FiUnderline size={16} />
                 </button>
 
-                <div className="border-l border-gray-300 mx-1"></div>
-
                 <button
                     type="button"
                     onClick={() => formatText('insertUnorderedList')}
@@ -144,8 +117,6 @@ const RichTextEditor = ({ value, onChange, placeholder }) => {
                 >
                     <FiType size={16} />
                 </button>
-
-                <div className="border-l border-gray-300 mx-1"></div>
 
                 <button
                     type="button"
@@ -167,33 +138,6 @@ const RichTextEditor = ({ value, onChange, placeholder }) => {
                 >
                     <FiImage size={16} />
                 </button>
-
-                <div className="border-l border-gray-300 mx-1"></div>
-
-                <select
-                    onChange={(e) => formatText('justifyLeft')}
-                    className="px-2 py-1 border border-gray-300 rounded text-sm"
-                    defaultValue="left"
-                >
-                    <option value="left">Left</option>
-                    <option value="center">Center</option>
-                    <option value="right">Right</option>
-                    <option value="full">Justify</option>
-                </select>
-
-                <input
-                    type="color"
-                    onChange={(e) => formatText('foreColor', e.target.value)}
-                    className="w-8 h-8 border border-gray-300 rounded cursor-pointer"
-                    title="Text Color"
-                />
-
-                <input
-                    type="color"
-                    onChange={(e) => formatText('backColor', e.target.value)}
-                    className="w-8 h-8 border border-gray-300 rounded cursor-pointer"
-                    title="Background Color"
-                />
             </div>
 
             {/* Editor */}
@@ -243,7 +187,7 @@ const RichTextEditor = ({ value, onChange, placeholder }) => {
 };
 
 const AddNews = () => {
-    const [serverError, setServerError] = useState(false);
+    const [serverError, setServerError] = useState('');
     const [coverImage, setCoverImage] = useState(null);
     const [coverImagePreview, setCoverImagePreview] = useState(null);
     const [activeLanguage, setActiveLanguage] = useState('en');
@@ -256,22 +200,40 @@ const AddNews = () => {
     // Fetch categories and authors
     const { data: categories = [] } = useQuery({
         queryKey: ['categories'],
-        queryFn: () => fetch('/api/categories').then(res => res.json())
+        queryFn: async () => {
+            const response = await fetch('/api/categories');
+            if (!response.ok) throw new Error('Failed to fetch categories');
+            return response.json();
+        }
     });
 
     const { data: authors = [] } = useQuery({
         queryKey: ['authors'],
-        queryFn: () => fetch('/api/users?role=author').then(res => res.json())
+        queryFn: async () => {
+            const response = await fetch('/api/users?role=author');
+            if (!response.ok) throw new Error('Failed to fetch authors');
+            return response.json();
+        }
     });
 
     const validationSchema = Yup.object({
         title_en: Yup.string().required('English title is required'),
         title_np: Yup.string().required('Nepali title is required'),
-        slug: Yup.string().required('Slug is required'),
-        content_en: Yup.string().required('English content is required'),
-        content_np: Yup.string().required('Nepali content is required'),
-        categoryId: Yup.number().required('Category is required'),
-        authorId: Yup.number().required('Author is required'),
+        slug: Yup.string()
+            .required('Slug is required')
+            .matches(/^[a-z0-9-]+$/, 'Slug can only contain lowercase letters, numbers and hyphens'),
+        content_en: Yup.string().test(
+            'is-empty',
+            'English content is required',
+            value => value && value.replace(/<(.|\n)*?>/g, '').trim().length > 0
+        ),
+        content_np: Yup.string().test(
+            'is-empty',
+            'Nepali content is required',
+            value => value && value.replace(/<(.|\n)*?>/g, '').trim().length > 0
+        ),
+        categoryId: Yup.number().required('Category is required').positive('Invalid category'),
+        authorId: Yup.number().required('Author is required').positive('Invalid author'),
         publishedAt: Yup.date().required('Publish date is required')
     });
 
@@ -281,7 +243,11 @@ const AddNews = () => {
                 method: 'POST',
                 body: formData
             });
-            if (!response.ok) throw new Error('Failed to create article');
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to create article');
+            }
             return response.json();
         },
         onSuccess: () => {
@@ -297,12 +263,24 @@ const AddNews = () => {
 
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
-        if (file) {
-            setCoverImage(file);
-            const reader = new FileReader();
-            reader.onload = (e) => setCoverImagePreview(e.target.result);
-            reader.readAsDataURL(file);
+        if (!file) return;
+
+        // Validate file type
+        if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+            toast.error('Only JPEG, PNG, and WebP images are allowed');
+            return;
         }
+
+        // Validate file size
+        if (file.size > MAX_FILE_SIZE) {
+            toast.error('Image size must be less than 10MB');
+            return;
+        }
+
+        setCoverImage(file);
+        const reader = new FileReader();
+        reader.onload = (e) => setCoverImagePreview(e.target.result);
+        reader.readAsDataURL(file);
     };
 
     const generateSlug = (title) => {
@@ -311,7 +289,7 @@ const AddNews = () => {
             .replace(/[^a-z0-9\s-]/g, '')
             .replace(/\s+/g, '-')
             .replace(/-+/g, '-')
-            .trim('-');
+            .trim();
     };
 
     const addKeyword = () => {
@@ -334,6 +312,33 @@ const AddNews = () => {
         categoryId: '',
         authorId: '',
         publishedAt: new Date().toISOString().slice(0, 16)
+    };
+
+    const handleSubmit = (values, { setSubmitting }) => {
+        setServerError('');
+
+        const formData = new FormData();
+
+        // Append all regular fields
+        Object.entries(values).forEach(([key, value]) => {
+            if (value !== undefined && value !== null) {
+                formData.append(key, value);
+            }
+        });
+
+        // Append cover image if exists
+        if (coverImage) {
+            formData.append('coverImage', coverImage);
+        }
+
+        // Append SEO keywords
+        if (seoKeywords.length > 0) {
+            formData.append('seoKeywords', JSON.stringify(seoKeywords));
+        }
+
+        createNewsMutation.mutate(formData, {
+            onSettled: () => setSubmitting(false)
+        });
     };
 
     return (
@@ -379,19 +384,9 @@ const AddNews = () => {
                 <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
-                    onSubmit={(values) => {
-                        const formData = new FormData();
-                        Object.keys(values).forEach(key => {
-                            formData.append(key, values[key]);
-                        });
-                        if (coverImage) {
-                            formData.append('coverImage', coverImage);
-                        }
-                        formData.append('seoKeywords', JSON.stringify(seoKeywords));
-                        createNewsMutation.mutate(formData);
-                    }}
+                    onSubmit={handleSubmit}
                 >
-                    {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
+                    {({ values, errors, touched, handleChange, handleBlur, setFieldValue, isSubmitting }) => (
                         <Form className="space-y-8">
                             {/* Basic Information */}
                             <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
@@ -406,11 +401,10 @@ const AddNews = () => {
                                         <button
                                             type="button"
                                             onClick={() => setActiveLanguage('en')}
-                                            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                                                activeLanguage === 'en'
-                                                    ? 'bg-white text-indigo-600 shadow-sm'
-                                                    : 'text-gray-600 hover:text-gray-900'
-                                            }`}
+                                            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeLanguage === 'en'
+                                                ? 'bg-white text-indigo-600 shadow-sm'
+                                                : 'text-gray-600 hover:text-gray-900'
+                                                }`}
                                         >
                                             <FiGlobe className="w-4 h-4 inline mr-1" />
                                             English
@@ -418,11 +412,10 @@ const AddNews = () => {
                                         <button
                                             type="button"
                                             onClick={() => setActiveLanguage('np')}
-                                            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                                                activeLanguage === 'np'
-                                                    ? 'bg-white text-indigo-600 shadow-sm'
-                                                    : 'text-gray-600 hover:text-gray-900'
-                                            }`}
+                                            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeLanguage === 'np'
+                                                ? 'bg-white text-indigo-600 shadow-sm'
+                                                : 'text-gray-600 hover:text-gray-900'
+                                                }`}
                                         >
                                             नेपाली
                                         </button>
@@ -586,52 +579,14 @@ const AddNews = () => {
                                     </div>
                                 </div>
                             </div>
+                            <SeoKeywords
+                                setKeywordInput={setKeywordInput}
+                                keywordInput={keywordInput}
+                                addKeyword={addKeyword}
+                                seoKeywords={seoKeywords}
+                                removeKeyword={removeKeyword}
+                            />
 
-                            {/* SEO Keywords */}
-                            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
-                                <div className="flex items-center mb-6">
-                                    <FiTag className="w-6 h-6 text-indigo-600 mr-3" />
-                                    <h2 className="text-2xl font-bold text-gray-900">SEO Keywords</h2>
-                                </div>
-
-                                <div className="space-y-4">
-                                    <div className="flex space-x-2">
-                                        <input
-                                            type="text"
-                                            value={keywordInput}
-                                            onChange={(e) => setKeywordInput(e.target.value)}
-                                            onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addKeyword())}
-                                            placeholder="Add SEO keyword"
-                                            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={addKeyword}
-                                            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-                                        >
-                                            <FiPlus size={16} />
-                                        </button>
-                                    </div>
-
-                                    <div className="flex flex-wrap gap-2">
-                                        {seoKeywords.map((keyword, index) => (
-                                            <span
-                                                key={index}
-                                                className="inline-flex items-center px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm"
-                                            >
-                                                {keyword}
-                                                <button
-                                                    type="button"
-                                                    onClick={() => removeKeyword(keyword)}
-                                                    className="ml-2 text-indigo-600 hover:text-indigo-800"
-                                                >
-                                                    <FiX size={14} />
-                                                </button>
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
 
                             {/* Actions */}
                             <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
@@ -656,11 +611,11 @@ const AddNews = () => {
                                         </button>
                                         <FormButton
                                             type="submit"
-                                            disabled={createNewsMutation.isLoading}
+                                            disabled={isSubmitting || createNewsMutation.isLoading}
                                             className="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg flex items-center transition-colors"
                                         >
                                             <FiSave className="mr-2" size={18} />
-                                            {createNewsMutation.isLoading ? 'Publishing...' : 'Publish Article'}
+                                            {isSubmitting || createNewsMutation.isLoading ? 'Publishing...' : 'Publish Article'}
                                         </FormButton>
                                     </div>
                                 </div>
