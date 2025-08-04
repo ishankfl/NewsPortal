@@ -25,8 +25,8 @@ public class UserService : IUserService
         var plainPassword = autoGeneratePassword
             ? PasswordGenerator.Generate()
             : request.PlainPassword ?? throw new ArgumentException("PlainPassword is required when autoGeneratePassword=false");
-
-        var passwordHash = BCrypt.Net.BCrypt.HashPassword(plainPassword);
+       // HashPassword
+        var passwordHash = PasswordGenerator.HashPassword(plainPassword);
 
         var user = new User
         {

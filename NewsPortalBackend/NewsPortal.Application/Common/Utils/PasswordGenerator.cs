@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BCrypt.Net;
 
 namespace NewsPortal.Application.Common.Utils
 {
@@ -15,6 +13,16 @@ namespace NewsPortal.Application.Common.Utils
             var rnd = new Random();
             return new string(Enumerable.Repeat(ValidChars, length)
                 .Select(s => s[rnd.Next(s.Length)]).ToArray());
+        }
+
+        public static string HashPassword(string password)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(password);
+        }
+
+        public static bool VerifyPassword(string password, string hashedPassword)
+        {
+            return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
         }
     }
 }

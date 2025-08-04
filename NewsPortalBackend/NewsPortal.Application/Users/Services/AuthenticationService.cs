@@ -21,7 +21,7 @@ namespace NewsPortal.Application.Users.Services
             {
                 var user = await _repository.GetUserByUsernameAsync(email);
 
-                if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+                if (user == null || PasswordGenerator.VerifyPassword(password, user.PasswordHash))
                 {
                     throw new UnauthorizedAccessException("Invalid username or password.");
                 }
