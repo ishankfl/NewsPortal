@@ -53,7 +53,9 @@ app.UseHttpsRedirection();
 
 app.UseCors("AllowLocalhost5173"); // ✅ Use before authorization
 app.UseAuthorization();
+app.UseStaticFiles();  // In Program.cs or Startup.cs
 
 app.MapControllers();
+
 
 app.Run();

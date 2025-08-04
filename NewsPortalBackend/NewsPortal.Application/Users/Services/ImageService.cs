@@ -24,7 +24,14 @@ namespace NewsPortal.Application.Users.Services
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Image name is required.");
 
-            var uploadFolder = Path.Combine(_env.WebRootPath, "uploads");
+            // Use fallback for webRoot if null or empty
+            var webRoot = _env.WebRootPath;
+            if (string.IsNullOrEmpty(webRoot))
+            {
+                webRoot = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+            }
+
+            var uploadFolder = Path.Combine(webRoot, "uploads");
             if (!Directory.Exists(uploadFolder))
                 Directory.CreateDirectory(uploadFolder);
 
@@ -46,6 +53,7 @@ namespace NewsPortal.Application.Users.Services
 
             return await _imageRepository.AddImageAsync(image);
         }
+
 
         public async Task<IEnumerable<Image>> GetAllImagesAsync()
         {

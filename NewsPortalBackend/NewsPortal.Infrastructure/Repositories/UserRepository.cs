@@ -16,6 +16,7 @@ namespace NewsPortal.Infrastructure.Repositories
             public int TotalPages => (int)Math.Ceiling((double)TotalItems / PageSize);
             public IEnumerable<T> Items { get; set; } = Enumerable.Empty<T>();
         }
+
         private readonly DapperDbContext _context;
 
         public UserRepository(DapperDbContext context)
