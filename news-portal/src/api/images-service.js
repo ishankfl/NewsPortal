@@ -3,6 +3,7 @@ import { server } from './server';
 
 // Upload image (multipart/form-data)
 export const uploadImage = async (file, name) => {
+  console.log("Image is uploadddinggggggggggg")
   if (!file) throw new Error("File is required.");
   if (!name) throw new Error("Image name is required.");
 

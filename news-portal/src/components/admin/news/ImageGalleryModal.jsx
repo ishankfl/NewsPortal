@@ -4,6 +4,7 @@ import { uploadImage, getAllImages } from '../../../api/images-service';
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
+import { imgServer } from "../../../api/server";
 export
 const ImageGalleryModal = ({ isOpen, onClose, onSelectImage }) => {
     const [selectedImage, setSelectedImage] = useState(null);
@@ -20,18 +21,21 @@ const ImageGalleryModal = ({ isOpen, onClose, onSelectImage }) => {
     const uploadImageMutation = useMutation({
         mutationFn: ({ file, name }) => uploadImage(file, name),
         onSuccess: () => {
+            console.log("Image uplaod successuluu.............")
             toast.success('Image uploaded successfully!');
             setUploadingImage(false);
             setNewImageName('');
             refetch();
         },
         onError: (error) => {
+            console.log("Got errr while ")
             toast.error(error.message || 'Failed to upload image');
             setUploadingImage(false);
         }
     });
 
     const handleImageUpload = (event) => {
+        console.log("Hanle image called")
         const file = event.target.files[0];
         if (!file) return;
 
@@ -41,7 +45,9 @@ const ImageGalleryModal = ({ isOpen, onClose, onSelectImage }) => {
         }
 
         setUploadingImage(true);
+        console.log("Image is uploadddinggggggggggg")
         uploadImageMutation.mutate({ file, name: newImageName.trim() });
+
     };
 
     const handleSelectImage = () => {
