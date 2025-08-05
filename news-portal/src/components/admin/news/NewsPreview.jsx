@@ -13,6 +13,11 @@ import {
 } from 'react-icons/fi';
 
 const NewsPreview = ({ isOpen, onClose, articleData, activeLanguage = 'en' }) => {
+    console.log("Daaaaaaaaaaaaaaaaaaaaaaaa",
+        articleData,
+        activeLanguage
+
+    )
     const [previewLanguage, setPreviewLanguage] = useState(activeLanguage);
 
     if (!isOpen || !articleData) return null;
@@ -161,8 +166,11 @@ const NewsPreview = ({ isOpen, onClose, articleData, activeLanguage = 'en' }) =>
                         <div className="prose prose-lg max-w-none">
                             {currentContent ? (
                                 <div 
-                                    className="text-gray-800 leading-relaxed"
+                                    className="text-gray-800 leading-relaxed [&_*]:text-justify-supported"
                                     dangerouslySetInnerHTML={{ __html: currentContent }}
+                                    style={{
+                                        textAlign: 'inherit'
+                                    }}
                                 />
                             ) : (
                                 <div className="text-gray-500 italic text-center py-12">

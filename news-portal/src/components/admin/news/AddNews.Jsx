@@ -202,6 +202,7 @@ const AddNews = () => {
                     {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
                         <Form className="space-y-8">
                             <BasicInformation
+
                                 activeLanguage={activeLanguage}
                                 values={values}
                                 errors={errors}
@@ -212,7 +213,6 @@ const AddNews = () => {
                                 categories={categories}
                                 authors={authors}
                                 generateSlug={generateSlug}
-                                setActiveLanguage={setActiveLanguage}
                             />
 
                             {/* Cover Image */}
@@ -281,6 +281,7 @@ const AddNews = () => {
                                 errors={errors}
                                 touched={touched}
                                 setFieldValue={setFieldValue}
+                            
 
                             />
 
