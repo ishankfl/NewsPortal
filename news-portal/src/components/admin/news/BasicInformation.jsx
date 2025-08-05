@@ -1,3 +1,7 @@
+import { FiFileText, FiGlobe, FiTag, FiUser } from "react-icons/fi";
+import FormInput from "../../common/FormInput";
+import FormSelect from "../../common/FormSelect";
+
 export const BasicInformation = (
     {
         activeLanguage,
@@ -9,7 +13,8 @@ export const BasicInformation = (
         setFieldValue,
         categories,
         authors,
-        generateSlug
+        generateSlug,
+        setActiveLanguage
     }
 ) => {
     {/* Basic Information */ }

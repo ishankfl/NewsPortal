@@ -212,6 +212,7 @@ const AddNews = () => {
                                 categories={categories}
                                 authors={authors}
                                 generateSlug={generateSlug}
+                                setActiveLanguage={setActiveLanguage}
                             />
 
                             {/* Cover Image */}
