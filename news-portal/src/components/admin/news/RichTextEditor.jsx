@@ -1,4 +1,4 @@
-import { FiBold, FiImage, FiItalic, FiList, FiType, FiUnderline, FiLink, FiFolder, FiAlignLeft, FiAlignCenter, FiAlignRight, FiAlignJustify } from "react-icons/fi";
+import { FiBold, FiImage, FiItalic, FiList, FiType, FiUnderline, FiLink, FiFolder, FiAlignLeft, FiAlignCenter, FiAlignRight, FiAlignJustify, FiMaximize2, FiMinimize2 } from "react-icons/fi";
 import { useState, useRef, useEffect } from "react";
 import DOMPurify from "dompurify";
 import { ImageGalleryModal } from "./ImageGalleryModal";
@@ -10,6 +10,7 @@ export const RichTextEditor = ({ value, onChange, placeholder }) => {
   const [showGalleryModal, setShowGalleryModal] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const [imageSize, setImageSize] = useState("medium"); // 'small', 'medium', 'large', 'full'
+  const [selectedImage, setSelectedImage] = useState(null);
 
   // Save and restore cursor position
   const saveCursorPosition = () => {
@@ -47,6 +48,25 @@ export const RichTextEditor = ({ value, onChange, placeholder }) => {
     }
   }, [value, placeholder]);
 
+  // Add click handler for images
+  useEffect(() => {
+    const editor = editorRef.current;
+    if (!editor) return;
+
+    const handleClick = (e) => {
+      if (e.target.tagName === 'IMG') {
+        setSelectedImage(e.target);
+      } else {
+        setSelectedImage(null);
+      }
+    };
+
+    editor.addEventListener('click', handleClick);
+    return () => {
+      editor.removeEventListener('click', handleClick);
+    };
+  }, []);
+
   const formatText = (command, value = null) => {
     const cursorRange = saveCursorPosition();
     document.execCommand(command, false, value);
@@ -61,8 +81,7 @@ export const RichTextEditor = ({ value, onChange, placeholder }) => {
 
   const setFontSize = (size) => {
     const cursorRange = saveCursorPosition();
-    document.execCommand("fontSize", false, "7"); // This creates a <font size="7"> element
-    // Find the newly created font element and replace it with a span with proper styling
+    document.execCommand("fontSize", false, "7");
     const fontElements = editorRef.current.getElementsByTagName("font");
     if (fontElements.length > 0) {
       const fontElement = fontElements[fontElements.length - 1];
@@ -77,36 +96,35 @@ export const RichTextEditor = ({ value, onChange, placeholder }) => {
     handleInput();
   };
 
+  const getSizeClass = (size) => {
+    switch (size) {
+      case "small": return "max-w-xs";
+      case "medium": return "max-w-md";
+      case "large": return "max-w-2xl";
+      case "full": return "w-full";
+      default: return "max-w-md";
+    }
+  };
+
+  const updateImageSize = (size) => {
+    if (selectedImage) {
+      const sizeClass = getSizeClass(size);
+      selectedImage.className = `${sizeClass} h-auto mx-auto my-2`;
+      setImageSize(size);
+      handleInput();
+    }
+  };
+
   const insertImage = () => {
     if (imageUrl && /^https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg|webp)$/i.test(imageUrl)) {
       const cursorRange = saveCursorPosition();
+      const sizeClass = getSizeClass(imageSize);
       
-      // Determine image size class
-      let sizeClass = "";
-      switch (imageSize) {
-        case "small":
-          sizeClass = "max-w-xs";
-          break;
-        case "medium":
-          sizeClass = "max-w-md";
-          break;
-        case "large":
-          sizeClass = "max-w-2xl";
-          break;
-        case "full":
-          sizeClass = "w-full";
-          break;
-        default:
-          sizeClass = "max-w-md";
-      }
-      
-      // Create image with size class and responsive behavior
       const img = document.createElement("img");
       img.src = imageUrl;
       img.className = `${sizeClass} h-auto mx-auto my-2`;
       img.alt = "Inserted image";
       
-      // Insert the image at cursor position
       const selection = window.getSelection();
       if (selection.rangeCount > 0) {
         const range = selection.getRangeAt(0);
@@ -127,25 +145,7 @@ export const RichTextEditor = ({ value, onChange, placeholder }) => {
   const handleGalleryImageSelect = (image) => {
     const imageUrl = image.url || `${imgServer}${image.imageUrl}`;
     const cursorRange = saveCursorPosition();
-    
-    // Create image with size class
-    let sizeClass = "";
-    switch (imageSize) {
-      case "small":
-        sizeClass = "max-w-xs";
-        break;
-      case "medium":
-        sizeClass = "max-w-md";
-        break;
-      case "large":
-        sizeClass = "max-w-2xl";
-        break;
-      case "full":
-        sizeClass = "w-full";
-        break;
-      default:
-        sizeClass = "max-w-md";
-    }
+    const sizeClass = getSizeClass(imageSize);
     
     const img = document.createElement("img");
     img.src = imageUrl;
@@ -167,7 +167,6 @@ export const RichTextEditor = ({ value, onChange, placeholder }) => {
   const handleInput = () => {
     const content = editorRef.current.innerHTML;
     const placeholderContent = `<div class="text-gray-400">${placeholder}</div>`;
-    // Avoid sending placeholder as content
     if (content === placeholderContent) {
       onChange("");
     } else {
@@ -189,7 +188,7 @@ export const RichTextEditor = ({ value, onChange, placeholder }) => {
   };
 
   return (
-    <div className="border border-gray-300 rounded-lg overflow-hidden font-sans">
+    <div className="border border-gray-300 rounded-lg overflow-hidden font-sans relative">
       {/* Toolbar */}
       <div className="bg-gray-50 border-b border-gray-300 p-2 flex flex-wrap gap-1 items-center">
         {/* Text Formatting */}
@@ -345,6 +344,30 @@ export const RichTextEditor = ({ value, onChange, placeholder }) => {
           <FiImage size={16} />
         </button>
       </div>
+
+      {/* Image resize toolbar (shown when an image is selected) */}
+      {selectedImage && (
+        <div className="absolute top-16 left-1/2 transform -translate-x-1/2 bg-white shadow-lg rounded-md p-2 flex gap-2 z-10">
+          {["small", "medium", "large", "full"].map((size) => (
+            <button
+              key={size}
+              type="button"
+              onClick={() => updateImageSize(size)}
+              className={`px-3 py-1 text-sm rounded flex items-center gap-1 ${
+                imageSize === size
+                  ? "bg-indigo-600 text-white"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              }`}
+              title={`Set image to ${size} size`}
+            >
+              {size === "small" && <FiMinimize2 size={14} />}
+              {size === "medium" && <span className="text-xs">M</span>}
+              {size === "large" && <span className="text-sm">L</span>}
+              {size === "full" && <FiMaximize2 size={14} />}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Editor */}
       <div

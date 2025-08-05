@@ -33,6 +33,7 @@ import FormSelect from '../../common/FormSelect';
 import { RichTextEditor } from './RichTextEditor';
 import { ImageGalleryModal } from './ImageGalleryModal';
 import NewsPreview from './NewsPreview';
+import SeoKeywords from './SEOKeywords';
 
 const AddNews = () => {
     const [serverError, setServerError] = useState(false);
@@ -211,11 +212,10 @@ const AddNews = () => {
                                         <button
                                             type="button"
                                             onClick={() => setActiveLanguage('en')}
-                                            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                                                activeLanguage === 'en'
+                                            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeLanguage === 'en'
                                                     ? 'bg-white text-indigo-600 shadow-sm'
                                                     : 'text-gray-600 hover:text-gray-900'
-                                            }`}
+                                                }`}
                                         >
                                             <FiGlobe className="w-4 h-4 inline mr-1" />
                                             English
@@ -223,11 +223,10 @@ const AddNews = () => {
                                         <button
                                             type="button"
                                             onClick={() => setActiveLanguage('np')}
-                                            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                                                activeLanguage === 'np'
+                                            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeLanguage === 'np'
                                                     ? 'bg-white text-indigo-600 shadow-sm'
                                                     : 'text-gray-600 hover:text-gray-900'
-                                            }`}
+                                                }`}
                                         >
                                             नेपाली
                                         </button>
@@ -376,77 +375,15 @@ const AddNews = () => {
                                 </div>
                             </div>
 
-                            {/* Content */}
-                            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
-                                <div className="flex items-center mb-6">
-                                    <FiFileText className="w-6 h-6 text-indigo-600 mr-3" />
-                                    <h2 className="text-2xl font-bold text-gray-900">Article Content</h2>
-                                </div>
+                         
 
-                                <div className="space-y-6">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Content ({activeLanguage === 'en' ? 'English' : 'नेपाली'})
-                                        </label>
-                                        <RichTextEditor
-                                            value={activeLanguage === 'en' ? values.content_en : values.content_np}
-                                            onChange={(content) => {
-                                                setFieldValue(activeLanguage === 'en' ? 'content_en' : 'content_np', content);
-                                            }}
-                                            placeholder={`Write your article content in ${activeLanguage === 'en' ? 'English' : 'Nepali'}...`}
-                                        />
-                                        {touched[`content_${activeLanguage}`] && errors[`content_${activeLanguage}`] && (
-                                            <p className="mt-1 text-sm text-red-600">{errors[`content_${activeLanguage}`]}</p>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* SEO Keywords */}
-                            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
-                                <div className="flex items-center mb-6">
-                                    <FiTag className="w-6 h-6 text-indigo-600 mr-3" />
-                                    <h2 className="text-2xl font-bold text-gray-900">SEO Keywords</h2>
-                                </div>
-
-                                <div className="space-y-4">
-                                    <div className="flex space-x-2">
-                                        <input
-                                            type="text"
-                                            value={keywordInput}
-                                            onChange={(e) => setKeywordInput(e.target.value)}
-                                            onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addKeyword())}
-                                            placeholder="Add SEO keyword"
-                                            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={addKeyword}
-                                            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-                                        >
-                                            <FiPlus size={16} />
-                                        </button>
-                                    </div>
-
-                                    <div className="flex flex-wrap gap-2">
-                                        {seoKeywords.map((keyword, index) => (
-                                            <span
-                                                key={index}
-                                                className="inline-flex items-center px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm"
-                                            >
-                                                {keyword}
-                                                <button
-                                                    type="button"
-                                                    onClick={() => removeKeyword(keyword)}
-                                                    className="ml-2 text-indigo-600 hover:text-indigo-800"
-                                                >
-                                                    <FiX size={14} />
-                                                </button>
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
+                            <SeoKeywords
+                                setKeywordInput={setKeywordInput}
+                                keywordInput={keywordInput}
+                                addKeyword={addKeyword}
+                                seoKeywords={seoKeywords}
+                                removeKeyword={removeKeyword}
+                            />
 
                             {/* Actions */}
                             <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
