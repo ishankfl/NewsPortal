@@ -34,6 +34,7 @@ import { RichTextEditor } from './RichTextEditor';
 import { ImageGalleryModal } from './ImageGalleryModal';
 import NewsPreview from './NewsPreview';
 import SeoKeywords from './SEOKeywords';
+import { NewsContenxt } from './NewsContents';
 
 const AddNews = () => {
     const [serverError, setServerError] = useState(false);
@@ -213,8 +214,8 @@ const AddNews = () => {
                                             type="button"
                                             onClick={() => setActiveLanguage('en')}
                                             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeLanguage === 'en'
-                                                    ? 'bg-white text-indigo-600 shadow-sm'
-                                                    : 'text-gray-600 hover:text-gray-900'
+                                                ? 'bg-white text-indigo-600 shadow-sm'
+                                                : 'text-gray-600 hover:text-gray-900'
                                                 }`}
                                         >
                                             <FiGlobe className="w-4 h-4 inline mr-1" />
@@ -224,8 +225,8 @@ const AddNews = () => {
                                             type="button"
                                             onClick={() => setActiveLanguage('np')}
                                             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeLanguage === 'np'
-                                                    ? 'bg-white text-indigo-600 shadow-sm'
-                                                    : 'text-gray-600 hover:text-gray-900'
+                                                ? 'bg-white text-indigo-600 shadow-sm'
+                                                : 'text-gray-600 hover:text-gray-900'
                                                 }`}
                                         >
                                             नेपाली
@@ -375,7 +376,14 @@ const AddNews = () => {
                                 </div>
                             </div>
 
-                         
+                            <NewsContenxt
+                                activeLanguage={activeLanguage}
+                                values={values}
+                                errors={errors}
+                                touched={touched}
+                                setFieldValue={setFieldValue}
+
+                            />
 
                             <SeoKeywords
                                 setKeywordInput={setKeywordInput}
