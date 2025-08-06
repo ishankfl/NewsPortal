@@ -7,6 +7,9 @@ import AddNews from './components/admin/news/AddNews';
 import Login from './components/admin/auth/Login';
 import { ToastContainer, toast } from 'react-toastify';
 import EditUser from './components/admin/user/EditUser';
+import AddCategory from './components/admin/category/AddCategory';
+import ViewCategories from './components/admin/category/ViewCategories';
+import EditCategory from './components/admin/category/EditCategory';
 function App() {
   return (
     <>
@@ -18,6 +21,9 @@ function App() {
           <Route path="users/add" element={<AddUser />} />
           <Route path="users/manage" element={<ViewUsers />} />
           <Route path="users/edit/:id" element={<EditUser />} />
+          <Route path="categories/add" element={<AddCategory />} />
+          <Route path="categories/manage" element={<ViewCategories />} />
+          <Route path="categories/edit/:id" element={<EditCategory />} />
           <Route path="news/add" element={<AddNews />} />
         </Route>
       </Routes>
@@ -27,4 +33,5 @@ function App() {
 }
 
 export default App;
+
 
