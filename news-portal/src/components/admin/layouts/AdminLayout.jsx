@@ -10,13 +10,15 @@ import {
   FiSettings,
   FiLogOut,
   FiChevronDown,
-  FiChevronRight
+  FiChevronRight,
+  FiTag
 } from 'react-icons/fi';
 
 const AdminLayout = () => {
+  const [isUsersOpen, setIsUsersOpen] = useState(false);
   const [isNewsOpen, setIsNewsOpen] = useState(false);
+  const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [isAdvertiseOpen, setIsAdvertiseOpen] = useState(false);
-  const [isUserOpen, setIsUserOpen] = useState(false);
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -121,17 +123,17 @@ const AdminLayout = () => {
             {/* User Dropdown */}
             <li>
               <button
-                onClick={() => setIsUserOpen(!isUserOpen)}
+                onClick={() => setIsUsersOpen(!isUsersOpen)}
                 className="flex items-center justify-between w-full p-2 rounded hover:bg-indigo-700"
               >
                 <div className="flex items-center">
                   <FiUsers className="mr-3" />
                   Users
                 </div>
-                {isUserOpen ? <FiChevronDown /> : <FiChevronRight />}
+                {isUsersOpen ? <FiChevronDown /> : <FiChevronRight />}
               </button>
               <AnimatePresence>
-                {isUserOpen && (
+                {isUsersOpen && (
                   <motion.ul
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
@@ -156,6 +158,41 @@ const AdminLayout = () => {
                     <li>
                       <Link to="/reset-password" className="block p-2 rounded hover:bg-indigo-700">
                         Reset Password
+                      </Link>
+                    </li>
+                  </motion.ul>
+                )}
+              </AnimatePresence>
+            </li>
+
+            {/* Categories Dropdown */}
+            <li>
+              <button
+                onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
+                className="flex items-center justify-between w-full p-2 rounded hover:bg-indigo-700"
+              >
+                <div className="flex items-center">
+                  <FiTag className="mr-3" />
+                  Categories
+                </div>
+                {isCategoriesOpen ? <FiChevronDown /> : <FiChevronRight />}
+              </button>
+              <AnimatePresence>
+                {isCategoriesOpen && (
+                  <motion.ul
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="ml-8 mt-1 space-y-1 overflow-hidden"
+                  >
+                    <li>
+                      <Link to="/admin/categories/manage" className="block p-2 rounded hover:bg-indigo-700">
+                        Manage Categories
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/admin/categories/add" className="block p-2 rounded hover:bg-indigo-700">
+                        Add New Category
                       </Link>
                     </li>
                   </motion.ul>
