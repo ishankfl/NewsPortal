@@ -110,7 +110,7 @@ export const BasicInformation = (
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-3">
                             <FiTag className="w-4 h-4 inline mr-1" />
-                            Categories
+                            {activeLanguage === 'en' ? 'Categories' : 'श्रेणीहरू'}
                         </label>
                         <div className="space-y-2 max-h-48 overflow-y-auto border border-gray-200 rounded-lg p-3">
                             {categories.map((category) => (
@@ -126,7 +126,10 @@ export const BasicInformation = (
                                         htmlFor={`category-${category.id}`}
                                         className="ml-2 text-sm text-gray-900 cursor-pointer"
                                     >
-                                        {category.name_En || category.name}
+                                        {activeLanguage === 'en' 
+                                            ? (category.name_En || category.name) 
+                                            : (category.name_Np || category.name_En || category.name)
+                                        }
                                     </label>
                                 </div>
                             ))}
@@ -135,13 +138,16 @@ export const BasicInformation = (
                             <p className="mt-1 text-sm text-red-600">{errors.categoryIds}</p>
                         )}
                         <p className="mt-1 text-xs text-gray-500">
-                            Select one or more categories for this article
+                            {activeLanguage === 'en' 
+                                ? 'Select one or more categories for this article'
+                                : 'यस लेखको लागि एक वा बढी श्रेणीहरू चयन गर्नुहोस्'
+                            }
                         </p>
                     </div>
 
                     <div className="space-y-6">
                         <FormSelect
-                            label="Author"
+                            label={activeLanguage === 'en' ? 'Author' : 'लेखक'}
                             id="authorId"
                             name="authorId"
                             value={values.authorId}
@@ -153,7 +159,7 @@ export const BasicInformation = (
                         />
 
                         <FormInput
-                            label="Publish Date"
+                            label={activeLanguage === 'en' ? 'Publish Date' : 'प्रकाशन मिति'}
                             id="publishedAt"
                             name="publishedAt"
                             type="datetime-local"

@@ -54,6 +54,7 @@ const AddNews = () => {
     const [allowComments, setAllowComments] = useState(true);
     const [showCoverGallery, setShowCoverGallery] = useState(false);
     const [showPreview, setShowPreview] = useState(false);
+    const [currentFormValues, setCurrentFormValues] = useState(null);
 
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -215,87 +216,94 @@ const AddNews = () => {
                                 createNewsMutation.mutate(formData);
                             }}
                         >
-                            {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
-                                <Form className="space-y-8">
-                                    <BasicInformation
-                                        activeLanguage={activeLanguage}
-                                        values={values}
-                                        errors={errors}
-                                        touched={touched}
-                                        handleChange={handleChange}
-                                        handleBlur={handleBlur}
-                                        setFieldValue={setFieldValue}
-                                        categories={categories}
-                                        authors={authors}
-                                        generateSlug={generateSlug}
-                                        setActiveLanguage={setActiveLanguage}
-                                        selectedCategories={selectedCategories}
-                                        setSelectedCategories={setSelectedCategories}
-                                    />
+                            {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => {
+                                // Update current form values for preview
+                                React.useEffect(() => {
+                                    setCurrentFormValues(values);
+                                }, [values]);
 
-                                    <NewsContenxt
-                                        activeLanguage={activeLanguage}
-                                        values={values}
-                                        errors={errors}
-                                        touched={touched}
-                                        setFieldValue={setFieldValue}
-                                    />
+                                return (
+                                    <Form className="space-y-8">
+                                        <BasicInformation
+                                            activeLanguage={activeLanguage}
+                                            values={values}
+                                            errors={errors}
+                                            touched={touched}
+                                            handleChange={handleChange}
+                                            handleBlur={handleBlur}
+                                            setFieldValue={setFieldValue}
+                                            categories={categories}
+                                            authors={authors}
+                                            generateSlug={generateSlug}
+                                            setActiveLanguage={setActiveLanguage}
+                                            selectedCategories={selectedCategories}
+                                            setSelectedCategories={setSelectedCategories}
+                                        />
 
-                                    <SeoKeywords
-                                        setKeywordInput={setKeywordInput}
-                                        keywordInput={keywordInput}
-                                        addKeyword={addKeyword}
-                                        seoKeywords={seoKeywords}
-                                        removeKeyword={removeKeyword}
-                                        seoTitle={seoTitle}
-                                        setSeoTitle={setSeoTitle}
-                                        seoDescription={seoDescription}
-                                        setSeoDescription={setSeoDescription}
-                                        allowComments={allowComments}
-                                        setAllowComments={setAllowComments}
-                                    />
+                                        <NewsContenxt
+                                            activeLanguage={activeLanguage}
+                                            values={values}
+                                            errors={errors}
+                                            touched={touched}
+                                            setFieldValue={setFieldValue}
+                                        />
 
-                                    {/* Actions */}
-                                    <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
-                                        <div className="flex justify-between items-center">
-                                            <div className="flex space-x-4">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setShowPreview(true)}
-                                                    className="flex items-center px-4 py-2 text-indigo-600 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors"
-                                                >
-                                                    <FiEye className="w-4 h-4 mr-2" />
-                                                    Preview Article
-                                                </button>
-                                            </div>
+                                        <SeoKeywords
+                                            setKeywordInput={setKeywordInput}
+                                            keywordInput={keywordInput}
+                                            addKeyword={addKeyword}
+                                            seoKeywords={seoKeywords}
+                                            removeKeyword={removeKeyword}
+                                            seoTitle={seoTitle}
+                                            setSeoTitle={setSeoTitle}
+                                            seoDescription={seoDescription}
+                                            setSeoDescription={setSeoDescription}
+                                            allowComments={allowComments}
+                                            setAllowComments={setAllowComments}
+                                        />
 
-                                            <div className="flex space-x-4">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => navigate('/admin/news/manage')}
-                                                    className="px-6 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-                                                >
-                                                    Cancel
-                                                </button>
-                                                <FormButton
-                                                    type="submit"
-                                                    disabled={createNewsMutation.isLoading}
-                                                    className="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg flex items-center transition-colors"
-                                                >
-                                                    <FiSave className="mr-2" size={18} />
-                                                    {createNewsMutation.isLoading ? 'Publishing...' : 'Publish Article'}
-                                                </FormButton>
+                                        {/* Actions */}
+                                        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+                                            <div className="flex justify-between items-center">
+                                                <div className="flex space-x-4">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setShowPreview(true)}
+                                                        className="flex items-center px-4 py-2 text-indigo-600 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors"
+                                                    >
+                                                        <FiEye className="w-4 h-4 mr-2" />
+                                                        Preview Article
+                                                    </button>
+                                                </div>
+
+                                                <div className="flex space-x-4">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => navigate('/admin/news/manage')}
+                                                        className="px-6 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                                                    >
+                                                        Cancel
+                                                    </button>
+                                                    <FormButton
+                                                        type="submit"
+                                                        disabled={createNewsMutation.isLoading}
+                                                        className="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg flex items-center transition-colors"
+                                                    >
+                                                        <FiSave className="mr-2" size={18} />
+                                                        {createNewsMutation.isLoading ? 'Publishing...' : 'Publish Article'}
+                                                    </FormButton>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    {serverError && (
-                                        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                                            <p className="text-red-600">{serverError}</p>
-                                        </div>
-                                    )}
-                                </Form>
-                            )}
+                                        {serverError && (
+                                            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                                                <p className="text-red-600">{serverError}</p>
+                                            </div>
+                                        )}
+                                    </Form>
+                                );
+                            }}
                         </Formik>
                     </div>
 
@@ -473,15 +481,19 @@ const AddNews = () => {
                     onSelectImage={handleCoverImageSelect}
                 />
 
-                {/* News Preview Modal */}
-                {showPreview && (
+                {/* News Preview Modal - Outside Formik but with current values */}
+                {showPreview && currentFormValues && (
                     <NewsPreview
                         isOpen={showPreview}
                         onClose={() => setShowPreview(false)}
                         articleData={{
-                            ...initialValues,
+                            ...currentFormValues,
                             coverImagePreview,
-                            seoKeywords
+                            seoKeywords,
+                            categoryIds: selectedCategories,
+                            seoTitle,
+                            seoDescription,
+                            allowComments
                         }}
                         activeLanguage={activeLanguage}
                     />
