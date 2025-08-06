@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { imgServer, server } from '../../../api/server';
+import { getCategories } from '../../../api/category-services';
 import {
     FiSave,
     FiArrowLeft,
@@ -53,7 +54,7 @@ const AddNews = () => {
     // Fetch categories and authors
     const { data: categories = [] } = useQuery({
         queryKey: ['categories'],
-        queryFn: () => fetch('/api/categories').then(res => res.json())
+        queryFn: getCategories
     });
 
     const { data: authors = [] } = useQuery({
