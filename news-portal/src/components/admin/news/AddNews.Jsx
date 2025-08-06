@@ -201,6 +201,7 @@ const AddNews = () => {
                 >
                     {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
                         <Form className="space-y-8">
+                            {/* sdfkljsdlkfj flsjd flksdj flkj sdfk sdklf jsdkl jsdk fksld flksd fjlk */}
                             <BasicInformation
 
                                 activeLanguage={activeLanguage}
