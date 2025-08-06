@@ -20,7 +20,7 @@ namespace NewsPortal.Domain.Models
         public int AuthorId { get; set; }
         public DateTime PublishedAt { get; set; }
 
-        public Category Category { get; set; }
+        public Categories Category { get; set; }
         public User Author { get; set; }
     }
 }

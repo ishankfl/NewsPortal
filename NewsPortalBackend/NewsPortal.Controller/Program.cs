@@ -1,4 +1,6 @@
-﻿using NewsPortal.Application.Users.Interfaces;
+﻿using NewsPortal.Application.Categories.Services;
+using NewsPortal.Application.Category.Interfaces;
+using NewsPortal.Application.Users.Interfaces;
 using NewsPortal.Application.Users.Services;
 using NewsPortal.Controller.Filters;
 using NewsPortal.Domain.Interfaces;
@@ -31,6 +33,10 @@ builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IImageService, ImageService>();
+
+
+builder.Services.AddScoped<ICategoryRepository, CategoriesRepository>();
+builder.Services.AddScoped<ICategoryService, CategoriesService>();
 
 builder.Services.AddMemoryCache();
 

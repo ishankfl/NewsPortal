@@ -139,7 +139,10 @@
       },
       "NewsPortal.Domain/1.0.0": {
         "runtime": {
-          "NewsPortal.Domain.dll": {}
+          "NewsPortal.Domain.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       },
       "NewsPortal.Infrastructure/1.0.0": {
@@ -151,7 +154,10 @@
           "Npgsql": "9.0.3"
         },
         "runtime": {
-          "NewsPortal.Infrastructure.dll": {}
+          "NewsPortal.Infrastructure.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }

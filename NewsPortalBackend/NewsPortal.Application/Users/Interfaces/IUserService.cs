@@ -14,7 +14,6 @@ namespace NewsPortal.Application.Users.Interfaces
         Task<bool> UnsuspendAsync(int id);
         Task<UserResponse> GetByIdAsync(int id);
 
-        // Optional convenience op that your repo can already support through UpdateAsync(User)
         Task<bool> UpdateRoleAsync(int id, Role newRole);
 
         Task<GetUsersResult> GetAllAsync(int page = 1, int pageSize = 10, string? searchTerm = null);
