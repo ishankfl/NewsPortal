@@ -57,7 +57,7 @@ const AdminLayout = () => {
                     className="ml-8 mt-1 space-y-1 overflow-hidden"
                   >
                     <li>
-                      <Link to="/news/manage" className="block p-2 rounded hover:bg-indigo-700">
+                      <Link to="/admin/news/manage" className="block p-2 rounded hover:bg-indigo-700">
                         Manage News
                       </Link>
                     </li>
@@ -72,7 +72,7 @@ const AdminLayout = () => {
             </li>
 
             <li>
-              <Link to="/media/manage" className="flex items-center p-2 rounded hover:bg-indigo-700">
+              <Link to="/admin/media/manage" className="flex items-center p-2 rounded hover:bg-indigo-700">
                 <FiImage className="mr-3" />
                 Manage Media
               </Link>
@@ -114,7 +114,7 @@ const AdminLayout = () => {
             </li>
 
             <li>
-              <Link to="/banner" className="flex items-center p-2 rounded hover:bg-indigo-700">
+              <Link to="/admin/banner" className="flex items-center p-2 rounded hover:bg-indigo-700">
                 <FiImage className="mr-3" />
                 Banner News
               </Link>
@@ -141,22 +141,22 @@ const AdminLayout = () => {
                     className="ml-8 mt-1 space-y-1 overflow-hidden"
                   >
                     <li>
-                      <Link to="/users/manage" className="block p-2 rounded hover:bg-indigo-700">
+                      <Link to="/admin/users/manage" className="block p-2 rounded hover:bg-indigo-700">
                         Manage Users
                       </Link>
                     </li>
                     <li>
-                      <Link to="/users/add" className="block p-2 rounded hover:bg-indigo-700">
+                      <Link to="/admin/users/add" className="block p-2 rounded hover:bg-indigo-700">
                         Add New User
                       </Link>
                     </li>
                     <li>
-                      <Link to="/profile" className="block p-2 rounded hover:bg-indigo-700">
+                      <Link to="/admin/profile" className="block p-2 rounded hover:bg-indigo-700">
                         My Profile
                       </Link>
                     </li>
                     <li>
-                      <Link to="/reset-password" className="block p-2 rounded hover:bg-indigo-700">
+                      <Link to="/admin/reset-password" className="block p-2 rounded hover:bg-indigo-700">
                         Reset Password
                       </Link>
                     </li>
@@ -201,7 +201,7 @@ const AdminLayout = () => {
             </li>
 
             <li>
-              <Link to="/logout" className="flex items-center p-2 rounded hover:bg-indigo-700">
+              <Link to="/admin/logout" className="flex items-center p-2 rounded hover:bg-indigo-700">
                 <FiLogOut className="mr-3" />
                 Logout
               </Link>

@@ -14,9 +14,20 @@ export const BasicInformation = (
         categories,
         authors,
         generateSlug,
-        setActiveLanguage
+        setActiveLanguage,
+        selectedCategories,
+        setSelectedCategories
     }
 ) => {
+    const handleCategoryChange = (categoryId) => {
+        const updatedCategories = selectedCategories.includes(categoryId)
+            ? selectedCategories.filter(id => id !== categoryId)
+            : [...selectedCategories, categoryId];
+        
+        setSelectedCategories(updatedCategories);
+        setFieldValue('categoryIds', updatedCategories);
+    };
+
     return (
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
             <div className="flex items-center mb-6">
@@ -94,41 +105,64 @@ export const BasicInformation = (
                     helperText="This will be used in the article URL"
                 />
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <FormSelect
-                        label="Category"
-                        id="categoryId"
-                        name="categoryId"
-                        value={values.categoryId}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={touched.categoryId && errors.categoryId}
-                        options={categories.map(cat => ({ value: cat.id, label: cat.name }))}
-                        icon={FiTag}
-                    />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Categories Checkboxes */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-3">
+                            <FiTag className="w-4 h-4 inline mr-1" />
+                            Categories
+                        </label>
+                        <div className="space-y-2 max-h-48 overflow-y-auto border border-gray-200 rounded-lg p-3">
+                            {categories.map((category) => (
+                                <div key={category.id} className="flex items-center">
+                                    <input
+                                        type="checkbox"
+                                        id={`category-${category.id}`}
+                                        checked={selectedCategories.includes(category.id)}
+                                        onChange={() => handleCategoryChange(category.id)}
+                                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                                    />
+                                    <label
+                                        htmlFor={`category-${category.id}`}
+                                        className="ml-2 text-sm text-gray-900 cursor-pointer"
+                                    >
+                                        {category.name_En || category.name}
+                                    </label>
+                                </div>
+                            ))}
+                        </div>
+                        {selectedCategories.length === 0 && touched.categoryIds && errors.categoryIds && (
+                            <p className="mt-1 text-sm text-red-600">{errors.categoryIds}</p>
+                        )}
+                        <p className="mt-1 text-xs text-gray-500">
+                            Select one or more categories for this article
+                        </p>
+                    </div>
 
-                    <FormSelect
-                        label="Author"
-                        id="authorId"
-                        name="authorId"
-                        value={values.authorId}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={touched.authorId && errors.authorId}
-                        options={authors.map(author => ({ value: author.id, label: author.username }))}
-                        icon={FiUser}
-                    />
+                    <div className="space-y-6">
+                        <FormSelect
+                            label="Author"
+                            id="authorId"
+                            name="authorId"
+                            value={values.authorId}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={touched.authorId && errors.authorId}
+                            options={authors.map(author => ({ value: author.id, label: author.username }))}
+                            icon={FiUser}
+                        />
 
-                    <FormInput
-                        label="Publish Date"
-                        id="publishedAt"
-                        name="publishedAt"
-                        type="datetime-local"
-                        value={values.publishedAt}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={touched.publishedAt && errors.publishedAt}
-                    />
+                        <FormInput
+                            label="Publish Date"
+                            id="publishedAt"
+                            name="publishedAt"
+                            type="datetime-local"
+                            value={values.publishedAt}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={touched.publishedAt && errors.publishedAt}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
