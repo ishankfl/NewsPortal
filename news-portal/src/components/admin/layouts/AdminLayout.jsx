@@ -17,6 +17,7 @@ import {
 const AdminLayout = () => {
   const [isUsersOpen, setIsUsersOpen] = useState(false);
   const [isNewsOpen, setIsNewsOpen] = useState(false);
+  const [isArticlesOpen, setIsArticlesOpen] = useState(false);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [isAdvertiseOpen, setIsAdvertiseOpen] = useState(false);
 
@@ -64,6 +65,36 @@ const AdminLayout = () => {
                     <li>
                       <Link to="/admin/news/add" className="block p-2 rounded hover:bg-indigo-700">
                         Add New News
+                      </Link>
+                    </li>
+                  </motion.ul>
+                )}
+              </AnimatePresence>
+            </li>
+
+            {/* Articles Dropdown */}
+            <li>
+              <button
+                onClick={() => setIsArticlesOpen(!isArticlesOpen)}
+                className="flex items-center justify-between w-full p-2 rounded hover:bg-indigo-700"
+              >
+                <div className="flex items-center">
+                  <FiFileText className="mr-3" />
+                  Articles
+                </div>
+                {isArticlesOpen ? <FiChevronDown /> : <FiChevronRight />}
+              </button>
+              <AnimatePresence>
+                {isArticlesOpen && (
+                  <motion.ul
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="ml-8 mt-1 space-y-1 overflow-hidden"
+                  >
+                    <li>
+                      <Link to="/admin/articles/manage" className="block p-2 rounded hover:bg-indigo-700">
+                        Manage Articles
                       </Link>
                     </li>
                   </motion.ul>

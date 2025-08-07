@@ -10,6 +10,8 @@ import EditUser from './components/admin/user/EditUser';
 import AddCategory from './components/admin/category/AddCategory';
 import ViewCategories from './components/admin/category/ViewCategories';
 import EditCategory from './components/admin/category/EditCategory';
+import ArticleManagement from './components/admin/articles/ArticleManagement';
+import ArticleForm from './components/admin/articles/ArticleForm';
 function App() {
   return (
     <>
@@ -25,6 +27,7 @@ function App() {
           <Route path="categories/manage" element={<ViewCategories />} />
           <Route path="categories/edit/:id" element={<EditCategory />} />
           <Route path="news/add" element={<AddNews />} />
+ 
         </Route>
       </Routes>
       <ToastContainer />

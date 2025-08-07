@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "NewsPortal.Controller.Controllers.ArticleController",
+    "Method": "Create",
+    "RelativePath": "api/Article",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "NewsPortal.Application.Articles.DTOs.CreateArticleRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "NewsPortal.Controller.Controllers.AuthenticationController",
     "Method": "Login",
     "RelativePath": "api/Authentication/login",

@@ -3,8 +3,48 @@
   "WorkspaceRootPath": "J:\\NewsPortal\\NewsPortalBackend\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{02429BF3-44F0-4258-8B6F-E8ABA8CA5D2C}|NewsPortal.Controller\\NewsPortal.Controller.csproj|j:\\newsportal\\newsportalbackend\\newsportal.controller\\controllers\\articlecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{02429BF3-44F0-4258-8B6F-E8ABA8CA5D2C}|NewsPortal.Controller\\NewsPortal.Controller.csproj|solutionrelative:newsportal.controller\\controllers\\articlecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|j:\\newsportal\\newsportalbackend\\newsportal.application\\articles\\services\\articleservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|solutionrelative:newsportal.application\\articles\\services\\articleservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|j:\\newsportal\\newsportalbackend\\newsportal.application\\articles\\interfaces\\iarticleservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|solutionrelative:newsportal.application\\articles\\interfaces\\iarticleservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A38D9A13-8A42-4170-8C77-E1A8DD97F6D0}|NewsPortal.Infrastructure\\NewsPortal.Infrastructure.csproj|j:\\newsportal\\newsportalbackend\\newsportal.infrastructure\\repositories\\articlerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A38D9A13-8A42-4170-8C77-E1A8DD97F6D0}|NewsPortal.Infrastructure\\NewsPortal.Infrastructure.csproj|solutionrelative:newsportal.infrastructure\\repositories\\articlerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3B9622AA-4E67-453B-87EF-E3DDBCAAF7A2}|NewsPortal.Domain\\NewsPortal.Domain.csproj|j:\\newsportal\\newsportalbackend\\newsportal.domain\\interfaces\\iarticlerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3B9622AA-4E67-453B-87EF-E3DDBCAAF7A2}|NewsPortal.Domain\\NewsPortal.Domain.csproj|solutionrelative:newsportal.domain\\interfaces\\iarticlerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{3B9622AA-4E67-453B-87EF-E3DDBCAAF7A2}|NewsPortal.Domain\\NewsPortal.Domain.csproj|j:\\newsportal\\newsportalbackend\\newsportal.domain\\models\\article.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3B9622AA-4E67-453B-87EF-E3DDBCAAF7A2}|NewsPortal.Domain\\NewsPortal.Domain.csproj|solutionrelative:newsportal.domain\\models\\article.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|j:\\newsportal\\newsportalbackend\\newsportal.application\\articles\\dtos\\articlelistresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|solutionrelative:newsportal.application\\articles\\dtos\\articlelistresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|j:\\newsportal\\newsportalbackend\\newsportal.application\\articles\\dtos\\updatearticlerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|solutionrelative:newsportal.application\\articles\\dtos\\updatearticlerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|j:\\newsportal\\newsportalbackend\\newsportal.application\\articles\\dtos\\createarticlerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|solutionrelative:newsportal.application\\articles\\dtos\\createarticlerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|j:\\newsportal\\newsportalbackend\\newsportal.application\\articles\\dtos\\articleresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|solutionrelative:newsportal.application\\articles\\dtos\\articleresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|j:\\newsportal\\newsportalbackend\\newsportal.application\\users\\dtos\\authuserresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C2F212E1-AC46-4FB6-8DB2-880C2398C701}|NewsPortal.Application\\NewsPortal.Application.csproj|solutionrelative:newsportal.application\\users\\dtos\\authuserresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{02429BF3-44F0-4258-8B6F-E8ABA8CA5D2C}|NewsPortal.Controller\\NewsPortal.Controller.csproj|j:\\newsportal\\newsportalbackend\\newsportal.controller\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -61,20 +101,16 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 217,
-          "SelectedChildIndex": 2,
+          "DockedWidth": 61,
+          "SelectedChildIndex": 1,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 11,
               "Title": "Program.cs",
               "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Controller\\Program.cs",
               "RelativeDocumentMoniker": "NewsPortal.Controller\\Program.cs",
@@ -86,8 +122,12 @@
               "EditorCaption": ""
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 12,
               "Title": "Program.cs",
               "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Domain\\Program.cs",
               "RelativeDocumentMoniker": "NewsPortal.Domain\\Program.cs",
@@ -99,7 +139,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 14,
               "Title": "AuthenticationController.cs",
               "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Controller\\Controllers\\AuthenticationController.cs",
               "RelativeDocumentMoniker": "NewsPortal.Controller\\Controllers\\AuthenticationController.cs",
@@ -112,7 +152,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 13,
               "Title": "CategoryController.cs",
               "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Controller\\Controllers\\CategoryController.cs",
               "RelativeDocumentMoniker": "NewsPortal.Controller\\Controllers\\CategoryController.cs",
@@ -124,7 +164,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 19,
               "Title": "IImageService.cs",
               "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\Users\\Interfaces\\IImageService.cs",
               "RelativeDocumentMoniker": "NewsPortal.Application\\Users\\Interfaces\\IImageService.cs",
@@ -136,7 +176,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 16,
               "Title": "CategoryServices.cs",
               "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\Category\\Services\\CategoryServices.cs",
               "RelativeDocumentMoniker": "NewsPortal.Application\\Category\\Services\\CategoryServices.cs",
@@ -148,7 +188,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 15,
               "Title": "ICategoryServices.cs",
               "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\Category\\Interfaces\\ICategoryServices.cs",
               "RelativeDocumentMoniker": "NewsPortal.Application\\Category\\Interfaces\\ICategoryServices.cs",
@@ -160,7 +200,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 18,
               "Title": "ICategoryRepository.cs",
               "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Domain\\Interfaces\\ICategoryRepository.cs",
               "RelativeDocumentMoniker": "NewsPortal.Domain\\Interfaces\\ICategoryRepository.cs",
@@ -172,7 +212,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 17,
               "Title": "Category.cs",
               "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Domain\\Models\\Category.cs",
               "RelativeDocumentMoniker": "NewsPortal.Domain\\Models\\Category.cs",
@@ -184,7 +224,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 20,
               "Title": "CategoryRepository.cs",
               "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Infrastructure\\Repositories\\CategoryRepository.cs",
               "RelativeDocumentMoniker": "NewsPortal.Infrastructure\\Repositories\\CategoryRepository.cs",
@@ -196,7 +236,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 21,
               "Title": "ArticleView.cs",
               "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Domain\\Models\\ArticleView.cs",
               "RelativeDocumentMoniker": "NewsPortal.Domain\\Models\\ArticleView.cs",
@@ -208,7 +248,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 22,
               "Title": "ImageRepository.cs",
               "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Infrastructure\\Repositories\\ImageRepository.cs",
               "RelativeDocumentMoniker": "NewsPortal.Infrastructure\\Repositories\\ImageRepository.cs",
@@ -221,9 +261,152 @@
           ]
         },
         {
-          "DockedWidth": 183,
-          "SelectedChildIndex": 3,
+          "DockedWidth": 339,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ArticleController.cs",
+              "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Controller\\Controllers\\ArticleController.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Controller\\Controllers\\ArticleController.cs",
+              "ToolTip": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Controller\\Controllers\\ArticleController.cs",
+              "RelativeToolTip": "NewsPortal.Controller\\Controllers\\ArticleController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-07T10:06:39.002Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ArticleService.cs",
+              "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\Articles\\Services\\ArticleService.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Application\\Articles\\Services\\ArticleService.cs",
+              "ToolTip": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\Articles\\Services\\ArticleService.cs",
+              "RelativeToolTip": "NewsPortal.Application\\Articles\\Services\\ArticleService.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAgwBYAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-07T09:57:31.796Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "IArticleService.cs",
+              "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\Articles\\Interfaces\\IArticleService.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Application\\Articles\\Interfaces\\IArticleService.cs",
+              "ToolTip": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\Articles\\Interfaces\\IArticleService.cs",
+              "RelativeToolTip": "NewsPortal.Application\\Articles\\Interfaces\\IArticleService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-07T09:57:03.464Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "IArticleRepository.cs",
+              "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Domain\\Interfaces\\IArticleRepository.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Domain\\Interfaces\\IArticleRepository.cs",
+              "ToolTip": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Domain\\Interfaces\\IArticleRepository.cs",
+              "RelativeToolTip": "NewsPortal.Domain\\Interfaces\\IArticleRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-07T09:53:48.585Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ArticleRepository.cs",
+              "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Infrastructure\\Repositories\\ArticleRepository.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Infrastructure\\Repositories\\ArticleRepository.cs",
+              "ToolTip": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Infrastructure\\Repositories\\ArticleRepository.cs",
+              "RelativeToolTip": "NewsPortal.Infrastructure\\Repositories\\ArticleRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-07T09:51:10.257Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ArticleListResponse.cs",
+              "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\Articles\\DTOs\\ArticleListResponse.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Application\\Articles\\DTOs\\ArticleListResponse.cs",
+              "ToolTip": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\Articles\\DTOs\\ArticleListResponse.cs",
+              "RelativeToolTip": "NewsPortal.Application\\Articles\\DTOs\\ArticleListResponse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-07T09:53:18.312Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Article.cs",
+              "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Domain\\Models\\Article.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Domain\\Models\\Article.cs",
+              "ToolTip": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Domain\\Models\\Article.cs",
+              "RelativeToolTip": "NewsPortal.Domain\\Models\\Article.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACoAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-06T15:56:14.978Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "UpdateArticleRequest.cs",
+              "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\Articles\\DTOs\\UpdateArticleRequest.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Application\\Articles\\DTOs\\UpdateArticleRequest.cs",
+              "ToolTip": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\Articles\\DTOs\\UpdateArticleRequest.cs",
+              "RelativeToolTip": "NewsPortal.Application\\Articles\\DTOs\\UpdateArticleRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-07T09:52:20.937Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "CreateArticleRequest.cs",
+              "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\Articles\\DTOs\\CreateArticleRequest.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Application\\Articles\\DTOs\\CreateArticleRequest.cs",
+              "ToolTip": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\Articles\\DTOs\\CreateArticleRequest.cs",
+              "RelativeToolTip": "NewsPortal.Application\\Articles\\DTOs\\CreateArticleRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-07T09:52:20.08Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "AuthUserResponse.cs",
+              "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\Users\\DTOs\\AuthUserResponse.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Application\\Users\\DTOs\\AuthUserResponse.cs",
+              "ToolTip": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\Users\\DTOs\\AuthUserResponse.cs",
+              "RelativeToolTip": "NewsPortal.Application\\Users\\DTOs\\AuthUserResponse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-07T09:52:15.024Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ArticleResponse.cs",
+              "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\Articles\\DTOs\\ArticleResponse.cs",
+              "RelativeDocumentMoniker": "NewsPortal.Application\\Articles\\DTOs\\ArticleResponse.cs",
+              "ToolTip": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Application\\Articles\\DTOs\\ArticleResponse.cs",
+              "RelativeToolTip": "NewsPortal.Application\\Articles\\DTOs\\ArticleResponse.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAA5wAwAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-07T09:52:09.217Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
@@ -235,19 +418,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:18:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Article.cs",
-              "DocumentMoniker": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Domain\\Models\\Article.cs",
-              "RelativeDocumentMoniker": "NewsPortal.Domain\\Models\\Article.cs",
-              "ToolTip": "J:\\NewsPortal\\NewsPortalBackend\\NewsPortal.Domain\\Models\\Article.cs",
-              "RelativeToolTip": "NewsPortal.Domain\\Models\\Article.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAAwwBYAAAA4AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-06T15:56:14.978Z",
-              "EditorCaption": ""
             }
           ]
         }

@@ -5,6 +5,37 @@
     "version": "1.0"
   },
   "paths": {
+    "/api/Article": {
+      "post": {
+        "tags": [
+          "Article"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateArticleRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateArticleRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateArticleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/Authentication/login": {
       "post": {
         "tags": [
@@ -644,6 +675,85 @@
             "nullable": true
           },
           "slug": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateArticleRequest": {
+        "required": [
+          "authorId",
+          "languageCode",
+          "slug",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "languageCode": {
+            "maxLength": 10,
+            "minLength": 0,
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "slug": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "summary": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "publicationDatetime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "allowComments": {
+            "type": "boolean"
+          },
+          "coverImageId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "authorId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reporterId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "seoTitle": {
+            "maxLength": 70,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "seoDescription": {
+            "maxLength": 160,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "seoKeywords": {
             "type": "string",
             "nullable": true
           }
