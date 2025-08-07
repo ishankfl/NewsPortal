@@ -1,1 +1,4 @@
-NewsPortalBackend/vs/
+NewsPortalBackend/.vs/
+news-portal/node_modules/
+
+*/.vs/*
