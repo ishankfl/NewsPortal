@@ -14,5 +14,6 @@ namespace NewsPortal.Domain.Interfaces
         Task<int> CreateAsync(Article article);
 
       
+        Task<bool> SlugExistsAsync(string slug, int? excludeId = null);
     }
 }

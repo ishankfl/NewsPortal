@@ -12,7 +12,7 @@ namespace NewsPortal.Application.Articles.Interfaces
         /// <returns>The ID of the newly created article</returns>
         Task<int> CreateAsync(CreateArticleRequest request);
 
-        /// <summary>
+    /*    /// <summary>
         /// Updates an existing article
         /// </summary>
         /// <param name="request">Article update request</param>
@@ -113,7 +113,7 @@ namespace NewsPortal.Application.Articles.Interfaces
         /// </summary>
         /// <param name="request">Article update request to validate</param>
         /// <returns>Validation result with any errors</returns>
-        Task<ValidationResult> ValidateForUpdateAsync(UpdateArticleRequest request);
+        Task<ValidationResult> ValidateForUpdateAsync(UpdateArticleRequest request);*/
     }
 
     public class ValidationResult
