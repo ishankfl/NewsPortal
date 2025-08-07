@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-
-namespace NewsPortal.Application.Articles.DTOs
+﻿namespace NewsPortal.Application.Articles.DTOs
 {
     public class ArticleListResponse
     {

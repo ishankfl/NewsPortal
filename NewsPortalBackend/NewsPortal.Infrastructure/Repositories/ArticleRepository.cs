@@ -1,7 +1,6 @@
 using Dapper;
 using NewsPortal.Domain.Interfaces;
 using NewsPortal.Domain.Models;
-using NewsPortal.Application.Articles.DTOs;
 using NewsPortal.Infrastructure.Persistence;
 using System.Data;
 
@@ -53,7 +52,7 @@ namespace NewsPortal.Infrastructure.Repositories
             });
         }
 
-        public async Task<Article> GetByIdAsync(int id)
+    /*    public async Task<Article> GetByIdAsync(int id)
         {
             const string sql = @"
                 SELECT 
@@ -207,7 +206,7 @@ namespace NewsPortal.Infrastructure.Repositories
             return affectedRows > 0;
         }
 
-        public async Task<ArticleListResponse> GetAllAsync(
+        public async Task<ArticleList> GetAllAsync(
             int page = 1,
             int pageSize = 10,
             string languageCode = null,
@@ -318,6 +317,6 @@ namespace NewsPortal.Infrastructure.Repositories
             using var conn = _context.CreateConnection();
             var count = await conn.ExecuteScalarAsync<int>(sql, parameters);
             return count > 0;
-        }
+        }*/
     }
 }
