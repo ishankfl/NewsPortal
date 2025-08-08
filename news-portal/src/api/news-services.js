@@ -97,18 +97,17 @@ export const getAllArticles = async (params = {}) => {
   try {
     const queryParams = new URLSearchParams();
     
-    if (params.page) queryParams.append('page', params.page);
+    if (params.page) queryParams.append('pageNumber', params.page);
     if (params.pageSize) queryParams.append('pageSize', params.pageSize);
-    if (params.languageCode) queryParams.append('languageCode', params.languageCode);
-    if (params.status) queryParams.append('status', params.status);
-    if (params.searchTerm) queryParams.append('searchTerm', params.searchTerm);
-    if (params.authorId) queryParams.append('authorId', params.authorId);
-    if (params.reporterId) queryParams.append('reporterId', params.reporterId);
+    if (params.search) queryParams.append('search', params.search);
 
     const response = await axios.get(`${server}/Article?${queryParams.toString()}`, {
       timeout: 10000,
     });
-    return response.data;
+    return {
+      items: response.data.articles,
+      totalCount: response.data.totalCount
+    };
   } catch (error) {
     console.error('Error fetching articles:', error);
     throw error.response?.data || error;
@@ -248,4 +247,5 @@ export const validateArticleData = (articleData) => {
     errors
   };
 };
+
 
