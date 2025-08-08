@@ -92,9 +92,9 @@ const AddNews = () => {
     };
 
     const handleCoverImageSelect = (image) => {
-        const imageUrl = image.url || `${imgServer}${image.imageUrl}`;
+        const imageUrl = `${imgServer}${image.imageUrl}`;
         setCoverImagePreview(imageUrl);
-        setCoverImage(imageUrl); // Store URL instead of file for gallery images
+        setCoverImage(image.imageUrl); // Store URL instead of file for gallery images
         setShowCoverGallery(false);
     };
 

@@ -9,7 +9,6 @@ import { getArticleById, updateArticle } from '../../../api/news-services';
 import {
     FiSave,
     FiArrowLeft,
-    FiFileText,
     FiEye,
     FiEdit3
 } from 'react-icons/fi';
