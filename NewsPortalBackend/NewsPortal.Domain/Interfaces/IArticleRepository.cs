@@ -15,5 +15,7 @@ namespace NewsPortal.Domain.Interfaces
 
       
         Task<bool> SlugExistsAsync(string slug, int? excludeId = null);
+        Task<(IEnumerable<Article> Articles, int TotalCount)> GetPagedAsync(int pageNumber, int pageSize, string? searchQuery);
+
     }
 }

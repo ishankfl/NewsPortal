@@ -19,16 +19,15 @@ namespace NewsPortal.Controller.Controllers
 
         // POST: api/article
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateArticleRequest request)
+        [HttpPost]
+        public async Task<IActionResult> Create([FromForm] CreateArticleRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
             try
             {
                 var articleId = await _articleService.CreateAsync(request);
                 return Ok(articleId);
-               // return CreatedAtAction(nameof(GetById), new { id = articleId }, new { Id = articleId });
             }
             catch (ArgumentException ex)
             {
@@ -39,8 +38,23 @@ namespace NewsPortal.Controller.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+        // GET: api/article
+        [HttpGet]
+        public async Task<IActionResult> GetPaged([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null)
+        {
+            try
+            {
+                var result = await _articleService.GetPagedAsync(pageNumber, pageSize, search);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
 
-        
+
+
 
         //// GET: api/article/{id}
         //[HttpGet("{id}")]
@@ -60,7 +74,7 @@ namespace NewsPortal.Controller.Controllers
         //    }
         //}
 
-      
+
     }
 
     public class PublishRequest

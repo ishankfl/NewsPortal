@@ -70,6 +70,34 @@ namespace NewsPortal.Infrastructure.Repositories
             var count = await conn.ExecuteScalarAsync<int>(sql, parameters);
             return count > 0;
         }
+        public async Task<(IEnumerable<Article> Articles, int TotalCount)> GetPagedAsync(int pageNumber, int pageSize, string? searchQuery)
+        {
+            var offset = (pageNumber - 1) * pageSize;
+
+            var sql = @"
+        SELECT * FROM articles
+        WHERE (@SearchQuery IS NULL OR title ILIKE '%' || @SearchQuery || '%' OR content ILIKE '%' || @SearchQuery || '%')
+        ORDER BY publication_datetime DESC
+        LIMIT @PageSize OFFSET @Offset;
+
+        SELECT COUNT(*) FROM articles
+        WHERE (@SearchQuery IS NULL OR title ILIKE '%' || @SearchQuery || '%' OR content ILIKE '%' || @SearchQuery || '%');
+    ";
+
+            using var conn = _context.CreateConnection();
+            using var multi = await conn.QueryMultipleAsync(sql, new
+            {
+                SearchQuery = string.IsNullOrWhiteSpace(searchQuery) ? null : searchQuery,
+                PageSize = pageSize,
+                Offset = offset
+            });
+
+            var articles = await multi.ReadAsync<Article>();
+            var totalCount = await multi.ReadSingleAsync<int>();
+
+            return (articles, totalCount);
+        }
+
 
     }
 }

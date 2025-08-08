@@ -182,6 +182,25 @@ namespace NewsPortal.Application.Articles.Services
 
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
         }
+        public async Task<PagedArticleResponse> GetPagedAsync(int pageNumber, int pageSize, string? searchQuery)
+        {
+            var (articles, totalCount) = await _articleRepository.GetPagedAsync(pageNumber, pageSize, searchQuery);
+
+            return new PagedArticleResponse
+            {
+                Articles = articles.Select(a => new ArticleDto
+                {
+                    Id = a.Id,
+                    Title = a.Title,
+                    Slug = a.Slug,
+                    Summary = a.Summary,
+                    Status = a.Status,
+                    PublicationDatetime = a.PublicationDatetime
+                    // map other fields as needed
+                }),
+                TotalCount = totalCount
+            };
+        }
 
         /*  public async Task<bool> UpdateAsync(UpdateArticleRequest request)
           {
