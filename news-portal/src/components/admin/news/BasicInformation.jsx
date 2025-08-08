@@ -62,12 +62,11 @@ export const BasicInformation = (
                 </div>
 
                 {/* Title Fields */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <FormInput
-                        label="Title (English)"
-                        id="title_en"
-                        name="title_en"
-                        value={values.title_en}
+                        label="Title"
+                        id="title"
+                        name="title"
+                        value={values.title}
                         onChange={(e) => {
                             handleChange(e);
                             if (!values.slug) {
@@ -75,23 +74,12 @@ export const BasicInformation = (
                             }
                         }}
                         onBlur={handleBlur}
-                        error={touched.title_en && errors.title_en}
+                        error={touched.title && errors.title}
                         placeholder="Enter article title in English"
                         className={activeLanguage === 'en' ? 'ring-2 ring-indigo-200' : ''}
                     />
 
-                    <FormInput
-                        label="Title (नेपाली)"
-                        id="title_np"
-                        name="title_np"
-                        value={values.title_np}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={touched.title_np && errors.title_np}
-                        placeholder="नेपालीमा शीर्षक लेख्नुहोस्"
-                        className={activeLanguage === 'np' ? 'ring-2 ring-indigo-200' : ''}
-                    />
-                </div>
+                
 
                 <FormInput
                     label="URL Slug"

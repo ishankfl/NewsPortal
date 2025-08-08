@@ -18,9 +18,10 @@ export const NewsContenxt = (
                         Content ({activeLanguage === 'en' ? 'English' : 'नेपाली'})
                     </label>
                     <RichTextEditor
-                        value={activeLanguage === 'en' ? values.content_en : values.content_np}
+                        value={values.content}
                         onChange={(content) => {
-                            setFieldValue(activeLanguage === 'en' ? 'content_en' : 'content_np', content);
+                            console.log('📝 RichTextEditor onChange called with:', content);
+                            setFieldValue('content', content);
                         }}
                         placeholder={`Write your article content in ${activeLanguage === 'en' ? 'English' : 'Nepali'}...`}
                     />

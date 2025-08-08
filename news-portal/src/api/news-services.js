@@ -1,5 +1,25 @@
 import axios from 'axios';
 import { server } from './server';
+export const createArticleWithFormData = async (formData) => {
+  try {
+    console.log("Data printed.... ");
+    console.log("FormData entries:");
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+    
+    const response = await axios.post(`${server}/Article`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      timeout: 10000,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error creating article with formData:', error);
+    throw error.response?.data || error;
+  }
+};
 
 // Create a new article
 export const createArticle = async (articleData) => {
@@ -228,3 +248,4 @@ export const validateArticleData = (articleData) => {
     errors
   };
 };
+

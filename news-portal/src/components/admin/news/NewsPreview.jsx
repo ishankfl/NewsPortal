@@ -22,8 +22,8 @@ const NewsPreview = ({ isOpen, onClose, articleData, activeLanguage = 'en' }) =>
 
     if (!isOpen || !articleData) return null;
 
-    const currentTitle = previewLanguage === 'en' ? articleData.title_en : articleData.title_np;
-    const currentContent = previewLanguage === 'en' ? articleData.content_en : articleData.content_np;
+    const currentTitle =  articleData.title 
+    const currentContent =  articleData.content_en;
 
     // Format date for display
     const formatDate = (dateString) => {

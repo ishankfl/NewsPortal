@@ -4,26 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { imgServer, server } from '../../../api/server';
 import { getCategories } from '../../../api/category-services';
+import { getUsers } from '../../../api/user-services';
 import {
     FiSave,
     FiArrowLeft,
     FiFileText,
-    FiUser,
-    FiTag,
     FiImage,
-    FiGlobe,
     FiEye,
     FiUpload,
     FiX,
-    FiPlus,
-    FiBold,
-    FiItalic,
-    FiUnderline,
-    FiList,
-    FiLink,
-    FiType,
     FiFolder,
-    FiCheck,
     FiSearch,
     FiMessageCircle
 
@@ -31,15 +21,12 @@ import {
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 
-import FormButton from '../../common/FormButton';
-import FormInput from '../../common/FormInput';
-import FormSelect from '../../common/FormSelect';
-import { RichTextEditor } from './RichTextEditor';
 import { ImageGalleryModal } from './ImageGalleryModal';
 import NewsPreview from './NewsPreview';
 import SeoKeywords from './SEOKeywords';
 import { NewsContenxt } from './NewsContents';
 import { BasicInformation } from './BasicInformation';
+import { createArticleWithFormData } from '../../../api/news-services';
 
 const AddNews = () => {
     const [serverError, setServerError] = useState(false);
@@ -65,38 +52,31 @@ const AddNews = () => {
         queryFn: getCategories
     });
 
-    const { data: authors = [] } = useQuery({
-        queryKey: ['authors'],
-        queryFn: () => fetch('/api/users?role=author').then(res => res.json())
+    const { data: usersData } = useQuery({
+        queryKey: ['users', { page: 1, pageSize: 100, search: '' }],
+        queryFn: getUsers
     });
 
+    const authors = usersData?.items || [];
+
     const validationSchema = Yup.object({
-        title_en: Yup.string().required('English title is required'),
-        title_np: Yup.string().required('Nepali title is required'),
+        title: Yup.string().required('Title is required'),
         slug: Yup.string().required('Slug is required'),
-        content_en: Yup.string().required('English content is required'),
-        content_np: Yup.string().required('Nepali content is required'),
-        categoryId: Yup.number().required('Category is required'),
-        authorId: Yup.number().required('Author is required'),
-        publishedAt: Yup.date().required('Publish date is required')
+        content: Yup.string().required('Content is required'),
+        authorId: Yup.string().required('Author is required'),
+        publishedAt: Yup.string().required('Publish date is required')
     });
 
     const createNewsMutation = useMutation({
-        mutationFn: async (formData) => {
-            const response = await fetch('/api/articles', {
-                method: 'POST',
-                body: formData
-            });
-            if (!response.ok) throw new Error('Failed to create article');
-            return response.json();
-        },
+        mutationFn: createArticleWithFormData,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['articles'] });
             toast.success('Article created successfully!');
             navigate('/admin/news/manage');
         },
         onError: (error) => {
-            setServerError(error.message);
+            console.error('Create news error:', error);
+            setServerError(error.message || 'Failed to create article');
             toast.error(error.message || 'Failed to create article');
         }
     });
@@ -139,11 +119,9 @@ const AddNews = () => {
     };
 
     const initialValues = {
-        title_en: '',
-        title_np: '',
+        title: '',
         slug: '',
-        content_en: '',
-        content_np: '',
+        content: '',
         categoryIds: [],
         authorId: '',
         publishedAt: new Date().toISOString().slice(0, 16)
@@ -195,25 +173,56 @@ const AddNews = () => {
                         <Formik
                             initialValues={initialValues}
                             validationSchema={validationSchema}
-                            onSubmit={(values) => {
-                                const formData = new FormData();
-                                Object.keys(values).forEach(key => {
-                                    formData.append(key, values[key]);
-                                });
-                                if (coverImage) {
-                                    if (typeof coverImage === 'string') {
-                                        formData.append('coverImageUrl', coverImage);
-                                    } else {
-                                        formData.append('coverImage', coverImage);
+                            onSubmit={async (values, { setSubmitting }) => {
+                                try {
+                                    console.log('🚀 Form submission started');
+                                    console.log('📝 Form values:', values);
+                                    console.log('🏷️ Selected categories:', selectedCategories);
+                                    
+                                    const formData = new FormData();
+                                    
+                                    // Map to API expected field names
+                                    formData.append('Title', values.title || '');
+                                    formData.append('Content', values.content || '');
+                                    formData.append('LanguageCode', 'en');
+                                    formData.append('Summary', values.content ? values.content.substring(0, 200) : '');
+                                    formData.append('Slug', values.slug || '');
+                                    formData.append('AuthorId', values.authorId || '');
+                                    formData.append('PublicationDatetime', values.publishedAt || '');
+                                    formData.append('Status', 'draft');
+                                    formData.append('AllowComments', allowComments.toString());
+                                    
+                                    // Add cover image
+                                    if (coverImage) {
+                                        if (typeof coverImage === 'string') {
+                                            formData.append('CoverImageUrl', coverImage);
+                                        } else {
+                                            formData.append('CoverImage', coverImage);
+                                        }
                                     }
+                                    
+                                    // Add additional data
+                                    formData.append('CategoryIds', JSON.stringify(selectedCategories));
+                                    formData.append('SeoKeywords', JSON.stringify(seoKeywords));
+                                    formData.append('SeoTitle', seoTitle || '');
+                                    formData.append('SeoDescription', seoDescription || '');
+                                    
+                                    console.log('📡 Calling API...');
+                                    console.log('📦 FormData contents:');
+                                    for (let [key, value] of formData.entries()) {
+                                        console.log(`  ${key}:`, value);
+                                    }
+                                    
+                                    const result = await createNewsMutation.mutateAsync(formData);
+                                    console.log('✅ API call successful:', result);
+                                    
+                                } catch (error) {
+                                    console.error('❌ Submission error:', error);
+                                    console.error('❌ Error details:', error.response?.data || error.message);
+                                } finally {
+                                    console.log('🏁 Form submission completed');
+                                    setSubmitting(false);
                                 }
-                                formData.append('categoryIds', JSON.stringify(selectedCategories));
-                                formData.append('categoryIds', JSON.stringify(selectedCategories));
-                                formData.append('seoKeywords', JSON.stringify(seoKeywords));
-                                formData.append('seoTitle', seoTitle);
-                                formData.append('seoDescription', seoDescription);
-                                formData.append('allowComments', allowComments);
-                                createNewsMutation.mutate(formData);
                             }}
                         >
                             {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => {
@@ -284,14 +293,21 @@ const AddNews = () => {
                                                     >
                                                         Cancel
                                                     </button>
-                                                    <FormButton
+                                                    <button
                                                         type="submit"
-                                                        disabled={createNewsMutation.isLoading}
-                                                        className="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg flex items-center transition-colors"
+                                                        disabled={createNewsMutation.isPending}
+                                                        onClick={(e) => {
+                                                            console.log('🔘 Submit button clicked!');
+                                                            console.log('🔍 Form validation errors:', errors);
+                                                            console.log('🔍 Form touched fields:', touched);
+                                                            console.log('🔍 Form values:', values);
+                                                            console.log('🔍 Form is valid:', Object.keys(errors).length === 0);
+                                                        }}
+                                                        className="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 text-white font-medium rounded-lg flex items-center transition-colors"
                                                     >
                                                         <FiSave className="mr-2" size={18} />
-                                                        {createNewsMutation.isLoading ? 'Publishing...' : 'Publish Article'}
-                                                    </FormButton>
+                                                        {createNewsMutation.isPending ? 'Publishing...' : 'Publish Article'}
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -301,6 +317,24 @@ const AddNews = () => {
                                                 <p className="text-red-600">{serverError}</p>
                                             </div>
                                         )}
+
+                                        {/* Debug Section - Remove after fixing */}
+                                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                                            <h4 className="font-semibold text-yellow-800">Debug Info:</h4>
+                                            <p className="text-sm text-yellow-700">
+                                                Form Valid: {Object.keys(errors).length === 0 ? 'Yes' : 'No'}
+                                            </p>
+                                            {Object.keys(errors).length > 0 && (
+                                                <div className="mt-2">
+                                                    <p className="text-sm font-medium text-red-600">Validation Errors:</p>
+                                                    <ul className="text-xs text-red-600">
+                                                        {Object.entries(errors).map(([field, error]) => (
+                                                            <li key={field}>• {field}: {error}</li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            )}
+                                        </div>
                                     </Form>
                                 );
                             }}
@@ -315,7 +349,7 @@ const AddNews = () => {
                                 <FiImage className="w-5 h-5 text-indigo-600 mr-2" />
                                 <h3 className="text-lg font-semibold text-gray-900">Cover Image</h3>
                             </div>
-                            
+
                             {coverImagePreview ? (
                                 <div className="relative mb-4">
                                     <img
@@ -379,7 +413,7 @@ const AddNews = () => {
                                 <FiSearch className="w-5 h-5 text-indigo-600 mr-2" />
                                 <h3 className="text-lg font-semibold text-gray-900">Article Summary</h3>
                             </div>
-                            
+
                             <div className="space-y-4">
                                 {/* Selected Categories */}
                                 <div>
