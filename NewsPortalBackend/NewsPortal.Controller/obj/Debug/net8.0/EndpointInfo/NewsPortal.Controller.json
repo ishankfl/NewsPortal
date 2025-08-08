@@ -12,23 +12,160 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/CreateArticleRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateArticleRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateArticleRequest"
+                "required": [
+                  "AuthorId",
+                  "LanguageCode",
+                  "Slug",
+                  "Title"
+                ],
+                "type": "object",
+                "properties": {
+                  "LanguageCode": {
+                    "maxLength": 10,
+                    "minLength": 0,
+                    "type": "string"
+                  },
+                  "Title": {
+                    "maxLength": 255,
+                    "minLength": 0,
+                    "type": "string"
+                  },
+                  "Slug": {
+                    "maxLength": 255,
+                    "minLength": 0,
+                    "type": "string"
+                  },
+                  "Content": {
+                    "type": "string"
+                  },
+                  "Summary": {
+                    "type": "string"
+                  },
+                  "Status": {
+                    "maxLength": 20,
+                    "minLength": 0,
+                    "type": "string"
+                  },
+                  "PublicationDatetime": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "AllowComments": {
+                    "type": "boolean"
+                  },
+                  "CoverImageId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "AuthorId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "ReporterId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "SeoTitle": {
+                    "maxLength": 70,
+                    "minLength": 0,
+                    "type": "string"
+                  },
+                  "SeoDescription": {
+                    "maxLength": 160,
+                    "minLength": 0,
+                    "type": "string"
+                  },
+                  "SeoKeywords": {
+                    "type": "string"
+                  }
+                }
+              },
+              "encoding": {
+                "LanguageCode": {
+                  "style": "form"
+                },
+                "Title": {
+                  "style": "form"
+                },
+                "Slug": {
+                  "style": "form"
+                },
+                "Content": {
+                  "style": "form"
+                },
+                "Summary": {
+                  "style": "form"
+                },
+                "Status": {
+                  "style": "form"
+                },
+                "PublicationDatetime": {
+                  "style": "form"
+                },
+                "AllowComments": {
+                  "style": "form"
+                },
+                "CoverImageId": {
+                  "style": "form"
+                },
+                "AuthorId": {
+                  "style": "form"
+                },
+                "ReporterId": {
+                  "style": "form"
+                },
+                "SeoTitle": {
+                  "style": "form"
+                },
+                "SeoDescription": {
+                  "style": "form"
+                },
+                "SeoKeywords": {
+                  "style": "form"
+                }
               }
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Article"
+        ],
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success"
@@ -675,85 +812,6 @@
             "nullable": true
           },
           "slug": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "CreateArticleRequest": {
-        "required": [
-          "authorId",
-          "languageCode",
-          "slug",
-          "title"
-        ],
-        "type": "object",
-        "properties": {
-          "languageCode": {
-            "maxLength": 10,
-            "minLength": 0,
-            "type": "string"
-          },
-          "title": {
-            "maxLength": 255,
-            "minLength": 0,
-            "type": "string"
-          },
-          "slug": {
-            "maxLength": 255,
-            "minLength": 0,
-            "type": "string"
-          },
-          "content": {
-            "type": "string",
-            "nullable": true
-          },
-          "summary": {
-            "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "maxLength": 20,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "publicationDatetime": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "allowComments": {
-            "type": "boolean"
-          },
-          "coverImageId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "authorId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "reporterId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "seoTitle": {
-            "maxLength": 70,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "seoDescription": {
-            "maxLength": 160,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "seoKeywords": {
             "type": "string",
             "nullable": true
           }

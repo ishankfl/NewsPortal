@@ -39,19 +39,19 @@ namespace NewsPortal.Controller.Controllers
             }
         }
         // GET: api/article
-        [HttpGet]
-        public async Task<IActionResult> GetPaged([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null)
-        {
-            try
-            {
-                var result = await _articleService.GetPagedAsync(pageNumber, pageSize, search);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
+[HttpGet]
+public async Task<IActionResult> GetPaged([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null)
+{
+    try
+    {
+        var result = await _articleService.GetPagedAsync(pageNumber, pageSize, search);
+        return Ok(result);
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, $"Internal server error: {ex.Message}");
+    }
+}
 
 
 
