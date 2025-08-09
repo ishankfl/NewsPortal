@@ -104,6 +104,8 @@ export const getAllArticles = async (params = {}) => {
     const response = await axios.get(`${server}/Article?${queryParams.toString()}`, {
       timeout: 10000,
     });
+    console.log("Get all articless... ")
+    console.log(response.data);
     return {
       items: response.data.articles,
       totalCount: response.data.totalCount

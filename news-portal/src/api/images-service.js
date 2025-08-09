@@ -31,6 +31,7 @@ export const getAllImages = async () => {
     const response = await axios.get(`${server}/Image`, {
       timeout: 5000,
     });
+    console.log("All images are fetched", response.data );
     return response.data; // array of images
   } catch (error) {
     console.error(error);

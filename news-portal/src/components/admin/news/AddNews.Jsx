@@ -94,7 +94,9 @@ const AddNews = () => {
     const handleCoverImageSelect = (image) => {
         const imageUrl = `${imgServer}${image.imageUrl}`;
         setCoverImagePreview(imageUrl);
-        setCoverImage(image.imageUrl); // Store URL instead of file for gallery images
+        console.log("Image is selected...... ")
+        console.log(image);
+        setCoverImage(image.id); // Store URL instead of file for gallery images
         setShowCoverGallery(false);
     };
 
@@ -178,9 +180,9 @@ const AddNews = () => {
                                     console.log('🚀 Form submission started');
                                     console.log('📝 Form values:', values);
                                     console.log('🏷️ Selected categories:', selectedCategories);
-                                    
+
                                     const formData = new FormData();
-                                    
+
                                     // Map to API expected field names
                                     formData.append('Title', values.title || '');
                                     formData.append('Content', values.content || '');
@@ -191,31 +193,32 @@ const AddNews = () => {
                                     formData.append('PublicationDatetime', values.publishedAt || '');
                                     formData.append('Status', 'draft');
                                     formData.append('AllowComments', allowComments.toString());
-                                    
+
                                     // Add cover image
                                     if (coverImage) {
+
                                         if (typeof coverImage === 'string') {
                                             formData.append('CoverImageUrl', coverImage);
                                         } else {
                                             formData.append('CoverImage', coverImage);
                                         }
                                     }
-                                    
+
                                     // Add additional data
                                     formData.append('CategoryIds', JSON.stringify(selectedCategories));
                                     formData.append('SeoKeywords', JSON.stringify(seoKeywords));
                                     formData.append('SeoTitle', seoTitle || '');
                                     formData.append('SeoDescription', seoDescription || '');
-                                    
+
                                     console.log('📡 Calling API...');
                                     console.log('📦 FormData contents:');
                                     for (let [key, value] of formData.entries()) {
                                         console.log(`  ${key}:`, value);
                                     }
-                                    
+
                                     const result = await createNewsMutation.mutateAsync(formData);
                                     console.log('✅ API call successful:', result);
-                                    
+
                                 } catch (error) {
                                     console.error('❌ Submission error:', error);
                                     console.error('❌ Error details:', error.response?.data || error.message);
