@@ -12,6 +12,8 @@ import ViewCategories from './components/admin/category/ViewCategories';
 import EditCategory from './components/admin/category/EditCategory';
 import EditNews from './components/admin/news/EditNews';
 import ViewNews from './components/admin/news/ViewNews';
+import BannerNews from './components/admin/banner/BannerNews';
+
 function App() {
   return (
     <>
@@ -30,6 +32,7 @@ function App() {
           <Route path="news/manage" element={<ViewNews />} />
           <Route path="news/edit/:id" element={<EditNews />} />
         </Route>
+          <Route path="/" element={<BannerNews />} />
       </Routes>
       <ToastContainer />
     </>
@@ -37,6 +40,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
