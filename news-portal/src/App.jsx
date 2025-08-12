@@ -14,6 +14,8 @@ import EditNews from './components/admin/news/EditNews';
 import ViewNews from './components/admin/news/ViewNews';
 import BannerNews from './components/admin/banner/BannerNews';
 import AddBannerNews from './components/admin/banner/AddBannerNews';
+import { BannerNewsPage } from './components/user/bannernews';
+import TestPage from './components/user/bannernews/TestPage';
 
 function App() {
   return (
@@ -35,6 +37,9 @@ function App() {
           <Route path="banner" element={<BannerNews />} />
           <Route path="banner/add" element={<AddBannerNews />} />
         </Route>
+        <Route path="/" element={<BannerNewsPage />} />
+        <Route path="/bannernews" element={<BannerNewsPage />} />
+        <Route path="/test" element={<TestPage />} />
       </Routes>
       <ToastContainer />
     </>

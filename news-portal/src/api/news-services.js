@@ -139,10 +139,11 @@ export const getArticlesByAuthor = async (authorId, page = 1, pageSize = 10) => 
 export const getPublishedArticles = async (params = {}) => {
   try {
     const queryParams = new URLSearchParams();
-    
+
     if (params.page) queryParams.append('page', params.page);
     if (params.pageSize) queryParams.append('pageSize', params.pageSize);
     if (params.languageCode) queryParams.append('languageCode', params.languageCode);
+    if (params.categoryId) queryParams.append('categoryId', params.categoryId);
 
     const response = await axios.get(`${server}/Article/published?${queryParams.toString()}`, {
       timeout: 5000,
@@ -150,6 +151,25 @@ export const getPublishedArticles = async (params = {}) => {
     return response.data;
   } catch (error) {
     console.error('Error fetching published articles:', error);
+    throw error.response?.data || error;
+  }
+};
+
+// Get articles by category
+export const getArticlesByCategory = async (categoryId, params = {}) => {
+  try {
+    const queryParams = new URLSearchParams();
+
+    if (params.page) queryParams.append('page', params.page);
+    if (params.pageSize) queryParams.append('pageSize', params.pageSize);
+    if (params.languageCode) queryParams.append('languageCode', params.languageCode);
+
+    const response = await axios.get(`${server}/Article/category/${categoryId}?${queryParams.toString()}`, {
+      timeout: 5000,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching articles by category:', error);
     throw error.response?.data || error;
   }
 };
