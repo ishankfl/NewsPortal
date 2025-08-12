@@ -13,8 +13,10 @@ import {
     FiChevronLeft,
     FiChevronRight
 } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 
 const BannerNews = () => {
+    const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('featured');
     const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -85,29 +87,26 @@ const BannerNews = () => {
     return (
         <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 py-8 px-4">
             <div className="max-w-7xl mx-auto">
-                {/* Header with Logo and Ad Space */}
+                {/* Header */}
                 <div className="mb-8">
-                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
                         <div className="flex items-center justify-between">
-                            {/* Logo Section */}
                             <div className="flex items-center space-x-4">
                                 <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg">
                                     <FiImage className="w-8 h-8 text-white" />
                                 </div>
                                 <div>
-                                    <h1 className="text-3xl font-bold text-gray-900">News Portal</h1>
-                                    <p className="text-gray-600 mt-1">Your trusted source for latest news</p>
+                                    <h1 className="text-3xl font-bold text-gray-900">Banner News</h1>
+                                    <p className="text-gray-600 mt-1">Manage featured and trending news for homepage banner</p>
                                 </div>
                             </div>
-                            
-                            {/* Header Advertisement Space */}
-                            <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl border-2 border-dashed border-gray-300 p-6 text-center">
-                                <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center mx-auto mb-2">
-                                    <FiImage className="w-6 h-6 text-gray-500" />
-                                </div>
-                                <h4 className="text-sm font-medium text-gray-700 mb-1">Header Ad Space</h4>
-                                <p className="text-xs text-gray-500">468x60 Banner</p>
-                            </div>
+                            <button 
+                                onClick={() => navigate('/admin/banner/add')}
+                                className="flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+                            >
+                                <FiPlus className="w-5 h-5 mr-2" />
+                                Add Banner News
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -343,3 +342,5 @@ const BannerNews = () => {
 };
 
 export default BannerNews;
+
+

@@ -116,6 +116,11 @@ export const getAllArticles = async (params = {}) => {
   }
 };
 
+// Get all articles with filtering and pagination (alias for getAllArticles)
+export const getArticles = async (params = {}) => {
+  return await getAllArticles(params);
+};
+
 // Get articles by author
 export const getArticlesByAuthor = async (authorId, page = 1, pageSize = 10) => {
   try {
@@ -249,5 +254,6 @@ export const validateArticleData = (articleData) => {
     errors
   };
 };
+
 
 
