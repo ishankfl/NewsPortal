@@ -62,7 +62,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("AllowLocalhost5173"); // ✅ Use before authorization
+app.UseCors("AllowLocalhost5173");
 app.UseAuthorization();
 app.UseStaticFiles();  // In Program.cs or Startup.cs
 
