@@ -8,6 +8,8 @@ using NewsPortal.Controller.Filters;
 using NewsPortal.Domain.Interfaces;
 using NewsPortal.Infrastructure.Persistence;
 using NewsPortal.Infrastructure.Repositories;
+using NewsPortal.Application.Banner.Interfaces;
+using NewsPortal.Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +44,11 @@ builder.Services.AddScoped<ICategoryService, CategoriesService>();
 
 builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
+
+
+builder.Services.AddScoped<IBannerRepository, BannerRepository>();
+builder.Services.AddScoped<IBannerService, BannerService>();
+
 
 builder.Services.AddMemoryCache();
 

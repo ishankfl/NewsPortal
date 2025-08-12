@@ -3,7 +3,6 @@ using NewsPortal.Domain.Dtos;
 using NewsPortal.Domain.Interfaces;
 using NewsPortal.Domain.Models;
 using NewsPortal.Infrastructure.Persistence;
-using System.Reflection;
 
 namespace NewsPortal.Infrastructure.Repositories
 {
@@ -30,7 +29,19 @@ namespace NewsPortal.Infrastructure.Repositories
                 RETURNING Id;";
 
             using var conn = _context.CreateConnection();
-            return await conn.ExecuteScalarAsync<int>(sql, banner);
+            using var transaction = conn.BeginTransaction();
+
+            try
+            {
+                var bannerId = await conn.ExecuteScalarAsync<int>(sql, banner, transaction);
+                transaction.Commit();
+                return bannerId;
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
         }
 
         public async Task<bool> UpdateAsync(Banner banner)
@@ -51,16 +62,39 @@ namespace NewsPortal.Infrastructure.Repositories
                 WHERE Id = @Id;";
 
             using var conn = _context.CreateConnection();
-            var affectedRows = await conn.ExecuteAsync(sql, banner);
-            return affectedRows > 0;
+            using var transaction = conn.BeginTransaction();
+
+            try
+            {
+                var affectedRows = await conn.ExecuteAsync(sql, banner, transaction);
+                transaction.Commit();
+                return affectedRows > 0;
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
             const string sql = "DELETE FROM Banners WHERE Id = @Id;";
+
             using var conn = _context.CreateConnection();
-            var affectedRows = await conn.ExecuteAsync(sql, new { Id = id });
-            return affectedRows > 0;
+            using var transaction = conn.BeginTransaction();
+
+            try
+            {
+                var affectedRows = await conn.ExecuteAsync(sql, new { Id = id }, transaction);
+                transaction.Commit();
+                return affectedRows > 0;
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
         }
 
         public async Task<Banner?> GetByIdAsync(int id)
@@ -126,16 +160,80 @@ namespace NewsPortal.Infrastructure.Repositories
                 DO UPDATE SET Priority = @Priority;";
 
             using var conn = _context.CreateConnection();
-            var affectedRows = await conn.ExecuteAsync(sql, new { BannerId = bannerId, PositionId = positionId, Priority = priority });
-            return affectedRows > 0;
+            using var transaction = conn.BeginTransaction();
+
+            try
+            {
+                var affectedRows = await conn.ExecuteAsync(sql, new { BannerId = bannerId, PositionId = positionId, Priority = priority }, transaction);
+                transaction.Commit();
+                return affectedRows > 0;
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
         }
 
         public async Task<bool> RemoveFromPositionAsync(int bannerId, int positionId)
         {
             const string sql = "DELETE FROM BannerPositionMappings WHERE BannerId = @BannerId AND PositionId = @PositionId;";
+
             using var conn = _context.CreateConnection();
-            var affectedRows = await conn.ExecuteAsync(sql, new { BannerId = bannerId, PositionId = positionId });
-            return affectedRows > 0;
+            using var transaction = conn.BeginTransaction();
+
+            try
+            {
+                var affectedRows = await conn.ExecuteAsync(sql, new { BannerId = bannerId, PositionId = positionId }, transaction);
+                transaction.Commit();
+                return affectedRows > 0;
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
+        }
+
+        public async Task<int> CreateWithPositionAsync(Banner banner, int positionId, int priority)
+        {
+            const string createSql = @"
+                INSERT INTO Banners (
+                    Title, Description, ImageUrl, TargetUrl, BannerTypeId, 
+                    StartDate, EndDate, IsActive, Priority, CreatedBy
+                )
+                VALUES (
+                    @Title, @Description, @ImageUrl, @TargetUrl, @BannerTypeId,
+                    @StartDate, @EndDate, @IsActive, @Priority, @CreatedBy
+                )
+                RETURNING Id;";
+
+            const string mappingSql = @"
+                INSERT INTO BannerPositionMappings (BannerId, PositionId, Priority)
+                VALUES (@BannerId, @PositionId, @Priority);";
+
+            using var conn = _context.CreateConnection();
+            using var transaction = conn.BeginTransaction();
+
+            try
+            {
+                var bannerId = await conn.ExecuteScalarAsync<int>(createSql, banner, transaction);
+
+                await conn.ExecuteAsync(mappingSql, new
+                {
+                    BannerId = bannerId,
+                    PositionId = positionId,
+                    Priority = priority
+                }, transaction);
+
+                transaction.Commit();
+                return bannerId;
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
         }
 
         private class BannerWithCount : Banner
