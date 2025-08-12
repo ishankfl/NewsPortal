@@ -1,339 +1,384 @@
-import React, { useState } from 'react';
-import { 
-    FiImage, 
-    FiPlus, 
-    FiEdit3, 
-    FiTrash2, 
-    FiEye, 
-    FiClock,
-    FiUser,
-    FiCalendar,
-    FiStar,
-    FiTrendingUp,
-    FiChevronLeft,
-    FiChevronRight
+import React, { useState, useEffect } from 'react';
+import {
+    FiImage, FiPlus, FiEdit3, FiTrash2, FiChevronLeft, FiChevronRight,
+    FiFileText, FiType, FiVideo, FiSettings
 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
+// Import banner service
+import {
+    getBanners,
+    deleteBanner,
+    updateBannerStatus,
+    assignBannerToPosition,
+    removeBannerFromPosition
+} from '../../../api/banner-service';
 
 const BannerNews = () => {
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState('featured');
-    const [currentSlide, setCurrentSlide] = useState(0);
+    const [bannerWidgets, setBannerWidgets] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [pagination, setPagination] = useState({
+        page: 1,
+        pageSize: 10,
+        totalItems: 0
+    });
 
-    // Mock data - replace with actual API calls
-    const bannerNews = [
-        {
-            id: 1,
-            title: "Breaking: Major Political Development in Nepal",
-            subtitle: "Government announces new policies for economic recovery and development initiatives",
-            coverImage: "https://via.placeholder.com/1200x600",
-            author: "John Doe",
-            publishedAt: "2024-01-15T10:30:00",
-            views: 15420,
-            status: "active",
-            priority: 1,
-            category: "Politics"
-        },
-        {
-            id: 2,
-            title: "Economic Growth Shows Positive Trends This Quarter",
-            subtitle: "Latest financial reports indicate significant improvement in key economic indicators",
-            coverImage: "https://via.placeholder.com/1200x600",
-            author: "Jane Smith",
-            publishedAt: "2024-01-14T14:20:00",
-            views: 8930,
-            status: "active",
-            priority: 2,
-            category: "Economy"
-        },
-        {
-            id: 3,
-            title: "Technology Innovation Summit Concludes Successfully",
-            subtitle: "Industry leaders discuss future of digital transformation and emerging technologies",
-            coverImage: "https://via.placeholder.com/1200x600",
-            author: "Mike Johnson",
-            publishedAt: "2024-01-13T09:15:00",
-            views: 12350,
-            status: "active",
-            priority: 3,
-            category: "Technology"
-        }
+    const availableWidgets = [
+        { id: 'ads', name: 'Ads Widget', icon: FiImage, description: 'Display advertisement banners' },
+        { id: 'post', name: 'Post Widget', icon: FiFileText, description: 'Show featured news posts' },
+        { id: 'text', name: 'Text', icon: FiType, description: 'Custom text content' },
+        { id: 'video', name: 'Video Widget', icon: FiVideo, description: 'Embed video content' }
     ];
 
-    const nextSlide = () => {
-        setCurrentSlide((prev) => (prev + 1) % bannerNews.length);
+    // Fetch banner widgets
+    const fetchBannerWidgets = async () => {
+        try {
+            setLoading(true);
+            const { data } = await getBanners(pagination.page, pagination.pageSize);
+            setBannerWidgets(data?.items || []);
+            setPagination(prev => ({ ...prev, totalItems: data?.totalItems || 0 }));
+        } catch (error) {
+            toast.error('Failed to fetch banner widgets');
+            console.error('Error fetching banners:', error);
+            setBannerWidgets([]); // Set empty array on error
+        } finally {
+            setLoading(false);
+        }
     };
 
-    const prevSlide = () => {
-        setCurrentSlide((prev) => (prev - 1 + bannerNews.length) % bannerNews.length);
+    // Delete banner
+    const handleDelete = async (id) => {
+        try {
+            await deleteBanner(id);
+            toast.success('Banner deleted successfully');
+            fetchBannerWidgets();
+        } catch (error) {
+            toast.error('Failed to delete banner');
+            console.error(error);
+        }
     };
 
-    const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
+    // Toggle status
+    const toggleStatus = async (id, currentStatus) => {
+        try {
+            await updateBannerStatus(id, !currentStatus);
+            toast.success('Banner status updated');
+            fetchBannerWidgets();
+        } catch (error) {
+            toast.error('Failed to update banner status');
+            console.error(error);
+        }
     };
 
-    const formatViews = (views) => {
-        if (views >= 1000000) return `${(views / 1000000).toFixed(1)}M`;
-        if (views >= 1000) return `${(views / 1000).toFixed(1)}K`;
-        return views.toString();
+    // Assign to position
+    const assignToPosition = async (bannerId, positionId) => {
+        try {
+            await assignBannerToPosition(bannerId, positionId);
+            toast.success('Banner assigned to position');
+            fetchBannerWidgets();
+        } catch (error) {
+            toast.error('Failed to assign banner');
+            console.error(error);
+        }
     };
+
+    // Remove from position
+    const removeFromPositionHandler = async (bannerId, positionId) => {
+        try {
+            await removeBannerFromPosition(bannerId, positionId);
+            toast.success('Banner removed from position');
+            fetchBannerWidgets();
+        } catch (error) {
+            toast.error('Failed to remove banner');
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        fetchBannerWidgets();
+    }, [pagination.page]);
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 py-8 px-4">
-            <div className="max-w-7xl mx-auto">
-                {/* Header */}
-                <div className="mb-8">
-                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-4">
-                                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg">
-                                    <FiImage className="w-8 h-8 text-white" />
-                                </div>
-                                <div>
-                                    <h1 className="text-3xl font-bold text-gray-900">Banner News</h1>
-                                    <p className="text-gray-600 mt-1">Manage featured and trending news for homepage banner</p>
-                                </div>
-                            </div>
-                            <button 
-                                onClick={() => navigate('/admin/banner/add')}
-                                className="flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl"
-                            >
-                                <FiPlus className="w-5 h-5 mr-2" />
-                                Add Banner News
-                            </button>
-                        </div>
+        <div className="min-h-screen bg-gray-50">
+            {/* Header */}
+            <div className="bg-white border-b border-gray-200 px-6 py-4">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-2xl font-semibold text-gray-900">Manage Widgets</h1>
+                        <p className="text-sm text-gray-600 mt-1">गृह पृष्ठ Manage Widgets</p>
                     </div>
+                    <button
+                        onClick={() => navigate('/admin/banner/add')}
+                        className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                    >
+                        <FiPlus className="w-4 h-4 mr-2" />
+                        Add Widget
+                    </button>
                 </div>
+            </div>
 
-                {/* Main Banner Section */}
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-12">
-                    {/* Main Banner News */}
-                    <div className="lg:col-span-3">
-                        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                            {/* Tabs */}
-                            <div className="border-b border-gray-200">
-                                <nav className="flex space-x-8 px-6">
-                                    <button
-                                        onClick={() => setActiveTab('featured')}
-                                        className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                                            activeTab === 'featured'
-                                                ? 'border-indigo-500 text-indigo-600'
-                                                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                                        }`}
-                                    >
-                                        <div className="flex items-center">
-                                            <FiStar className="w-4 h-4 mr-2" />
-                                            Featured Banner
-                                        </div>
-                                    </button>
-                                    <button
-                                        onClick={() => setActiveTab('trending')}
-                                        className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                                            activeTab === 'trending'
-                                                ? 'border-indigo-500 text-indigo-600'
-                                                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                                        }`}
-                                    >
-                                        <div className="flex items-center">
-                                            <FiTrendingUp className="w-4 h-4 mr-2" />
-                                            Trending News
-                                        </div>
-                                    </button>
-                                </nav>
-                            </div>
+            <div className="p-6">
+                {/* Banner Posts Section */}
+                <div className="mb-8">
+                    <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+                        <div className="px-6 py-4 border-b border-gray-200">
+                            <h2 className="text-lg font-medium text-gray-900">Banner Posts</h2>
+                            <p className="text-sm text-gray-500">Widgets to display banner posts</p>
+                        </div>
 
-                            {/* Banner Slider */}
-                            <div className="relative h-96 md:h-[500px] overflow-hidden">
-                                {bannerNews.map((news, index) => (
-                                    <div
-                                        key={news.id}
-                                        className={`absolute inset-0 transition-transform duration-500 ease-in-out ${
-                                            index === currentSlide ? 'translate-x-0' : 
-                                            index < currentSlide ? '-translate-x-full' : 'translate-x-full'
-                                        }`}
+                        <div className="p-6">
+                            {loading ? (
+                                <div className="flex justify-center py-8">
+                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                                </div>
+                            ) : bannerWidgets.length === 0 ? (
+                                <div className="text-center py-12">
+                                    <FiImage className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                                    <h3 className="text-lg font-medium text-gray-900 mb-2">No Banner News Found</h3>
+                                    <p className="text-gray-500 mb-6">You haven't created any banner news widgets yet. Get started by adding your first banner news.</p>
+                                    <button
+                                        onClick={() => navigate('/admin/banner/add')}
+                                        className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                                     >
-                                        {/* Background Image */}
-                                        <div className="relative h-full">
-                                            <img
-                                                src={news.coverImage}
-                                                alt={news.title}
-                                                className="w-full h-full object-cover"
-                                            />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-                                            
-                                            {/* Content Overlay */}
-                                            <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-                                                <div className="max-w-4xl">
-                                                    {/* Category Badge */}
-                                                    <div className="mb-4">
-                                                        <span className="inline-flex items-center px-3 py-1 bg-indigo-600 text-white rounded-full text-sm font-medium">
-                                                            <FiStar className="w-3 h-3 mr-1" />
-                                                            {news.category}
+                                        <FiPlus className="w-4 h-4 mr-2" />
+                                        Add First Banner News
+                                    </button>
+                                </div>
+                            ) : (
+                                <>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                        {bannerWidgets.map((widget) => (
+                                            <div key={widget.id} className="bg-gray-50 rounded-lg border border-gray-200 p-4">
+                                                <div className="aspect-video bg-gray-200 rounded-md mb-3 overflow-hidden">
+                                                    {widget.imageUrl ? (
+                                                        <img
+                                                            src={widget.imageUrl}
+                                                            alt={widget.title}
+                                                            className="w-full h-full object-cover"
+                                                        />
+                                                    ) : (
+                                                        <div className="w-full h-full flex items-center justify-center">
+                                                            <FiImage className="w-8 h-8 text-gray-400" />
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <div className="flex items-center justify-between">
+                                                        <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded">
+                                                            {widget.type}
                                                         </span>
+                                                        <div className="flex items-center space-x-1">
+                                                            <button
+                                                                onClick={() => navigate(`/admin/banner/edit/${widget.id}`)}
+                                                                className="p-1 text-gray-400 hover:text-blue-600 transition-colors"
+                                                            >
+                                                                <FiEdit3 className="w-3 h-3" />
+                                                            </button>
+                                                            <button
+                                                                onClick={() => handleDelete(widget.id)}
+                                                                className="p-1 text-gray-400 hover:text-red-600 transition-colors"
+                                                            >
+                                                                <FiTrash2 className="w-3 h-3" />
+                                                            </button>
+                                                        </div>
                                                     </div>
-                                                    
-                                                    {/* Title */}
-                                                    <h2 className="text-3xl md:text-4xl font-bold mb-3 leading-tight">
-                                                        {news.title}
-                                                    </h2>
-                                                    
-                                                    {/* Subtitle */}
-                                                    <p className="text-lg md:text-xl text-gray-200 mb-4 leading-relaxed">
-                                                        {news.subtitle}
-                                                    </p>
-                                                    
-                                                    {/* Meta Info */}
-                                                    <div className="flex items-center space-x-6 text-sm text-gray-300">
-                                                        <div className="flex items-center">
-                                                            <FiUser className="w-4 h-4 mr-2" />
-                                                            {news.author}
-                                                        </div>
-                                                        <div className="flex items-center">
-                                                            <FiCalendar className="w-4 h-4 mr-2" />
-                                                            {formatDate(news.publishedAt)}
-                                                        </div>
-                                                        <div className="flex items-center">
-                                                            <FiEye className="w-4 h-4 mr-2" />
-                                                            {formatViews(news.views)} views
-                                                        </div>
+                                                    <h3 className="text-sm font-medium text-gray-900 line-clamp-2">
+                                                        {widget.title}
+                                                    </h3>
+                                                    <div className="flex items-center justify-between text-xs text-gray-500">
+                                                        <span>{widget.position}</span>
+                                                        <button
+                                                            onClick={() => toggleStatus(widget.id, widget.isActive)}
+                                                            className={`px-2 py-1 rounded-full ${widget.isActive
+                                                                    ? 'bg-green-100 text-green-800'
+                                                                    : 'bg-gray-100 text-gray-800'
+                                                                }`}
+                                                        >
+                                                            {widget.isActive ? 'Active' : 'Inactive'}
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        ))}
                                     </div>
-                                ))}
-
-                                {/* Navigation Arrows */}
-                                <button
-                                    onClick={prevSlide}
-                                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 rounded-full transition-all duration-200"
-                                >
-                                    <FiChevronLeft className="w-6 h-6" />
-                                </button>
-                                <button
-                                    onClick={nextSlide}
-                                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 rounded-full transition-all duration-200"
-                                >
-                                    <FiChevronRight className="w-6 h-6" />
-                                </button>
-
-                                {/* Slide Indicators */}
-                                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                                    {bannerNews.map((_, index) => (
+                                    {/* Pagination */}
+                                    <div className="flex items-center justify-between mt-6">
                                         <button
-                                            key={index}
-                                            onClick={() => setCurrentSlide(index)}
-                                            className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                                                index === currentSlide ? 'bg-white' : 'bg-white/50'
-                                            }`}
-                                        />
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Admin Actions */}
-                            <div className="p-6 bg-gray-50 border-t border-gray-200">
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center space-x-4">
-                                        <button className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
-                                            <FiPlus className="w-4 h-4 mr-2" />
-                                            Add to Banner
+                                            onClick={() => setPagination({ ...pagination, page: Math.max(1, pagination.page - 1) })}
+                                            disabled={pagination.page === 1}
+                                            className="flex items-center px-3 py-1 border border-gray-300 rounded-md text-sm font-medium disabled:opacity-50"
+                                        >
+                                            <FiChevronLeft className="w-4 h-4 mr-1" />
+                                            Previous
                                         </button>
-                                        <button className="flex items-center px-4 py-2 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                                            <FiEdit3 className="w-4 h-4 mr-2" />
-                                            Edit Current
-                                        </button>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <span className="text-sm text-gray-500">
-                                            {currentSlide + 1} of {bannerNews.length}
+                                        <span className="text-sm text-gray-700">
+                                            Page {pagination.page} of {Math.ceil(pagination.totalItems / pagination.pageSize)}
                                         </span>
-                                        <button className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                                            <FiTrash2 className="w-4 h-4" />
+                                        <button
+                                            onClick={() => setPagination({ ...pagination, page: pagination.page + 1 })}
+                                            disabled={pagination.page * pagination.pageSize >= pagination.totalItems}
+                                            className="flex items-center px-3 py-1 border border-gray-300 rounded-md text-sm font-medium disabled:opacity-50"
+                                        >
+                                            Next
+                                            <FiChevronRight className="w-4 h-4 ml-1" />
+                                        </button>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Available Widgets Section */}
+                <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div className="px-6 py-4 border-b border-gray-200">
+                        <h2 className="text-lg font-medium text-gray-900">Available Widgets</h2>
+                        <p className="text-sm text-gray-500">To activate widget, click on + (plus), choose the location and click activate</p>
+                    </div>
+
+                    <div className="p-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            {availableWidgets.map((widget) => (
+                                <div key={widget.id} className="bg-gray-50 rounded-lg border border-gray-200 p-4 hover:border-blue-300 transition-colors">
+                                    <div className="text-center">
+                                        <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                                            <widget.icon className="w-6 h-6 text-blue-600" />
+                                        </div>
+                                        <h3 className="text-sm font-medium text-gray-900 mb-2">{widget.name}</h3>
+                                        <p className="text-xs text-gray-500 mb-4">{widget.description}</p>
+                                        <button
+                                            onClick={() => navigate(`/admin/banner/add?type=${widget.id}`)}
+                                            className="w-full flex items-center justify-center px-3 py-2 bg-blue-600 text-white text-xs rounded-md hover:bg-blue-700 transition-colors"
+                                        >
+                                            <FiPlus className="w-3 h-3 mr-1" />
+                                            Add Widget
                                         </button>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Right Sidebar Advertisement */}
-                    <div className="lg:col-span-1">
-                        <div className="sticky top-8">
-                            <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl border-2 border-dashed border-gray-300 p-8 text-center">
-                                <div className="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <FiImage className="w-8 h-8 text-gray-500" />
-                                </div>
-                                <h4 className="text-lg font-medium text-gray-700 mb-2">Advertisement Space</h4>
-                                <p className="text-sm text-gray-500">300x600 Skyscraper Ad</p>
-                            </div>
+                            ))}
                         </div>
                     </div>
                 </div>
 
-                {/* Middle Advertisement Space */}
-                <div className="mb-12">
-                    <div className="bg-gradient-to-r from-gray-100 to-gray-200 rounded-2xl border-2 border-dashed border-gray-300 p-8 text-center">
-                        <div className="w-20 h-20 bg-gray-300 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <FiImage className="w-10 h-10 text-gray-500" />
-                        </div>
-                        <h4 className="text-xl font-medium text-gray-700 mb-2">Middle Advertisement Space</h4>
-                        <p className="text-gray-500">728x90 Leaderboard Banner Ad</p>
+                {/* Widget Locations */}
+                <div className="mt-8 bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div className="px-6 py-4 border-b border-gray-200">
+                        <h2 className="text-lg font-medium text-gray-900">Widget Locations</h2>
+                        <p className="text-sm text-gray-500">Manage widget placement across your site</p>
                     </div>
-                </div>
 
-                {/* Secondary News Section */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                    {bannerNews.slice(0, 3).map((news) => (
-                        <div key={`secondary-${news.id}`} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300">
-                            <div className="relative h-48 overflow-hidden">
-                                <img
-                                    src={news.coverImage}
-                                    alt={news.title}
-                                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                                />
-                                <div className="absolute top-3 left-3">
-                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                                        {news.category}
-                                    </span>
-                                </div>
-                            </div>
-                            <div className="p-6">
-                                <h3 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2 hover:text-indigo-600 transition-colors">
-                                    {news.title}
-                                </h3>
-                                <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                                    {news.subtitle}
-                                </p>
-                                <div className="flex items-center justify-between text-xs text-gray-500">
-                                    <div className="flex items-center">
-                                        <FiUser className="w-3 h-3 mr-1" />
-                                        {news.author}
-                                    </div>
-                                    <div className="flex items-center">
-                                        <FiEye className="w-3 h-3 mr-1" />
-                                        {formatViews(news.views)}
+                    <div className="p-6">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {/* Header Banner Position */}
+                            <div className="border border-gray-200 rounded-lg p-4">
+                                <h3 className="font-medium text-gray-900 mb-3">Header Banner</h3>
+                                <div className="space-y-2">
+                                    {bannerWidgets
+                                        .filter(w => w.position === 'Header Banner')
+                                        .sort((a, b) => a.priority - b.priority)
+                                        .map(widget => (
+                                            <div key={widget.id} className="bg-blue-50 border border-blue-200 rounded p-3 text-sm">
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-blue-900">{widget.title}</span>
+                                                    <div className="flex space-x-2">
+                                                        <button
+                                                            onClick={() => removeFromPosition(widget.id, 1)}
+                                                            className="text-blue-600 hover:text-blue-800"
+                                                        >
+                                                            <FiSettings className="w-4 h-4" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div className="mt-1 text-xs text-gray-500">
+                                                    Priority: {widget.priority}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    <div
+                                        className="border-2 border-dashed border-gray-300 rounded p-3 text-center text-sm text-gray-500 cursor-pointer hover:bg-gray-50"
+                                        onClick={() => {
+                                            // Open modal to assign banner to this position
+                                        }}
+                                    >
+                                        Drop widget here
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
 
-                {/* Bottom Advertisement Space */}
-                <div className="mb-8">
-                    <div className="bg-gradient-to-r from-gray-100 to-gray-200 rounded-2xl border-2 border-dashed border-gray-300 p-12 text-center">
-                        <div className="w-20 h-20 bg-gray-300 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <FiImage className="w-10 h-10 text-gray-500" />
+                            {/* Sidebar Position */}
+                            <div className="border border-gray-200 rounded-lg p-4">
+                                <h3 className="font-medium text-gray-900 mb-3">Sidebar</h3>
+                                <div className="space-y-2">
+                                    {bannerWidgets
+                                        .filter(w => w.position === 'Sidebar')
+                                        .sort((a, b) => a.priority - b.priority)
+                                        .map(widget => (
+                                            <div key={widget.id} className="bg-green-50 border border-green-200 rounded p-3 text-sm">
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-green-900">{widget.title}</span>
+                                                    <div className="flex space-x-2">
+                                                        <button
+                                                            onClick={() => removeFromPosition(widget.id, 2)}
+                                                            className="text-green-600 hover:text-green-800"
+                                                        >
+                                                            <FiSettings className="w-4 h-4" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div className="mt-1 text-xs text-gray-500">
+                                                    Priority: {widget.priority}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    <div
+                                        className="border-2 border-dashed border-gray-300 rounded p-3 text-center text-sm text-gray-500 cursor-pointer hover:bg-gray-50"
+                                        onClick={() => {
+                                            // Open modal to assign banner to this position
+                                        }}
+                                    >
+                                        Drop widget here
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Footer Banner Position */}
+                            <div className="border border-gray-200 rounded-lg p-4">
+                                <h3 className="font-medium text-gray-900 mb-3">Footer Banner</h3>
+                                <div className="space-y-2">
+                                    {bannerWidgets
+                                        .filter(w => w.position === 'Footer Banner')
+                                        .sort((a, b) => a.priority - b.priority)
+                                        .map(widget => (
+                                            <div key={widget.id} className="bg-purple-50 border border-purple-200 rounded p-3 text-sm">
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-purple-900">{widget.title}</span>
+                                                    <div className="flex space-x-2">
+                                                        <button
+                                                            onClick={() => removeFromPosition(widget.id, 3)}
+                                                            className="text-purple-600 hover:text-purple-800"
+                                                        >
+                                                            <FiSettings className="w-4 h-4" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div className="mt-1 text-xs text-gray-500">
+                                                    Priority: {widget.priority}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    <div
+                                        className="border-2 border-dashed border-gray-300 rounded p-3 text-center text-sm text-gray-500 cursor-pointer hover:bg-gray-50"
+                                        onClick={() => {
+                                            // Open modal to assign banner to this position
+                                        }}
+                                    >
+                                        Drop widget here
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <h4 className="text-xl font-medium text-gray-700 mb-3">Footer Advertisement Space</h4>
-                        <p className="text-gray-500">970x250 Billboard Banner Ad</p>
                     </div>
                 </div>
             </div>
@@ -342,5 +387,4 @@ const BannerNews = () => {
 };
 
 export default BannerNews;
-
 

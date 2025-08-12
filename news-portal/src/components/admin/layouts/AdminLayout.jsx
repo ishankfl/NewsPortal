@@ -20,6 +20,7 @@ const AdminLayout = () => {
   const [isArticlesOpen, setIsArticlesOpen] = useState(false);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [isAdvertiseOpen, setIsAdvertiseOpen] = useState(false);
+  const [isBannerOpen, setIsBannerOpen] = useState(false);
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -144,11 +145,34 @@ const AdminLayout = () => {
               </AnimatePresence>
             </li>
 
+            {/* Banner News Dropdown */}
             <li>
-              <Link to="/admin/banner" className="flex items-center p-2 rounded hover:bg-indigo-700">
-                <FiImage className="mr-3" />
-                Banner News
-              </Link>
+              <button
+                onClick={() => setIsBannerOpen(!isBannerOpen)}
+                className="flex items-center justify-between w-full p-2 rounded hover:bg-indigo-700"
+              >
+                <div className="flex items-center">
+                  <FiImage className="mr-3" />
+                  Banner News
+                </div>
+                {isBannerOpen ? <FiChevronDown /> : <FiChevronRight />}
+              </button>
+              <AnimatePresence>
+                {isBannerOpen && (
+                  <motion.ul
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="ml-8 mt-1 space-y-1 overflow-hidden"
+                  >
+                    <li>
+                      <Link to="/admin/banner" className="block p-2 rounded hover:bg-indigo-700">
+                        Manage Banner News
+                      </Link>
+                    </li>
+                  </motion.ul>
+                )}
+              </AnimatePresence>
             </li>
 
             {/* User Dropdown */}
