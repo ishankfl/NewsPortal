@@ -5,15 +5,11 @@ namespace NewsPortal.Application.Articles.Interfaces
 {
     public interface IArticleService
     {
-        /// <summary>
-        /// Creates a new article
-        /// </summary>
-        /// <param name="request">Article creation request</param>
-        /// <returns>The ID of the newly created article</returns>
-        Task<int> CreateAsync(CreateArticleRequest request);
+      Task<int> CreateAsync(CreateArticleRequest request);
+        Task<ValidationResult> ValidateForPublishingAsync(CreateArticleRequest request);
+        Task<string> GenerateSlugAsync(string title, int? excludeId = null);
         Task<PagedArticleResponse> GetPagedAsync(int pageNumber, int pageSize, string? searchQuery);
- Task<ArticleDto?> GetByIdAsync(int id);
-      
+        Task<ArticleDto> GetByIdAsync(int id);
     }
 
     public class ValidationResult
