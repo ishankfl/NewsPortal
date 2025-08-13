@@ -5,7 +5,6 @@ using NewsPortal.Domain.Interfaces;
 using NewsPortal.Domain.Models;
 using System;
 using System.Globalization;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -28,19 +27,24 @@ namespace NewsPortal.Application.Articles.Services
             _imageRepository = imageRepository ?? throw new ArgumentNullException(nameof(imageRepository));
         }
 
-        // ✅ Create new article
         public async Task<int> CreateAsync(CreateArticleRequest request)
         {
+            // Validate the request
             var validationResult = await ValidateForPublishingAsync(request);
             if (!validationResult.IsValid)
+            {
                 throw new ArgumentException($"Validation failed: {string.Join(", ", validationResult.Errors)}");
+            }
 
+            // Generate unique slug if not provided or if it already exists
             var slug = string.IsNullOrWhiteSpace(request.Slug)
                 ? await GenerateSlugAsync(request.Title)
                 : request.Slug;
 
             if (await _articleRepository.SlugExistsAsync(slug))
+            {
                 slug = await GenerateSlugAsync(request.Title);
+            }
 
             var article = new Article
             {
@@ -65,11 +69,11 @@ namespace NewsPortal.Application.Articles.Services
             return await _articleRepository.CreateAsync(article);
         }
 
-        // ✅ Validation for creating
         public async Task<ValidationResult> ValidateForPublishingAsync(CreateArticleRequest request)
         {
             var result = new ValidationResult { IsValid = true };
 
+            // Validate required fields
             if (string.IsNullOrWhiteSpace(request.Title))
                 result.Errors.Add("Title is required");
 
@@ -83,27 +87,35 @@ namespace NewsPortal.Application.Articles.Services
             else if (request.Status != "draft" && request.Status != "published")
                 result.Errors.Add("Status must be 'draft' or 'published'");
 
+            // Validate author exists
             if (request.AuthorId <= 0)
             {
                 result.Errors.Add("Author ID is required");
             }
-            else if (await _userRepository.GetByIdAsync(request.AuthorId) == null)
+            else
             {
-                result.Errors.Add("Author not found");
+                var author = await _userRepository.GetByIdAsync(request.AuthorId);
+                if (author == null)
+                    result.Errors.Add("Author not found");
             }
 
-            if (request.ReporterId.HasValue && request.ReporterId.Value > 0 &&
-                await _userRepository.GetByIdAsync(request.ReporterId.Value) == null)
+            // Validate reporter if provided
+            if (request.ReporterId.HasValue && request.ReporterId.Value > 0)
             {
-                result.Errors.Add("Reporter not found");
+                var reporter = await _userRepository.GetByIdAsync(request.ReporterId.Value);
+                if (reporter == null)
+                    result.Errors.Add("Reporter not found");
             }
 
-            if (request.CoverImage.HasValue && request.CoverImage.Value > 0 &&
-                await _imageRepository.GetByIdAsync(request.CoverImage.Value) == null)
+            // Validate cover image if provided
+            if (request.CoverImage.HasValue && request.CoverImage.Value > 0)
             {
-                result.Errors.Add("Cover image not found");
+                var image = await _imageRepository.GetByIdAsync(request.CoverImage.Value);
+                if (image == null)
+                    result.Errors.Add("Cover image not found");
             }
 
+            // Validate SEO fields length
             if (!string.IsNullOrWhiteSpace(request.SeoTitle) && request.SeoTitle.Length > 70)
                 result.Errors.Add("SEO title must be 70 characters or less");
 
@@ -113,8 +125,6 @@ namespace NewsPortal.Application.Articles.Services
             result.IsValid = result.Errors.Count == 0;
             return result;
         }
-
-        // ✅ Slug generation
         public async Task<string> GenerateSlugAsync(string title, int? excludeId = null)
         {
             var baseSlug = GenerateSlugFromTitle(title);
@@ -135,12 +145,21 @@ namespace NewsPortal.Application.Articles.Services
             if (string.IsNullOrWhiteSpace(title))
                 return "article";
 
-            var slug = RemoveDiacritics(title.ToLowerInvariant());
+            // Convert to lowercase
+            var slug = title.ToLowerInvariant();
+
+            // Remove diacritics (accents)
+            slug = RemoveDiacritics(slug);
+
+            // Replace spaces and special characters with hyphens
             slug = Regex.Replace(slug, @"[^a-z0-9\s-]", "");
             slug = Regex.Replace(slug, @"\s+", "-");
             slug = Regex.Replace(slug, @"-+", "-");
+
+            // Trim hyphens from start and end
             slug = slug.Trim('-');
 
+            // Limit length
             if (slug.Length > 100)
                 slug = slug.Substring(0, 100).TrimEnd('-');
 
@@ -154,7 +173,8 @@ namespace NewsPortal.Application.Articles.Services
 
             foreach (var c in normalizedString)
             {
-                if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
                 {
                     stringBuilder.Append(c);
                 }
@@ -162,57 +182,38 @@ namespace NewsPortal.Application.Articles.Services
 
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
         }
-
-        // ✅ Get paged articles
         public async Task<PagedArticleResponse> GetPagedAsync(int pageNumber, int pageSize, string? searchQuery)
         {
             var (articles, totalCount) = await _articleRepository.GetPagedAsync(pageNumber, pageSize, searchQuery);
 
             return new PagedArticleResponse
             {
-                Articles = articles.Select(MapToDto),
+                Articles = articles.Select(a => new ArticleDto
+                {
+                    Id = a.Id,
+                    LanguageCode = a.LanguageCode,
+                    Title = a.Title,
+                    Slug = a.Slug,
+                    Summary = a.Summary,
+                    Status = a.Status,
+                    PublicationDatetime = a.PublicationDatetime,
+                    AllowComments = a.AllowComments,
+                    CoverImageId = a.CoverImageId,
+                    AuthorId = a.AuthorId,
+                    ReporterId = a.ReporterId,
+                    SeoTitle = a.SeoTitle,
+                    SeoDescription = a.SeoDescription,
+                    SeoKeywords = a.SeoKeywords,
+                    CreatedAt = a.CreatedAt,
+                    UpdatedAt = a.UpdatedAt,
+                    ImageUrl = a.ImageUrl
+                }),
                 TotalCount = totalCount
             };
         }
 
-        // ✅ NEW — Get single article by ID
-        public async Task<ArticleDto?> GetByIdAsync(int id)
-        {
-            var article = await _articleRepository.GetByIdAsync(id);
-            return article == null ? null : MapToDto(article);
-        }
 
-        // ✅ NEW — Get single article by Slug
-        public async Task<ArticleDto?> GetBySlugAsync(string slug)
-        {
-            var article = await _articleRepository.GetBySlugAsync(slug);
-            return article == null ? null : MapToDto(article);
-        }
+       
 
-        // ✅ Helper — Map Article to DTO
-        private static ArticleDto MapToDto(Article a)
-        {
-            return new ArticleDto
-            {
-                Id = a.Id,
-                LanguageCode = a.LanguageCode,
-                Title = a.Title,
-                Slug = a.Slug,
-                Summary = a.Summary,
-                Content = a.Content,
-                Status = a.Status,
-                PublicationDatetime = a.PublicationDatetime,
-                AllowComments = a.AllowComments,
-                CoverImageId = a.CoverImageId,
-                ImageUrl = a.ImageUrl ?? a.CoverImage?.ImageUrl,
-                AuthorId = a.AuthorId,
-                ReporterId = a.ReporterId,
-                SeoTitle = a.SeoTitle,
-                SeoDescription = a.SeoDescription,
-                SeoKeywords = a.SeoKeywords,
-                CreatedAt = a.CreatedAt,
-                UpdatedAt = a.UpdatedAt
-            };
-        }
     }
 }

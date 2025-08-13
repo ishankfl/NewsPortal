@@ -51,3 +51,4 @@ J:\NewsPortal\NewsPortalBackend\NewsPortal.Domain\obj\Debug\net8.0\rjsmrazor.dsw
 J:\NewsPortal\NewsPortalBackend\NewsPortal.Domain\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
 J:\NewsPortal\NewsPortalBackend\NewsPortal.Domain\obj\Debug\net8.0\staticwebassets.build.json.cache
 J:\NewsPortal\NewsPortalBackend\NewsPortal.Domain\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+J:\NewsPortal\NewsPortalBackend\NewsPortal.Domain\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
