@@ -34,7 +34,7 @@ const BannerNewsPage = () => {
     const fetchCategories = async () => {
         try {
             const response = await getCategories();
-            console.log("Response",response);
+            console.log("Response", response);
             setCategories(response || []);
         } catch (error) {
             console.error('Error fetching categories:', error);
@@ -108,20 +108,12 @@ const BannerNewsPage = () => {
                             </h1>
                         </div>
 
-                        {/* Navigation */}
-                        <nav className="hidden md:flex space-x-6">
-                            {categories.map((item) => (
-                                <a
-                                    key={item.id}
-                                    href="#"
-                                    className="relative text-gray-700 font-medium text-base transition duration-300 hover:text-blue-600 
-                       after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-blue-600 
-                       after:left-0 after:-bottom-1 after:transition-all after:duration-300 hover:after:w-full"
-                                >
-                                    {item.name_Np}
-                                </a>
-                            ))}
-                        </nav>
+                        {/* Header Advertisement */}
+                        <div className="hidden md:block flex-1 mx-8">
+                            <div className="bg-gray-100 border border-gray-300 rounded-lg h-16 flex items-center justify-center text-gray-600 text-lg font-medium">
+                                📰 Advertisement Banner
+                            </div>
+                        </div>
 
                         {/* Mobile Menu Button */}
                         <div className="md:hidden">
@@ -144,15 +136,26 @@ const BannerNewsPage = () => {
                     </div>
                 </div>
 
-                {/* Cover Advertisement Banner */}
-                <div className="w-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 text-white text-center py-4">
+                {/* Category Navigation Bar */}
+                <div className="w-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 py-3">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <h2 className="text-lg md:text-xl font-semibold">
-                            📢 Exclusive: Get the Latest News & Updates — Stay Ahead with Paile Tech!
-                        </h2>
+                        <nav className="hidden md:flex space-x-6 justify-center">
+                            {categories.map((item) => (
+                                <a
+                                    key={item.id}
+                                    href="#"
+                                    className="relative text-white font-medium text-base transition duration-300 hover:text-yellow-300 
+                       after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-yellow-300 
+                       after:left-0 after:-bottom-1 after:transition-all after:duration-300 hover:after:w-full"
+                                >
+                                    {item.name_Np}
+                                </a>
+                            ))}
+                        </nav>
                     </div>
                 </div>
             </header>
+
 
 
 
