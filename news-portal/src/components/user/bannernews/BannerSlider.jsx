@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import DOMPurify from 'dompurify';
 import { FiChevronLeft, FiChevronRight, FiClock, FiUser } from 'react-icons/fi';
+import { imgServer } from '../../../api/server';
 
 const BannerSlider = ({ bannerNews }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
+    console.log("BannerSlide", bannerNews);
 
     // Auto-slide functionality
     useEffect(() => {
@@ -15,17 +18,9 @@ const BannerSlider = ({ bannerNews }) => {
         }
     }, [bannerNews.length]);
 
-    const nextSlide = () => {
-        setCurrentSlide((prev) => (prev + 1) % bannerNews.length);
-    };
-
-    const prevSlide = () => {
-        setCurrentSlide((prev) => (prev - 1 + bannerNews.length) % bannerNews.length);
-    };
-
-    const goToSlide = (index) => {
-        setCurrentSlide(index);
-    };
+    const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % bannerNews.length);
+    const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + bannerNews.length) % bannerNews.length);
+    const goToSlide = (index) => setCurrentSlide(index);
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -51,22 +46,19 @@ const BannerSlider = ({ bannerNews }) => {
                 {bannerNews.map((news, index) => (
                     <div
                         key={news.id}
-                        className={`absolute inset-0 transition-opacity duration-500 ${
-                            index === currentSlide ? 'opacity-100' : 'opacity-0'
-                        }`}
+                        className={`absolute inset-0 transition-opacity duration-500 ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}
                     >
                         {/* Background Image */}
                         <div className="absolute inset-0">
-                            {news.coverImageUrl ? (
+                            {news.imageUrl ? (
                                 <img
-                                    src={news.coverImageUrl}
+                                    src={`${imgServer}${news.imageUrl}`}
                                     alt={news.title}
                                     className="w-full h-full object-cover"
                                 />
                             ) : (
                                 <div className="w-full h-full bg-gradient-to-r from-blue-500 to-purple-600"></div>
                             )}
-                            {/* Overlay */}
                             <div className="absolute inset-0 bg-black bg-opacity-40"></div>
                         </div>
 
@@ -80,16 +72,18 @@ const BannerSlider = ({ bannerNews }) => {
                                     </span>
                                 )}
 
-                                {/* Title */}
-                                <h1 className="text-2xl md:text-4xl font-bold mb-4 leading-tight">
-                                    {news.title}
-                                </h1>
+                                {/* Title (Rich Text) */}
+                                <h1
+                                    className="text-2xl md:text-4xl font-bold mb-4 leading-tight"
+                                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(news.title) }}
+                                ></h1>
 
-                                {/* Summary */}
+                                {/* Summary (Rich Text) */}
                                 {news.summary && (
-                                    <p className="text-lg md:text-xl text-gray-200 mb-4 line-clamp-2">
-                                        {news.summary}
-                                    </p>
+                                    <p
+                                        className="text-lg md:text-xl text-gray-200 mb-4 line-clamp-2"
+                                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(news.summary) }}
+                                    ></p>
                                 )}
 
                                 {/* Meta Information */}
@@ -141,32 +135,24 @@ const BannerSlider = ({ bannerNews }) => {
                         <button
                             key={index}
                             onClick={() => goToSlide(index)}
-                            className={`w-3 h-3 rounded-full transition-all ${
-                                index === currentSlide
-                                    ? 'bg-white'
-                                    : 'bg-white bg-opacity-50 hover:bg-opacity-75'
-                            }`}
+                            className={`w-3 h-3 rounded-full transition-all ${index === currentSlide ? 'bg-white' : 'bg-white bg-opacity-50 hover:bg-opacity-75'}`}
                         />
                     ))}
                 </div>
             )}
 
-            {/* Thumbnail Navigation (for larger screens) */}
+            {/* Thumbnail Navigation */}
             {bannerNews.length > 1 && (
                 <div className="hidden lg:block absolute right-4 top-4 space-y-2">
                     {bannerNews.slice(0, 4).map((news, index) => (
                         <button
                             key={news.id}
                             onClick={() => goToSlide(index)}
-                            className={`block w-20 h-16 rounded overflow-hidden border-2 transition-all ${
-                                index === currentSlide
-                                    ? 'border-white'
-                                    : 'border-transparent opacity-70 hover:opacity-100'
-                            }`}
+                            className={`block w-20 h-16 rounded overflow-hidden border-2 transition-all ${index === currentSlide ? 'border-white' : 'border-transparent opacity-70 hover:opacity-100'}`}
                         >
-                            {news.coverImageUrl ? (
+                            {news.imageUrl ? (
                                 <img
-                                    src={news.coverImageUrl}
+                                    src={`${imgServer}${news.imageUrl}`}
                                     alt={news.title}
                                     className="w-full h-full object-cover"
                                 />

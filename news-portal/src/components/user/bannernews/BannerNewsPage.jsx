@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getPublishedArticles } from "../../../api/news-services";
+import { getAllArticles, getPublishedArticles } from "../../../api/news-services";
 import { getBanners } from "../../../api/banner-service";
 import BannerSlider from "./BannerSlider";
 import CategoryNews from "./CategoryNews";
@@ -20,8 +20,8 @@ const BannerNewsPage = () => {
 
   const fetchBannerNews = async () => {
     try {
-      const response = await getPublishedArticles({ page: 1, pageSize: 5 });
-      setBannerNews(response.articles || []);
+      const response = await getAllArticles({ page: 1, pageSize: 4 });
+      setBannerNews(response.items || []);
     } catch (error) {
       console.error("Error fetching banner news:", error);
       setBannerNews(demoArticles.slice(0, 5));
@@ -30,8 +30,9 @@ const BannerNewsPage = () => {
 
   const fetchTrendingNews = async () => {
     try {
-      const response = await getPublishedArticles({ page: 1, pageSize: 10 });
-      setTrendingNews(response.articles || []);
+      const response = await getAllArticles({ page: 1, pageSize: 3 });
+      console.log("Fetching trending news", response)
+      setTrendingNews(response.items || []);
     } catch (error) {
       console.error("Error fetching trending news:", error);
       setTrendingNews(demoArticles);

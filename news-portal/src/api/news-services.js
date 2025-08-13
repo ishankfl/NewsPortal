@@ -100,7 +100,7 @@ export const getAllArticles = async (params = {}) => {
     if (params.page) queryParams.append('pageNumber', params.page);
     if (params.pageSize) queryParams.append('pageSize', params.pageSize);
     if (params.search) queryParams.append('search', params.search);
-
+    console.log(`${server}/Article?${queryParams.toString()}`)
     const response = await axios.get(`${server}/Article?${queryParams.toString()}`, {
       timeout: 10000,
     });
