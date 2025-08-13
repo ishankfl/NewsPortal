@@ -34,25 +34,38 @@ namespace NewsPortal.Infrastructure.Repositories
                 RETURNING id;";
 
             using var conn = _context.CreateConnection();
-            return await conn.ExecuteScalarAsync<int>(sql, new
-            {
-                article.LanguageCode,
-                article.Title,
-                article.Slug,
-                article.Content,
-                article.Summary,
-                article.Status,
-                article.PublicationDatetime,
-                article.AllowComments,
-                article.CoverImageId,
-                article.AuthorId,
-                article.ReporterId,
-                article.SeoTitle,
-                article.SeoDescription,
-                article.SeoKeywords
-            });
-        }
+            await conn.OpenAsync();
 
+            using var transaction = conn.BeginTransaction();
+            try
+            {
+                var newId = await conn.ExecuteScalarAsync<int>(sql, new
+                {
+                    article.LanguageCode,
+                    article.Title,
+                    article.Slug,
+                    article.Content,
+                    article.Summary,
+                    article.Status,
+                    article.PublicationDatetime,
+                    article.AllowComments,
+                    article.CoverImageId,
+                    article.AuthorId,
+                    article.ReporterId,
+                    article.SeoTitle,
+                    article.SeoDescription,
+                    article.SeoKeywords
+                }, transaction);
+
+                transaction.Commit();
+                return newId;
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
+        }
 
         public async Task<bool> SlugExistsAsync(string slug, int? excludeId = null)
         {
@@ -71,44 +84,45 @@ namespace NewsPortal.Infrastructure.Repositories
             var count = await conn.ExecuteScalarAsync<int>(sql, parameters);
             return count > 0;
         }
+
         public async Task<(IEnumerable<ArticleWithImageDto> Articles, int TotalCount)> GetPagedAsync(int pageNumber, int pageSize, string? searchQuery)
         {
             var offset = (pageNumber - 1) * pageSize;
 
             var sql = @"
-        SELECT 
-            a.id AS Id,
-            a.language_code AS LanguageCode,
-            a.title AS Title,
-            a.slug AS Slug,
-            a.content AS Content,
-            a.summary AS Summary,
-            a.status AS Status,
-            a.publication_datetime AS PublicationDatetime,
-            a.allow_comments AS AllowComments,
-            a.cover_image_id AS CoverImageId,
-            a.author_id AS AuthorId,
-            a.reporter_id AS ReporterId,
-            a.seo_title AS SeoTitle,
-            a.seo_description AS SeoDescription,
-            a.seo_keywords AS SeoKeywords,
-            a.created_at AS CreatedAt,
-            a.updated_at AS UpdatedAt,
-            i.imageurl AS ImageUrl
-        FROM articles a
-        LEFT JOIN images i ON a.cover_image_id = i.id
-        WHERE (@SearchQuery IS NULL 
-               OR a.title ILIKE '%' || @SearchQuery || '%' 
-               OR a.content ILIKE '%' || @SearchQuery || '%')
-        ORDER BY a.publication_datetime DESC
-        LIMIT @PageSize OFFSET @Offset;
+                SELECT 
+                    a.id AS Id,
+                    a.language_code AS LanguageCode,
+                    a.title AS Title,
+                    a.slug AS Slug,
+                    a.content AS Content,
+                    a.summary AS Summary,
+                    a.status AS Status,
+                    a.publication_datetime AS PublicationDatetime,
+                    a.allow_comments AS AllowComments,
+                    a.cover_image_id AS CoverImageId,
+                    a.author_id AS AuthorId,
+                    a.reporter_id AS ReporterId,
+                    a.seo_title AS SeoTitle,
+                    a.seo_description AS SeoDescription,
+                    a.seo_keywords AS SeoKeywords,
+                    a.created_at AS CreatedAt,
+                    a.updated_at AS UpdatedAt,
+                    i.imageurl AS ImageUrl
+                FROM articles a
+                LEFT JOIN images i ON a.cover_image_id = i.id
+                WHERE (@SearchQuery IS NULL 
+                       OR a.title ILIKE '%' || @SearchQuery || '%' 
+                       OR a.content ILIKE '%' || @SearchQuery || '%')
+                ORDER BY a.publication_datetime DESC
+                LIMIT @PageSize OFFSET @Offset;
 
-        SELECT COUNT(*) 
-        FROM articles a
-        WHERE (@SearchQuery IS NULL 
-               OR a.title ILIKE '%' || @SearchQuery || '%' 
-               OR a.content ILIKE '%' || @SearchQuery || '%');
-    ";
+                SELECT COUNT(*) 
+                FROM articles a
+                WHERE (@SearchQuery IS NULL 
+                       OR a.title ILIKE '%' || @SearchQuery || '%' 
+                       OR a.content ILIKE '%' || @SearchQuery || '%');
+            ";
 
             using var conn = _context.CreateConnection();
             using var multi = await conn.QueryMultipleAsync(sql, new
@@ -124,7 +138,35 @@ namespace NewsPortal.Infrastructure.Repositories
             return (articles, totalCount);
         }
 
+        public async Task<ArticleWithImageDto?> GetByIdAsync(int id)
+        {
+            const string sql = @"
+                SELECT 
+                    a.id AS Id,
+                    a.language_code AS LanguageCode,
+                    a.title AS Title,
+                    a.slug AS Slug,
+                    a.content AS Content,
+                    a.summary AS Summary,
+                    a.status AS Status,
+                    a.publication_datetime AS PublicationDatetime,
+                    a.allow_comments AS AllowComments,
+                    a.cover_image_id AS CoverImageId,
+                    a.author_id AS AuthorId,
+                    a.reporter_id AS ReporterId,
+                    a.seo_title AS SeoTitle,
+                    a.seo_description AS SeoDescription,
+                    a.seo_keywords AS SeoKeywords,
+                    a.created_at AS CreatedAt,
+                    a.updated_at AS UpdatedAt,
+                    i.imageurl AS ImageUrl
+                FROM articles a
+                LEFT JOIN images i ON a.cover_image_id = i.id
+                WHERE a.id = @Id;
+            ";
 
-
+            using var conn = _context.CreateConnection();
+            return await conn.QueryFirstOrDefaultAsync<ArticleWithImageDto>(sql, new { Id = id });
+        }
     }
 }

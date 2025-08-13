@@ -66,8 +66,6 @@ J:\NewsPortal\NewsPortalBackend\NewsPortal.Infrastructure\obj\Debug\net8.0\refin
 J:\NewsPortal\NewsPortalBackend\NewsPortal.Infrastructure\obj\Debug\net8.0\NewsPortal.Infrastructure.pdb
 J:\NewsPortal\NewsPortalBackend\NewsPortal.Infrastructure\obj\Debug\net8.0\NewsPortal.Infrastructure.genruntimeconfig.cache
 J:\NewsPortal\NewsPortalBackend\NewsPortal.Infrastructure\obj\Debug\net8.0\ref\NewsPortal.Infrastructure.dll
-J:\NewsPortal\NewsPortalBackend\NewsPortal.Infrastructure\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-J:\NewsPortal\NewsPortalBackend\NewsPortal.Infrastructure\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
 J:\NewsPortal\NewsPortalBackend\NewsPortal.Infrastructure\bin\Debug\net8.0\Dapper.SqlBuilder.dll
 J:\NewsPortal\NewsPortalBackend\NewsPortal.Infrastructure\obj\Debug\net8.0\rpswa.dswa.cache.json
 J:\NewsPortal\NewsPortalBackend\NewsPortal.Infrastructure\bin\Debug\net8.0\NewsPortal.Domain.staticwebassets.endpoints.json
@@ -77,4 +75,3 @@ J:\NewsPortal\NewsPortalBackend\NewsPortal.Infrastructure\obj\Debug\net8.0\rjsmr
 J:\NewsPortal\NewsPortalBackend\NewsPortal.Infrastructure\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
 J:\NewsPortal\NewsPortalBackend\NewsPortal.Infrastructure\obj\Debug\net8.0\staticwebassets.build.json.cache
 J:\NewsPortal\NewsPortalBackend\NewsPortal.Infrastructure\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-J:\NewsPortal\NewsPortalBackend\NewsPortal.Infrastructure\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

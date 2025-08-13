@@ -24,5 +24,7 @@ namespace NewsPortal.Domain.Interfaces
         /// <param name="searchQuery">Optional search query</param>
         /// <returns>Tuple with collection of ArticleWithImageDto and total count</returns>
         Task<(IEnumerable<ArticleWithImageDto> Articles, int TotalCount)> GetPagedAsync(int pageNumber, int pageSize, string? searchQuery);
+
+         Task<ArticleWithImageDto?> GetByIdAsync(int id);
     }
 }
