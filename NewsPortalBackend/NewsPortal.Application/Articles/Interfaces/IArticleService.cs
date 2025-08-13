@@ -12,7 +12,7 @@ namespace NewsPortal.Application.Articles.Interfaces
         /// <returns>The ID of the newly created article</returns>
         Task<int> CreateAsync(CreateArticleRequest request);
         Task<PagedArticleResponse> GetPagedAsync(int pageNumber, int pageSize, string? searchQuery);
-
+ Task<ArticleDto?> GetByIdAsync(int id);
         /*    /// <summary>
             /// Updates an existing article
             /// </summary>
