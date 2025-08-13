@@ -54,10 +54,10 @@ builder.Services.AddMemoryCache();
 
 builder.Services.AddScoped<RateLimitFilter>();
 
-builder.Services.AddControllers(options =>
-{
-    options.Filters.Add<RateLimitFilter>();
-});
+// builder.Services.AddControllers(options =>
+// {
+//     options.Filters.Add<RateLimitFilter>();
+// });
 
 var app = builder.Build();
 
