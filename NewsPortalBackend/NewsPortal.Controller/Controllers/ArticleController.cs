@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using NewsPortal.Application.Articles.DTOs;
 using NewsPortal.Application.Articles.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace NewsPortal.Controller.Controllers
@@ -64,6 +65,28 @@ namespace NewsPortal.Controller.Controllers
                     return NotFound($"Article with ID {id} not found");
 
                 return Ok(article);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        // GET: api/article/{id}/related?limit[pageSize]=4
+        [HttpGet("{id}/related")]
+        public async Task<IActionResult> GetRelated(int id, [FromQuery(Name = "limit[pageSize]")] int pageSize = 4)
+        {
+            try
+            {
+                var relatedArticles = await _articleService.GetRelatedArticlesAsync(id, pageSize);
+                if (relatedArticles == null)
+                    return NotFound($"Article with ID {id} not found");
+
+                return Ok(relatedArticles);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
