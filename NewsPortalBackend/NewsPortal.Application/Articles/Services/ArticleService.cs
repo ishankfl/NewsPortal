@@ -4,6 +4,7 @@ using NewsPortal.Application.Users.Interfaces;
 using NewsPortal.Domain.Interfaces;
 using NewsPortal.Domain.Models;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -29,14 +30,12 @@ namespace NewsPortal.Application.Articles.Services
 
         public async Task<int> CreateAsync(CreateArticleRequest request)
         {
-            // Validate the request
             var validationResult = await ValidateForPublishingAsync(request);
             if (!validationResult.IsValid)
             {
                 throw new ArgumentException($"Validation failed: {string.Join(", ", validationResult.Errors)}");
             }
 
-            // Generate unique slug if not provided or if it already exists
             var slug = string.IsNullOrWhiteSpace(request.Slug)
                 ? await GenerateSlugAsync(request.Title)
                 : request.Slug;
@@ -73,7 +72,6 @@ namespace NewsPortal.Application.Articles.Services
         {
             var result = new ValidationResult { IsValid = true };
 
-            // Validate required fields
             if (string.IsNullOrWhiteSpace(request.Title))
                 result.Errors.Add("Title is required");
 
@@ -87,7 +85,6 @@ namespace NewsPortal.Application.Articles.Services
             else if (request.Status != "draft" && request.Status != "published")
                 result.Errors.Add("Status must be 'draft' or 'published'");
 
-            // Validate author exists
             if (request.AuthorId <= 0)
             {
                 result.Errors.Add("Author ID is required");
@@ -99,7 +96,6 @@ namespace NewsPortal.Application.Articles.Services
                     result.Errors.Add("Author not found");
             }
 
-            // Validate reporter if provided
             if (request.ReporterId.HasValue && request.ReporterId.Value > 0)
             {
                 var reporter = await _userRepository.GetByIdAsync(request.ReporterId.Value);
@@ -107,7 +103,6 @@ namespace NewsPortal.Application.Articles.Services
                     result.Errors.Add("Reporter not found");
             }
 
-            // Validate cover image if provided
             if (request.CoverImage.HasValue && request.CoverImage.Value > 0)
             {
                 var image = await _imageRepository.GetByIdAsync(request.CoverImage.Value);
@@ -115,7 +110,6 @@ namespace NewsPortal.Application.Articles.Services
                     result.Errors.Add("Cover image not found");
             }
 
-            // Validate SEO fields length
             if (!string.IsNullOrWhiteSpace(request.SeoTitle) && request.SeoTitle.Length > 70)
                 result.Errors.Add("SEO title must be 70 characters or less");
 
@@ -146,21 +140,13 @@ namespace NewsPortal.Application.Articles.Services
             if (string.IsNullOrWhiteSpace(title))
                 return "article";
 
-            // Convert to lowercase
             var slug = title.ToLowerInvariant();
-
-            // Remove diacritics (accents)
             slug = RemoveDiacritics(slug);
-
-            // Replace spaces and special characters with hyphens
             slug = Regex.Replace(slug, @"[^a-z0-9\s-]", "");
             slug = Regex.Replace(slug, @"\s+", "-");
             slug = Regex.Replace(slug, @"-+", "-");
-
-            // Trim hyphens from start and end
             slug = slug.Trim('-');
 
-            // Limit length
             if (slug.Length > 100)
                 slug = slug.Substring(0, 100).TrimEnd('-');
 
@@ -241,6 +227,40 @@ namespace NewsPortal.Application.Articles.Services
                 UpdatedAt = article.UpdatedAt,
                 ImageUrl = article.ImageUrl
             };
+        }
+
+        public async Task<IEnumerable<ArticleDto>> GetRelatedArticlesAsync(int articleId, int pageSize)
+        {
+            if (pageSize <= 0)
+                throw new ArgumentException("Page size must be greater than zero.");
+
+            var article = await _articleRepository.GetByIdAsync(articleId);
+            if (article == null)
+                return null; // Return null to indicate article not found, handled by controller
+
+            var relatedArticles = await _articleRepository.GetRelatedArticlesAsync(articleId, pageSize);
+
+            return relatedArticles.Select(a => new ArticleDto
+            {
+                Id = a.Id,
+                LanguageCode = a.LanguageCode,
+                Title = a.Title,
+                Slug = a.Slug,
+                Content = a.Content,
+                Summary = a.Summary,
+                Status = a.Status,
+                PublicationDatetime = a.PublicationDatetime,
+                AllowComments = a.AllowComments,
+                CoverImageId = a.CoverImageId,
+                AuthorId = a.AuthorId,
+                ReporterId = a.ReporterId,
+                SeoTitle = a.SeoTitle,
+                SeoDescription = a.SeoDescription,
+                SeoKeywords = a.SeoKeywords,
+                CreatedAt = a.CreatedAt,
+                UpdatedAt = a.UpdatedAt,
+                ImageUrl = a.ImageUrl
+            });
         }
     }
 }

@@ -115,3 +115,6 @@ J:\NewsPortal\NewsPortalBackend\NewsPortal.Controller\obj\Debug\net8.0\rjsmrazor
 J:\NewsPortal\NewsPortalBackend\NewsPortal.Controller\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
 J:\NewsPortal\NewsPortalBackend\NewsPortal.Controller\obj\Debug\net8.0\staticwebassets.build.json.cache
 J:\NewsPortal\NewsPortalBackend\NewsPortal.Controller\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+J:\NewsPortal\NewsPortalBackend\NewsPortal.Controller\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+J:\NewsPortal\NewsPortalBackend\NewsPortal.Controller\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+J:\NewsPortal\NewsPortalBackend\NewsPortal.Controller\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

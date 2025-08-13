@@ -10,6 +10,7 @@ namespace NewsPortal.Application.Articles.Interfaces
         Task<string> GenerateSlugAsync(string title, int? excludeId = null);
         Task<PagedArticleResponse> GetPagedAsync(int pageNumber, int pageSize, string? searchQuery);
         Task<ArticleDto> GetByIdAsync(int id);
+        Task<IEnumerable<ArticleDto>> GetRelatedArticlesAsync(int articleId, int pageSize);
     }
 
     public class ValidationResult

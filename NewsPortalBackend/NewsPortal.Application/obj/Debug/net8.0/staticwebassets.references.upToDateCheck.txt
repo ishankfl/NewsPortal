@@ -32,3 +32,5 @@ J:\NewsPortal\NewsPortalBackend\NewsPortal.Domain\obj\Debug\net8.0\staticwebasse
 J:\NewsPortal\NewsPortalBackend\NewsPortal.Infrastructure\obj\Debug\net8.0\staticwebassets.build.json
 J:\NewsPortal\NewsPortalBackend\NewsPortal.Domain\obj\Debug\net8.0\staticwebassets.build.json
 J:\NewsPortal\NewsPortalBackend\NewsPortal.Infrastructure\obj\Debug\net8.0\staticwebassets.build.json
+J:\NewsPortal\NewsPortalBackend\NewsPortal.Domain\obj\Debug\net8.0\staticwebassets.build.json
+J:\NewsPortal\NewsPortalBackend\NewsPortal.Infrastructure\obj\Debug\net8.0\staticwebassets.build.json
