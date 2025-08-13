@@ -125,6 +125,7 @@ namespace NewsPortal.Application.Articles.Services
             result.IsValid = result.Errors.Count == 0;
             return result;
         }
+
         public async Task<string> GenerateSlugAsync(string title, int? excludeId = null)
         {
             var baseSlug = GenerateSlugFromTitle(title);
@@ -182,6 +183,7 @@ namespace NewsPortal.Application.Articles.Services
 
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
         }
+
         public async Task<PagedArticleResponse> GetPagedAsync(int pageNumber, int pageSize, string? searchQuery)
         {
             var (articles, totalCount) = await _articleRepository.GetPagedAsync(pageNumber, pageSize, searchQuery);
@@ -212,8 +214,33 @@ namespace NewsPortal.Application.Articles.Services
             };
         }
 
+        public async Task<ArticleDto> GetByIdAsync(int id)
+        {
+            var article = await _articleRepository.GetByIdAsync(id);
+            if (article == null)
+                return null;
 
-       
-
+            return new ArticleDto
+            {
+                Id = article.Id,
+                LanguageCode = article.LanguageCode,
+                Title = article.Title,
+                Slug = article.Slug,
+                Content = article.Content,
+                Summary = article.Summary,
+                Status = article.Status,
+                PublicationDatetime = article.PublicationDatetime,
+                AllowComments = article.AllowComments,
+                CoverImageId = article.CoverImageId,
+                AuthorId = article.AuthorId,
+                ReporterId = article.ReporterId,
+                SeoTitle = article.SeoTitle,
+                SeoDescription = article.SeoDescription,
+                SeoKeywords = article.SeoKeywords,
+                CreatedAt = article.CreatedAt,
+                UpdatedAt = article.UpdatedAt,
+                ImageUrl = article.ImageUrl
+            };
+        }
     }
 }
