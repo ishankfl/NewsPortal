@@ -19,7 +19,6 @@ namespace NewsPortal.Controller.Controllers
 
         // POST: api/article
         [HttpPost]
-        [HttpPost]
         public async Task<IActionResult> Create([FromForm] CreateArticleRequest request)
         {
             if (!ModelState.IsValid)
@@ -38,43 +37,39 @@ namespace NewsPortal.Controller.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
         // GET: api/article
-[HttpGet]
-public async Task<IActionResult> GetPaged([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null)
-{
-    try
-    {
-        var result = await _articleService.GetPagedAsync(pageNumber, pageSize, search);
-        return Ok(result);
-    }
-    catch (Exception ex)
-    {
-        return StatusCode(500, $"Internal server error: {ex.Message}");
-    }
-}
+        [HttpGet]
+        public async Task<IActionResult> GetPaged([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null)
+        {
+            try
+            {
+                var result = await _articleService.GetPagedAsync(pageNumber, pageSize, search);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
 
+        // GET: api/article/{id}
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            try
+            {
+                var article = await _articleService.GetByIdAsync(id);
+                if (article == null)
+                    return NotFound($"Article with ID {id} not found");
 
-
-
-        //// GET: api/article/{id}
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> GetById(int id)
-        //{
-        //    try
-        //    {
-        //        var article = await _articleService.GetByIdAsync(id);
-        //        if (article == null)
-        //            return NotFound($"Article with ID {id} not found");
-
-        //        return Ok(article);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, $"Internal server error: {ex.Message}");
-        //    }
-        //}
-
-
+                return Ok(article);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
     }
 
     public class PublishRequest
