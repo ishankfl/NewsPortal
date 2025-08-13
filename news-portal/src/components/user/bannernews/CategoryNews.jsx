@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import DOMPurify from 'dompurify';
 import { FiClock, FiUser, FiShare2, FiBookmark, FiFileText } from 'react-icons/fi';
 import { getAllArticles } from '../../../api/news-services';
 import { demoArticles } from './demoData';
@@ -136,9 +137,9 @@ const CategoryNews = ({ selectedCategory, categories }) => {
                         <div className="bg-white rounded-lg shadow-sm overflow-hidden mb-8">
                             <div className="md:flex">
                                 <div className="md:w-1/2">
-                                    {news[0].coverImageUrl ? (
+                                    {news[0].imageUrl ? (
                                         <img
-                                            src={`${imgServer}${news[0].coverImageUrl}`}
+                                            src={`${imgServer}${news[0].imageUrl}`}
                                             alt={news[0].title}
                                             className="w-full h-64 md:h-full object-cover"
                                         />
@@ -154,13 +155,15 @@ const CategoryNews = ({ selectedCategory, categories }) => {
                                             {news[0].categoryName}
                                         </span>
                                     )}
-                                    <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">
-                                        {news[0].title}
-                                    </h3>
+                                    <h3
+                                        className="text-xl md:text-2xl font-bold text-gray-900 mb-3"
+                                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(news[0].title) }}
+                                    />
                                     {news[0].summary && (
-                                        <p className="text-gray-600 mb-4 line-clamp-3">
-                                            {truncateText(news[0].summary, 150)}
-                                        </p>
+                                        <p
+                                            className="text-gray-600 mb-4 line-clamp-3"
+                                            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(truncateText(news[0].summary, 150)) }}
+                                        />
                                     )}
                                     <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
                                         <div className="flex items-center space-x-4">
@@ -192,7 +195,7 @@ const CategoryNews = ({ selectedCategory, categories }) => {
                                     {article.imageUrl ? (
                                         <img
                                             src={`${imgServer}${article.imageUrl}`}
-                                            alt={`${imgServer}${article.imageUrl}`}
+                                            alt={article.title}
                                             className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                                         />
                                     ) : (
@@ -207,13 +210,15 @@ const CategoryNews = ({ selectedCategory, categories }) => {
                                             {article.categoryName}
                                         </span>
                                     )}
-                                    <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
-                                        {article.title}
-                                    </h3>
+                                    <h3
+                                        className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2"
+                                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(article.title) }}
+                                    />
                                     {article.summary && (
-                                        <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-                                            {truncateText(article.summary, 100)}
-                                        </p>
+                                        <p
+                                            className="text-gray-600 text-sm mb-3 line-clamp-2"
+                                            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(truncateText(article.summary, 100)) }}
+                                        />
                                     )}
                                     <div className="flex items-center justify-between text-xs text-gray-500">
                                         <div className="flex items-center space-x-2">
