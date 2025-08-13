@@ -34,6 +34,7 @@ const BannerNewsPage = () => {
     const fetchCategories = async () => {
         try {
             const response = await getCategories();
+            console.log("Response",response);
             setCategories(response || []);
         } catch (error) {
             console.error('Error fetching categories:', error);
@@ -91,23 +92,69 @@ const BannerNewsPage = () => {
 
     return (
         <div className="min-h-screen bg-gray-50">
-            {/* Header */}
-            <header className="bg-white shadow-sm border-b">
+            <header className="bg-white shadow-md border-b">
+                {/* Top Header */}
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-16">
-                        <div className="flex items-center">
-                            <h1 className="text-2xl font-bold text-gray-900">News Portal</h1>
+                    <div className="flex items-center justify-between h-20">
+                        {/* Logo & Brand */}
+                        <div className="flex items-center space-x-4">
+                            <img
+                                src="/images/logo.jpg"
+                                alt="Paile Tech Logo"
+                                className="max-w-[80px] max-h-[80px] object-contain rounded-md shadow-sm"
+                            />
+                            <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
+                                पाइला <span className="text-blue-600">Tech</span>
+                            </h1>
                         </div>
-                        <nav className="hidden md:flex space-x-8">
-                            <a href="#" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Home</a>
-                            <a href="#" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Politics</a>
-                            <a href="#" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Sports</a>
-                            <a href="#" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Technology</a>
-                            <a href="#" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Business</a>
+
+                        {/* Navigation */}
+                        <nav className="hidden md:flex space-x-6">
+                            {categories.map((item) => (
+                                <a
+                                    key={item.id}
+                                    href="#"
+                                    className="relative text-gray-700 font-medium text-base transition duration-300 hover:text-blue-600 
+                       after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-blue-600 
+                       after:left-0 after:-bottom-1 after:transition-all after:duration-300 hover:after:w-full"
+                                >
+                                    {item.name_Np}
+                                </a>
+                            ))}
                         </nav>
+
+                        {/* Mobile Menu Button */}
+                        <div className="md:hidden">
+                            <button className="text-gray-700 hover:text-blue-600 focus:outline-none">
+                                <svg
+                                    className="w-7 h-7"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M4 6h16M4 12h16M4 18h16"
+                                    />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Cover Advertisement Banner */}
+                <div className="w-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 text-white text-center py-4">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <h2 className="text-lg md:text-xl font-semibold">
+                            📢 Exclusive: Get the Latest News & Updates — Stay Ahead with Paile Tech!
+                        </h2>
                     </div>
                 </div>
             </header>
+
+
 
             {/* Main Content */}
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -119,8 +166,8 @@ const BannerNewsPage = () => {
 
                         {/* Advertisement Banner */}
                         <div className="my-8">
-                            <Advertisement 
-                                advertisements={advertisements.filter(ad => ad.position === 'Header Banner')} 
+                            <Advertisement
+                                advertisements={advertisements.filter(ad => ad.position === 'Header Banner')}
                                 position="banner"
                             />
                         </div>
@@ -130,11 +177,10 @@ const BannerNewsPage = () => {
                             <div className="flex flex-wrap gap-2 mb-6">
                                 <button
                                     onClick={() => setSelectedCategory('all')}
-                                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                                        selectedCategory === 'all'
-                                            ? 'bg-blue-600 text-white'
-                                            : 'bg-white text-gray-700 hover:bg-gray-100'
-                                    }`}
+                                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${selectedCategory === 'all'
+                                        ? 'bg-blue-600 text-white'
+                                        : 'bg-white text-gray-700 hover:bg-gray-100'
+                                        }`}
                                 >
                                     All News
                                 </button>
@@ -142,11 +188,10 @@ const BannerNewsPage = () => {
                                     <button
                                         key={category.id}
                                         onClick={() => setSelectedCategory(category.id)}
-                                        className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                                            selectedCategory === category.id
-                                                ? 'bg-blue-600 text-white'
-                                                : 'bg-white text-gray-700 hover:bg-gray-100'
-                                        }`}
+                                        className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${selectedCategory === category.id
+                                            ? 'bg-blue-600 text-white'
+                                            : 'bg-white text-gray-700 hover:bg-gray-100'
+                                            }`}
                                     >
                                         {category.name}
                                     </button>
@@ -155,8 +200,8 @@ const BannerNewsPage = () => {
                         </div>
 
                         {/* Category-wise News */}
-                        <CategoryNews 
-                            selectedCategory={selectedCategory} 
+                        <CategoryNews
+                            selectedCategory={selectedCategory}
                             categories={categories}
                         />
                     </div>
@@ -168,8 +213,8 @@ const BannerNewsPage = () => {
 
                         {/* Sidebar Advertisement */}
                         <div className="mt-8">
-                            <Advertisement 
-                                advertisements={advertisements.filter(ad => ad.position === 'Sidebar')} 
+                            <Advertisement
+                                advertisements={advertisements.filter(ad => ad.position === 'Sidebar')}
                                 position="sidebar"
                             />
                         </div>
