@@ -17,7 +17,6 @@ const BannerNewsPage = () => {
   const [advertisements, setAdvertisements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("all");
-
   const fetchBannerNews = async () => {
     try {
       const response = await getAllArticles({ page: 1, pageSize: 4 });
@@ -51,6 +50,7 @@ const BannerNewsPage = () => {
 
   useEffect(() => {
     const fetchAll = async () => {
+      console.log("Categoriesss", categories)
       setLoading(true);
       await Promise.all([fetchBannerNews(), fetchTrendingNews(), fetchAdvertisements()]);
       setLoading(false);
@@ -99,6 +99,7 @@ const BannerNewsPage = () => {
                   All News
                 </button>
                 {categories.map((category) => (
+                  <div>
                   <button
                     key={category.id}
                     onClick={() => setSelectedCategory(category.id)}
@@ -108,8 +109,9 @@ const BannerNewsPage = () => {
                         : "bg-white text-gray-700 hover:bg-gray-100"
                     }`}
                   >
-                    {category.name_Np || category.name}
+                    {category.name_Np || category.name_En}
                   </button>
+                  </div>
                 ))}
               </div>
             </div>

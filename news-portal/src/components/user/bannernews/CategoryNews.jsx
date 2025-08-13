@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { FiClock, FiUser, FiEye, FiShare2, FiBookmark, FiFileText } from 'react-icons/fi';
-import { getPublishedArticles } from '../../../api/news-services';
+import { FiClock, FiUser, FiShare2, FiBookmark, FiFileText } from 'react-icons/fi';
+import { getAllArticles } from '../../../api/news-services';
 import { demoArticles } from './demoData';
+import { imgServer } from '../../../api/server';
 
 const CategoryNews = ({ selectedCategory, categories }) => {
     const [news, setNews] = useState([]);
@@ -16,28 +17,30 @@ const CategoryNews = ({ selectedCategory, categories }) => {
     const fetchCategoryNews = async () => {
         try {
             setLoading(true);
-            const params = {
+
+            const queryParams = {
                 page: pagination.page,
                 pageSize: pagination.pageSize
             };
 
-            // Add category filter if not 'all'
             if (selectedCategory !== 'all') {
-                params.categoryId = selectedCategory;
+                queryParams.categoryId = selectedCategory;
             }
 
-            const response = await getPublishedArticles(params);
-            setNews(response.articles || []);
+            const response = await getAllArticles(queryParams);
+
+            setNews(prev => pagination.page === 1 ? response.items || [] : [...prev, ...(response.items || [])]);
             setPagination(prev => ({
                 ...prev,
                 totalCount: response.totalCount || 0
             }));
         } catch (error) {
             console.error('Error fetching category news:', error);
-            // Fallback to demo data
+
             const filteredNews = selectedCategory === 'all'
                 ? demoArticles
                 : demoArticles.filter(article => article.categoryId === selectedCategory);
+
             setNews(filteredNews);
             setPagination(prev => ({
                 ...prev,
@@ -47,6 +50,11 @@ const CategoryNews = ({ selectedCategory, categories }) => {
             setLoading(false);
         }
     };
+
+    // Reset page when category changes
+    useEffect(() => {
+        setPagination(prev => ({ ...prev, page: 1 }));
+    }, [selectedCategory]);
 
     useEffect(() => {
         fetchCategoryNews();
@@ -69,14 +77,16 @@ const CategoryNews = ({ selectedCategory, categories }) => {
     const getCategoryName = (categoryId) => {
         if (selectedCategory === 'all') return 'All News';
         const category = categories.find(cat => cat.id === categoryId);
-        return category ? category.name : 'News';
+        return category ? (category.name_Np || category.name_En) : 'News';
     };
 
     const loadMore = () => {
-        setPagination(prev => ({
-            ...prev,
-            page: prev.page + 1
-        }));
+        if (pagination.page * pagination.pageSize < pagination.totalCount) {
+            setPagination(prev => ({
+                ...prev,
+                page: prev.page + 1
+            }));
+        }
     };
 
     if (loading && pagination.page === 1) {
@@ -110,7 +120,7 @@ const CategoryNews = ({ selectedCategory, categories }) => {
                 </span>
             </div>
 
-            {/* News Grid */}
+            {/* No news fallback */}
             {news.length === 0 ? (
                 <div className="text-center py-12">
                     <div className="text-gray-400 mb-4">
@@ -121,14 +131,14 @@ const CategoryNews = ({ selectedCategory, categories }) => {
                 </div>
             ) : (
                 <>
-                    {/* Featured Article (First Article) */}
+                    {/* Featured Article */}
                     {news.length > 0 && (
                         <div className="bg-white rounded-lg shadow-sm overflow-hidden mb-8">
                             <div className="md:flex">
                                 <div className="md:w-1/2">
                                     {news[0].coverImageUrl ? (
                                         <img
-                                            src={news[0].coverImageUrl}
+                                            src={`${imgServer}${news[0].coverImageUrl}`}
                                             alt={news[0].title}
                                             className="w-full h-64 md:h-full object-cover"
                                         />
@@ -149,7 +159,7 @@ const CategoryNews = ({ selectedCategory, categories }) => {
                                     </h3>
                                     {news[0].summary && (
                                         <p className="text-gray-600 mb-4 line-clamp-3">
-                                            {news[0].summary}
+                                            {truncateText(news[0].summary, 150)}
                                         </p>
                                     )}
                                     <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -165,14 +175,6 @@ const CategoryNews = ({ selectedCategory, categories }) => {
                                                 <span>{formatDate(news[0].publicationDatetime || news[0].createdAt)}</span>
                                             </div>
                                         </div>
-                                        <div className="flex items-center space-x-3">
-                                            <button className="flex items-center space-x-1 text-gray-500 hover:text-blue-600">
-                                                <FiBookmark className="w-4 h-4" />
-                                            </button>
-                                            <button className="flex items-center space-x-1 text-gray-500 hover:text-blue-600">
-                                                <FiShare2 className="w-4 h-4" />
-                                            </button>
-                                        </div>
                                     </div>
                                     <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">
                                         Read More
@@ -182,15 +184,15 @@ const CategoryNews = ({ selectedCategory, categories }) => {
                         </div>
                     )}
 
-                    {/* Regular Articles Grid */}
+                    {/* Articles Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {news.slice(1).map((article) => (
                             <div key={article.id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
                                 <div className="aspect-video overflow-hidden">
-                                    {article.coverImageUrl ? (
+                                    {article.imageUrl ? (
                                         <img
-                                            src={article.coverImageUrl}
-                                            alt={article.title}
+                                            src={`${imgServer}${article.imageUrl}`}
+                                            alt={`${imgServer}${article.imageUrl}`}
                                             className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                                         />
                                     ) : (
@@ -232,7 +234,7 @@ const CategoryNews = ({ selectedCategory, categories }) => {
                         ))}
                     </div>
 
-                    {/* Load More Button */}
+                    {/* Load More */}
                     {pagination.page * pagination.pageSize < pagination.totalCount && (
                         <div className="text-center mt-8">
                             <button
