@@ -2,11 +2,16 @@ import React, { useState, useEffect } from 'react';
 import DOMPurify from 'dompurify';
 import { FiChevronLeft, FiChevronRight, FiClock, FiUser } from 'react-icons/fi';
 import { imgServer } from '../../../api/server';
+import { useNavigate } from 'react-router-dom'; // Add this import
 
 const BannerSlider = ({ bannerNews }) => {
+    const navigate = useNavigate(); // Initialize the navigate function
+
     const [currentSlide, setCurrentSlide] = useState(0);
     console.log("BannerSlide", bannerNews);
-
+    const handleReadMore = (newsId) => {
+        navigate(`/news/${newsId}`); // Navigate to the single news view page
+    };
     // Auto-slide functionality
     useEffect(() => {
         if (bannerNews.length > 1) {
@@ -101,7 +106,10 @@ const BannerSlider = ({ bannerNews }) => {
                                 </div>
 
                                 {/* Read More Button */}
-                                <button className="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                                <button
+                                    onClick={() => handleReadMore(news.id)}
+                                    className="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                                >
                                     Read Full Story
                                 </button>
                             </div>
