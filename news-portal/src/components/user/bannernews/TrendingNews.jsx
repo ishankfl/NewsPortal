@@ -1,5 +1,6 @@
 import React from 'react';
 import { FiTrendingUp, FiClock, FiEye, FiArrowRight } from 'react-icons/fi';
+import { imgServer } from '../../../api/server';
 
 const TrendingNews = ({ trendingNews }) => {
     const formatDate = (dateString) => {
@@ -16,7 +17,7 @@ const TrendingNews = ({ trendingNews }) => {
     };
 
     return (
-        <div className="bg-white rounded-lg shadow-sm">
+        <div className="bg-white rounded-lg shadow-sm space-y-6">
             {/* Header */}
             <div className="p-4 border-b border-gray-200">
                 <div className="flex items-center space-x-2">
@@ -24,6 +25,11 @@ const TrendingNews = ({ trendingNews }) => {
                     <h2 className="text-lg font-semibold text-gray-900">Trending News</h2>
                 </div>
                 <p className="text-sm text-gray-500 mt-1">Most popular stories right now</p>
+            </div>
+
+            {/* Advertisement Banner */}
+            <div className="p-4 bg-gray-100 flex items-center justify-center rounded-lg text-gray-500 text-sm font-medium">
+                Advertisement
             </div>
 
             {/* Trending News List */}
@@ -50,9 +56,9 @@ const TrendingNews = ({ trendingNews }) => {
                                             {/* Thumbnail */}
                                             <div className="flex-shrink-0">
                                                 <div className="w-16 h-12 rounded overflow-hidden">
-                                                    {news.coverImageUrl ? (
+                                                    {news.imageUrl ? (
                                                         <img
-                                                            src={news.coverImageUrl}
+                                                            src={`${imgServer}${news.imageUrl}`}
                                                             alt={news.title}
                                                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                                                         />
@@ -96,6 +102,13 @@ const TrendingNews = ({ trendingNews }) => {
 
                                 {/* Hover Effect Line */}
                                 <div className="mt-2 h-px bg-gray-200 group-hover:bg-blue-300 transition-colors"></div>
+
+                                {/* Insert Advertisement after 4th news item */}
+                                {index === 3 && (
+                                    <div className="my-4 p-4 bg-gray-100 flex items-center justify-center rounded-lg text-gray-500 text-sm font-medium">
+                                        Advertisement
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>
