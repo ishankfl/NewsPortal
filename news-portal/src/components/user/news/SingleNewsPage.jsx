@@ -3,14 +3,19 @@ import { useParams } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import { FiClock, FiUser, FiShare2, FiBookmark, FiHeart, FiMessageSquare, FiArrowLeft } from 'react-icons/fi';
 import { getArticleById, getRelatedArticles } from '../../../api/news-services';
-import { getBanners } from '../../../api/banner-service';
+// import { getBanners } from '../../../api/banner-service';
+// import { imgServer } from '../../../api/server';
+// import TrendingNews from './TrendingNews';
+// import Advertisement from './Advertisement';
+// import { ViewersHeader } from '../../common/Header';
+// import { Footer } from '../../common/Footer';
+// import { useCategories } from '../../../providers/CategoriesProvider';
 import { imgServer } from '../../../api/server';
-import TrendingNews from './TrendingNews';
-import Advertisement from './Advertisement';
-import { ViewersHeader } from '../../common/Header';
-import { Footer } from '../../common/Footer';
-import { useCategories } from '../../../providers/CategoriesProvider';
-
+import { TrendingNews } from '../bannernews/TrendingNews'
+import { Advertisement } from '../bannernews/Advertisement'
+import { ViewersHeader } from '../../common/Header'
+import { Footer } from '../../common/Footer'
+import { useCategories } from '../../../providers/CategoriesProvider'
 const SingleNewsPage = () => {
   const { id } = useParams();
   const { categories } = useCategories();
@@ -117,8 +122,8 @@ const SingleNewsPage = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back button */}
         <div className="mb-6">
-          <button 
-            onClick={() => window.history.back()} 
+          <button
+            onClick={() => window.history.back()}
             className="flex items-center text-blue-600 hover:text-blue-800"
           >
             <FiArrowLeft className="mr-2" />
@@ -130,7 +135,7 @@ const SingleNewsPage = () => {
           {/* Left Sidebar */}
           <div className="lg:col-span-2">
             <div className="sticky top-8 space-y-6">
-              <Advertisement 
+              <Advertisement
                 advertisements={advertisements.filter(ad => ad.position === "Left Sidebar")}
                 position="sidebar"
               />
@@ -139,7 +144,7 @@ const SingleNewsPage = () => {
               <div className="bg-white p-4 rounded-lg shadow-sm">
                 <h3 className="text-sm font-semibold text-gray-900 mb-3">Share this article</h3>
                 <div className="flex space-x-3">
-                  <button 
+                  <button
                     onClick={handleShare}
                     className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center"
                   >
@@ -201,7 +206,7 @@ const SingleNewsPage = () => {
                   </div>
 
                   <div className="flex items-center space-x-4">
-                    <button 
+                    <button
                       onClick={handleLike}
                       className={`flex items-center space-x-1 ${isLiked ? 'text-red-500' : 'text-gray-500'}`}
                     >
@@ -212,7 +217,7 @@ const SingleNewsPage = () => {
                       <FiMessageSquare className="w-4 h-4" />
                       <span>{commentCount}</span>
                     </button>
-                    <button 
+                    <button
                       onClick={handleBookmark}
                       className={`${isBookmarked ? 'text-blue-500' : 'text-gray-500'}`}
                     >
@@ -248,7 +253,7 @@ const SingleNewsPage = () => {
                   </div>
                 )}
 
-                <div 
+                <div
                   className="prose prose-lg max-w-none"
                   dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(article.content) }}
                 />
@@ -268,7 +273,7 @@ const SingleNewsPage = () => {
                       <span>Views: {article.viewCount || 0}</span>
                     </div>
                     <div className="flex items-center space-x-4">
-                      <button 
+                      <button
                         onClick={handleShare}
                         className="flex items-center space-x-1 text-gray-500 hover:text-blue-600"
                       >
@@ -322,7 +327,7 @@ const SingleNewsPage = () => {
               <div className="space-y-4">
                 {/* Comment form */}
                 <div className="border border-gray-200 rounded-lg p-4">
-                  <textarea 
+                  <textarea
                     className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     rows="4"
                     placeholder="Share your thoughts..."
@@ -363,7 +368,7 @@ const SingleNewsPage = () => {
             <div className="sticky top-8 space-y-6">
               <TrendingNews trendingNews={relatedNews} />
 
-              <Advertisement 
+              <Advertisement
                 advertisements={advertisements.filter(ad => ad.position === "Right Sidebar")}
                 position="sidebar"
               />
@@ -390,7 +395,7 @@ const SingleNewsPage = () => {
 
       {/* Advertisement before footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Advertisement 
+        <Advertisement
           advertisements={advertisements.filter(ad => ad.position === "Footer Banner")}
           position="banner"
         />

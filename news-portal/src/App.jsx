@@ -16,6 +16,7 @@ import BannerNews from './components/admin/banner/BannerNews';
 import AddBannerNews from './components/admin/banner/AddBannerNews';
 import { BannerNewsPage } from './components/user/bannernews';
 import TestPage from './components/user/bannernews/TestPage';
+import SingleNewsPage from './components/user/news/SingleNewsPage';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
         <Route path="/" element={<BannerNewsPage />} />
         <Route path="/bannernews" element={<BannerNewsPage />} />
         <Route path="/test" element={<TestPage />} />
+        <Route path="/news/:id" element={<SingleNewsPage />} />
       </Routes>
       <ToastContainer />
     </>

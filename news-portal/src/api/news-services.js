@@ -277,3 +277,16 @@ export const validateArticleData = (articleData) => {
 
 
 
+// Get related articles by article ID
+export const getRelatedArticles = async (id, limit = 5) => {
+  try {
+    const response = await axios.get(`${server}/Article/${id}/related`, {
+      params: { limit },
+      timeout: 5000,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching related articles:', error);
+    throw error.response?.data || error;
+  }
+};
