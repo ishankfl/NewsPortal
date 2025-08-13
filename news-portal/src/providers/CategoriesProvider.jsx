@@ -1,8 +1,7 @@
-// CategoriesProvider.jsx
 import React, { createContext, useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getCategories } from "../../api/category-services";
-
+// import { getCategories } from "../../api/category-services";
+import { getCategories } from "../api/category-services";
 const CategoriesContext = createContext({
   categories: [],
   isLoading: false,
