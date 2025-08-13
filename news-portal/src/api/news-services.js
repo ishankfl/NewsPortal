@@ -7,7 +7,7 @@ export const createArticleWithFormData = async (formData) => {
     for (let [key, value] of formData.entries()) {
       console.log(`${key}:`, value);
     }
-    
+
     const response = await axios.post(`${server}/Article`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -52,16 +52,31 @@ export const updateArticle = async (id, articleData) => {
     throw error.response?.data || error;
   }
 };
-
 // Get article by ID
 export const getArticleById = async (id) => {
   try {
     const response = await axios.get(`${server}/Article/${id}`, {
       timeout: 5000,
     });
+    console.log('Article response:', response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching article by ID:', error);
+    throw error.response?.data || error;
+  }
+};
+
+// Get related articles
+export const getRelatedArticles = async (id, { pageSize = 4 }) => {
+  try {
+    const response = await axios.get(`${server}/Article/${id}/related`, {
+      params: { 'limit[pageSize]': pageSize },
+      timeout: 5000,
+    });
+    console.log('Related articles response:', response.data);
+    return response.data; // Returns array of ArticleDto objects
+  } catch (error) {
+    console.error('Error fetching related articles:', error);
     throw error.response?.data || error;
   }
 };
@@ -96,7 +111,7 @@ export const deleteArticle = async (id) => {
 export const getAllArticles = async (params = {}) => {
   try {
     const queryParams = new URLSearchParams();
-    
+
     if (params.page) queryParams.append('pageNumber', params.page);
     if (params.pageSize) queryParams.append('pageSize', params.pageSize);
     if (params.search) queryParams.append('search', params.search);
@@ -277,16 +292,16 @@ export const validateArticleData = (articleData) => {
 
 
 
-// Get related articles by article ID
-export const getRelatedArticles = async (id, limit = 5) => {
-  try {
-    const response = await axios.get(`${server}/Article/${id}/related`, {
-      params: { limit },
-      timeout: 5000,
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching related articles:', error);
-    throw error.response?.data || error;
-  }
-};
+// // Get related articles by article ID
+// export const getRelatedArticles = async (id, limit = 5) => {
+//   try {
+//     const response = await axios.get(`${server}/Article/${id}/related`, {
+//       params: { limit },
+//       timeout: 5000,
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error('Error fetching related articles:', error);
+//     throw error.response?.data || error;
+//   }
+// };

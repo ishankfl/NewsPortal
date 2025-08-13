@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import { FiClock, FiUser, FiShare2, FiBookmark, FiHeart, FiMessageSquare, FiArrowLeft } from 'react-icons/fi';
 import { getArticleById, getRelatedArticles } from '../../../api/news-services';
@@ -27,17 +27,15 @@ const SingleNewsPage = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [articleRes, relatedRes, adsRes] = await Promise.all([
+        const [articleRes, relatedRes] = await Promise.all([
           getArticleById(id),
           getRelatedArticles(id, { pageSize: 4 }),
-          getBanners(1, 3)
         ]);
 
-        setArticle(articleRes.data);
-        setRelatedNews(relatedRes.items || []);
-        setAdvertisements(adsRes.data?.items || []);
-        setLikeCount(articleRes.data?.likeCount || 0);
-        setCommentCount(articleRes.data?.commentCount || 0);
+        setArticle(articleRes);
+        setRelatedNews(relatedRes || []); // Ensure relatedNews is an array
+        setLikeCount(articleRes.likeCount || 0);
+        setCommentCount(articleRes.commentCount || 0);
       } catch (err) {
         console.error('Error fetching news data:', err);
         setError('Failed to load article. Please try again later.');
@@ -56,7 +54,7 @@ const SingleNewsPage = () => {
       month: 'long',
       day: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     });
   };
 
@@ -65,8 +63,8 @@ const SingleNewsPage = () => {
       navigator.share({
         title: article?.title,
         text: article?.summary,
-        url: window.location.href
-      }).catch(err => console.log('Error sharing:', err));
+        url: window.location.href,
+      }).catch((err) => console.log('Error sharing:', err));
     } else {
       navigator.clipboard.writeText(window.location.href);
       alert('Link copied to clipboard!');
@@ -75,7 +73,7 @@ const SingleNewsPage = () => {
 
   const handleLike = () => {
     setIsLiked(!isLiked);
-    setLikeCount(prev => isLiked ? prev - 1 : prev + 1);
+    setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
   };
 
   const handleBookmark = () => {
@@ -84,11 +82,9 @@ const SingleNewsPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Always show header */}
       <ViewersHeader />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Always show back button */}
         <div className="mb-6">
           <button
             onClick={() => window.history.back()}
@@ -100,11 +96,11 @@ const SingleNewsPage = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Left Sidebar - always show */}
+          {/* Left Sidebar */}
           <div className="lg:col-span-2">
             <div className="sticky top-8 space-y-6">
               <Advertisement
-                advertisements={advertisements.filter(ad => ad.position === "Left Sidebar")}
+                advertisements={advertisements.filter((ad) => ad.position === 'Left Sidebar')}
                 position="sidebar"
               />
 
@@ -143,7 +139,7 @@ const SingleNewsPage = () => {
             ) : error ? (
               <div className="bg-white rounded-lg shadow-sm p-8 text-center">
                 <div className="text-red-600 mb-4">{error}</div>
-                <button 
+                <button
                   onClick={() => window.location.reload()}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
                 >
@@ -157,8 +153,50 @@ const SingleNewsPage = () => {
             ) : (
               <>
                 <article className="bg-white rounded-lg shadow-sm overflow-hidden">
-                  {/* Article content remains the same */}
-                  {/* ... (keep all your existing article content JSX) */}
+                  {article.imageUrl && (
+                    <img
+                      src={`${imgServer}/${article.imageUrl}`}
+                      alt={article.title}
+                      className="w-full h-96 object-cover"
+                    />
+                  )}
+                  <div className="p-6">
+                    <h1 className="text-3xl font-bold text-gray-900 mb-4">{article.title}</h1>
+                    <div className="flex items-center text-gray-600 text-sm mb-4">
+                      <FiClock className="mr-2" />
+                      <span>{formatDate(article.publicationDatetime)}</span>
+                      <FiUser className="ml-4 mr-2" />
+                      <span>Author ID: {article.authorId}</span>
+                    </div>
+                    <div className="flex items-center space-x-4 mb-6">
+                      <button
+                        onClick={handleLike}
+                        className={`flex items-center space-x-1 ${isLiked ? 'text-red-500' : 'text-gray-600'} hover:text-red-500`}
+                      >
+                        <FiHeart className="w-5 h-5" />
+                        <span>{likeCount}</span>
+                      </button>
+                      <button
+                        onClick={handleBookmark}
+                        className={`flex items-center space-x-1 ${isBookmarked ? 'text-blue-500' : 'text-gray-600'} hover:text-blue-500`}
+                      >
+                        <FiBookmark className="w-5 h-5" />
+                        <span>Bookmark</span>
+                      </button>
+                      {article.allowComments && (
+                        <div className="flex items-center space-x-1 text-gray-600">
+                          <FiMessageSquare className="w-5 h-5" />
+                          <span>{commentCount}</span>
+                        </div>
+                      )}
+                    </div>
+                    {/* <h1>{article.content}</h1> */}
+                    <div
+                      className="prose max-w-none text-gray-800"
+                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(article.content) }}
+                    />
+                    {/* sdfsldj */}
+                  </div>
                 </article>
 
                 {/* Related News */}
@@ -166,31 +204,52 @@ const SingleNewsPage = () => {
                   <div className="mt-12">
                     <h2 className="text-2xl font-bold text-gray-900 mb-6">Related News</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {relatedNews.map(news => (
-                        <div key={news.id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-                          {/* ... (keep your related news item JSX) */}
-                        </div>
+                      {relatedNews.map((news) => (
+                        <Link
+                          to={`/news/${news.id}`}
+                          key={news.id}
+                          className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+                        >
+                          {news.imageUrl && (
+                            <img
+                              src={`${imgServer}/${news.imageUrl}`}
+                              alt={news.title}
+                              className="w-full h-48 object-cover"
+                            />
+                          )}
+                          <div className="p-4">
+                            <h3 className="text-lg font-semibold text-gray-900 mb-2">{news.title}</h3>
+                            <p className="text-gray-600 text-sm mb-2">{news.summary}</p>
+                            <div className="flex items-center text-gray-500 text-sm">
+                              <FiClock className="mr-1" />
+                              <span>{formatDate(news.publicationDatetime)}</span>
+                            </div>
+                          </div>
+                        </Link>
                       ))}
                     </div>
                   </div>
                 )}
 
                 {/* Comments Section */}
-                <div className="mt-12 bg-white rounded-lg shadow-sm p-6">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Comments ({commentCount})</h2>
-                  {/* ... (keep your comments section JSX) */}
-                </div>
+                {article?.allowComments && (
+                  <div className="mt-12 bg-white rounded-lg shadow-sm p-6">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Comments ({commentCount})</h2>
+                    <p className="text-gray-600">Comments section is not implemented yet.</p>
+                    {/* Add comments form and list here when implemented */}
+                  </div>
+                )}
               </>
             )}
           </div>
 
-          {/* Right Sidebar - always show */}
+          {/* Right Sidebar */}
           <div className="lg:col-span-2">
             <div className="sticky top-8 space-y-6">
               <TrendingNews trendingNews={relatedNews} />
 
               <Advertisement
-                advertisements={advertisements.filter(ad => ad.position === "Right Sidebar")}
+                advertisements={advertisements.filter((ad) => ad.position === 'Right Sidebar')}
                 position="sidebar"
               />
 
@@ -213,15 +272,13 @@ const SingleNewsPage = () => {
         </div>
       </main>
 
-      {/* Advertisement before footer - always show */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Advertisement
-          advertisements={advertisements.filter(ad => ad.position === "Footer Banner")}
+          advertisements={advertisements.filter((ad) => ad.position === 'Footer Banner')}
           position="banner"
         />
       </div>
 
-      {/* Always show footer */}
       <Footer categories={categories} />
     </div>
   );
